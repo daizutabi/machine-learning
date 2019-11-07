@@ -16,6 +16,5 @@ plugins:
 
 nav:
 - Home: index.md
-# - Keras: keras
-# - TensorFlow: tensorflow
+- TensorFlow: tensorflow
 # - NNabla: nnabla
