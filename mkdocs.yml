@@ -1,0 +1,21 @@
+site_name: Machine Learning
+site_author: daizutabi
+site_url: https://ml.daizutabi.net/
+repo_url: https://github.com/daizutabi/machine-learning/
+edit_uri: ""
+
+theme: ivory
+
+markdown_extensions:
+  - admonition
+  - pymdownx.arithmatex
+
+plugins:
+  - pheasant:
+      jupyter: true
+
+nav:
+- Home: index.md
+# - Keras: keras
+# - TensorFlow: tensorflow
+# - NNabla: nnabla
