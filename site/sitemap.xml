@@ -2,37 +2,42 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
      <loc>https://ml.daizutabi.net/</loc>
-     <lastmod>2019-11-08</lastmod>
+     <lastmod>2019-11-09</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/初級/KerasによるMLの基本/基本的な画像分類/</loc>
-     <lastmod>2019-11-08</lastmod>
+     <lastmod>2019-11-09</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/初級/KerasによるMLの基本/TF.Hubによるテキスト分類/</loc>
-     <lastmod>2019-11-08</lastmod>
+     <lastmod>2019-11-09</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/初級/KerasによるMLの基本/映画レビューのテキスト分類/</loc>
-     <lastmod>2019-11-08</lastmod>
+     <lastmod>2019-11-09</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/初級/KerasによるMLの基本/回帰：燃費を予測する/</loc>
-     <lastmod>2019-11-08</lastmod>
+     <lastmod>2019-11-09</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/初級/KerasによるMLの基本/過学習と学習不足/</loc>
-     <lastmod>2019-11-08</lastmod>
+     <lastmod>2019-11-09</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/初級/KerasによるMLの基本/モデルの保存と復元/</loc>
-     <lastmod>2019-11-08</lastmod>
+     <lastmod>2019-11-09</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
+     <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/詳細/カスタマイズ/テンソルと演算/</loc>
+     <lastmod>2019-11-09</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="daizutabi">
+    <link rel="shortcut icon" href="../../../../../img/favicon.ico">
+    <title>1 テンソルと演算 &mdash; Machine Learning</title>
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/tonsky/FiraCode@1.206/distr/fira_code.css">
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/v4-shims.css">
+    <link rel="stylesheet" href="../../../../../css/theme.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/v4-shims.css">
+    <link rel="stylesheet" href="../../../../../css/pheasant.css">
+    <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script>
+        hljs.initHighlightingOnLoad();
+    </script> 
+</head>
+
+<body ontouchstart="">
+    <div id="container">
+        <aside>
+            <div class="home">
+                <div class="title">
+                    <button class="hamburger"></button>
+                    <a href="../../../../.." class="site-name"> Machine Learning</a>
+                </div>
+            </div>
+            <nav class="nav">
+                <ul class="root">
+                    <li class="toctree-l1"><a class="nav-item" href="../../../../..">機械学習自習室</a></li>
+                    <li class="toctree-l1"><button class="section nav-item">TensorFlow</button>
+<ul class="subnav">
+    <li class="toctree-l2 current"><button class="section nav-item">チュートリアル</button>
+<ul class="subnav">
+    <li class="toctree-l3"><button class="section nav-item hide">初級</button>
+<ul class="subnav hide">
+    <li class="toctree-l4"><button class="section nav-item hide">KerasによるMLの基本</button>
+<ul class="subnav hide">
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/KerasによるMLの基本/基本的な画像分類/">1 基本的な画像の分類</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/KerasによるMLの基本/TF.Hubによるテキスト分類/">2 TF.Hubによるテキスト分類</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/KerasによるMLの基本/映画レビューのテキスト分類/">3 映画レビューのテキスト分類</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/KerasによるMLの基本/回帰：燃費を予測する/">4 回帰：燃費を予測する</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/KerasによるMLの基本/過学習と学習不足/">5 過学習と学習不足</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/KerasによるMLの基本/モデルの保存と復元/">6 モデルの保存と復元</a></li>
+</ul></li>
+</ul></li>
+    <li class="toctree-l3 current"><button class="section nav-item">詳細</button>
+<ul class="subnav">
+    <li class="toctree-l4 current"><button class="section nav-item">カスタマイズ</button>
+<ul class="subnav">
+    <li class="toctree-l5 current"><a class="nav-item current" href="./">1 テンソルと演算</a>
+<ul class="subnav">
+<li class="toctree-l6"><a class="nav-item toc" href="#11">1.1 テンソル</a></li>
+<li class="toctree-l6"><a class="nav-item toc" href="#12-gpu">1.2 GPU による高速化</a></li>
+<li class="toctree-l6"><a class="nav-item toc" href="#13">1.3 データセット</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+                </ul>
+            </nav>
+            <div class="repo">
+    <div class="link">
+        <a href="https://github.com/daizutabi/machine-learning/" class="fa fa-github"> GitHub</a>
+    </div>
+    <div class="previous"><a href="../../../初級/KerasによるMLの基本/モデルの保存と復元/">&laquo; Previous</a></div>
+</div>
+        </aside>
+        <div id="spacer"><button class="arrow"></button></div>
+        <main>
+            <div class="home-top">
+                <button class="hamburger"></button>
+                <a href="../../../../.." class="site-name"> Machine Learning</a>
+            </div>
+            <div id="main">
+                <nav class="breadcrumbs">
+<ul>
+    <li>TensorFlow &raquo; </li><li>チュートリアル &raquo; </li><li>詳細 &raquo; </li><li>カスタマイズ</li>
+</ul>
+</nav>
+                <div id="content">
+<h1 id="1"><span class="pheasant-header"><span class="header"><span class="number">1</span> <span class="title">テンソルと演算</span></span></span></h1>
+<div class="pheasant-fenced-code"><div class="cell jupyter input"><div class="code"><pre><code class="python">import tempfile
+import time
+
+import numpy as np
+import tensorflow as tf</code></pre></div>
+<div class="report"><p><span class="count">[1]</span>
+<span class="start">2019-11-09 05:38:14</span> (<span class="time">1.95s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">1.95s</span>)</span></p></div></div></div>
+
+<h2 id="11"><span class="pheasant-header"><span class="header"><span class="number">1.1</span> <span class="title">テンソル</span></span></span></h2>
+<div class="pheasant-fenced-code"><div class="cell jupyter input"><div class="code"><pre><code class="python">print(tf.add(1, 2))
+print(tf.add([1, 2], [3, 4]))
+print(tf.square(5))
+print(tf.reduce_sum([1, 2, 3]))</code></pre></div>
+<div class="report"><p><span class="count">[2]</span>
+<span class="start">2019-11-09 05:38:16</span> (<span class="time">7.98s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">9.93s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">tf.Tensor(3, shape=(), dtype=int32)
+tf.Tensor([4 6], shape=(2,), dtype=int32)
+tf.Tensor(25, shape=(), dtype=int32)
+tf.Tensor(6, shape=(), dtype=int32)</code></pre></div></div></div>
+
+<p>Operator overloading is also supported</p>
+<div class="pheasant-fenced-code"><div class="cell jupyter input"><div class="code"><pre><code class="python">print(tf.square(2) + tf.square(3))</code></pre></div>
+<div class="report"><p><span class="count">[3]</span>
+<span class="start">2019-11-09 05:38:24</span> (<span class="time">6.03ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">9.94s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">tf.Tensor(13, shape=(), dtype=int32)</code></pre></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cell jupyter input"><div class="code"><pre><code class="python">x = tf.matmul([[1]], [[2, 3]])
+print(x)
+print(x.shape)
+print(x.dtype)</code></pre></div>
+<div class="report"><p><span class="count">[4]</span>
+<span class="start">2019-11-09 05:38:24</span> (<span class="time">7.02ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">9.95s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">tf.Tensor([[2 3]], shape=(1, 2), dtype=int32)
+(1, 2)
+&lt;dtype: &#39;int32&#39;&gt;</code></pre></div></div></div>
+
+<h3 id="111-numpy"><span class="pheasant-header"><span class="header"><span class="number">1.1.1</span> <span class="title">NumPy互換性</span></span></span></h3>
+<div class="pheasant-fenced-code"><div class="cell jupyter input"><div class="code"><pre><code class="python">ndarray = np.ones([3, 3])
+
+print(&#34;TensorFlow演算によりnumpy配列は自動的にテンソルに変換される&#34;)
+tensor = tf.multiply(ndarray, 42)
+print(tensor)
+
+print(&#34;またNumPy演算によりテンソルは自動的にnumpy配列に変換される&#34;)
+print(np.add(tensor, 1))
+
+print(&#34;.numpy()メソッドによりテンソルは明示的にnumpy配列に変換される&#34;)
+print(tensor.numpy())</code></pre></div>
+<div class="report"><p><span class="count">[5]</span>
+<span class="start">2019-11-09 05:38:24</span> (<span class="time">13.0ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">9.96s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">TensorFlow演算によりnumpy配列は自動的にテンソルに変換される
+tf.Tensor(
+[[42. 42. 42.]
+ [42. 42. 42.]
+ [42. 42. 42.]], shape=(3, 3), dtype=float64)
+またNumPy演算によりテンソルは自動的にnumpy配列に変換される
+[[43. 43. 43.]
+ [43. 43. 43.]
+ [43. 43. 43.]]
+.numpy()メソッドによりテンソルは明示的にnumpy配列に変換される
+[[42. 42. 42.]
+ [42. 42. 42.]
+ [42. 42. 42.]]</code></pre></div></div></div>
+
+<h2 id="12-gpu"><span class="pheasant-header"><span class="header"><span class="number">1.2</span> <span class="title">GPU による高速化</span></span></span></h2>
+<div class="pheasant-fenced-code"><div class="cell jupyter input"><div class="code"><pre><code class="python">x = tf.random.uniform([3, 3])
+
+print(&#34;利用できるGPUはあるか: &#34;)
+print(tf.config.experimental.list_physical_devices(&#34;GPU&#34;))
+
+print(&#34;テンソルはGPU #0にあるか:  &#34;)
+print(x.device.endswith(&#34;GPU:0&#34;))</code></pre></div>
+<div class="report"><p><span class="count">[6]</span>
+<span class="start">2019-11-09 05:38:24</span> (<span class="time">9.03ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">9.97s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">利用できるGPUはあるか: 
+[PhysicalDevice(name=&#39;/physical_device:GPU:0&#39;, device_type=&#39;GPU&#39;)]
+テンソルはGPU #0にあるか:  
+True</code></pre></div></div></div>
+
+<h3 id="121"><span class="pheasant-header"><span class="header"><span class="number">1.2.1</span> <span class="title">明示的デバイス配置</span></span></span></h3>
+<div class="pheasant-fenced-code"><div class="cell jupyter input"><div class="code"><pre><code class="python">def time_matmul(x):
+    start = time.time()
+    for loop in range(10):
+        tf.matmul(x, x)
+    result = time.time() - start
+
+    print(&#34;10 loops: {:0.2f}ms&#34;.format(1000 * result))
+
+# CPUでの実行を強制
+print(&#34;On CPU:&#34;)
+with tf.device(&#34;CPU:0&#34;):
+    x = tf.random.uniform([1000, 1000])
+    assert x.device.endswith(&#34;CPU:0&#34;)
+    time_matmul(x)
+# GPU #0があればその上での実行を強制
+if tf.config.experimental.list_physical_devices(&#34;GPU&#34;):
+    print(&#34;On GPU:&#34;)
+    with tf.device(&#34;GPU:0&#34;):  # 2番めのGPUなら GPU:1, 3番目なら GPU:2 など
+        x = tf.random.uniform([1000, 1000])
+        assert x.device.endswith(&#34;GPU:0&#34;)
+        time_matmul(x)</code></pre></div>
+<div class="report"><p><span class="count">[7]</span>
+<span class="start">2019-11-09 05:38:24</span> (<span class="time">766ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">10.7s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">On CPU:
+10 loops: 100.00ms
+On GPU:</code></pre></div></div><div class="cell jupyter error"><div class="code"><pre><code class="nohighlight">InternalError: Blas GEMM launch failed : a.shape=(1000, 1000), b.shape=(1000, 1000), m=1000, n=1000, k=1000 [Op:MatMul] name: MatMul/</code></pre></div>
+      <div class="report"><pre><code class="nohighlight">InternalError                             Traceback (most recent call last)
+&lt;ipython-input-8-d627e7e6273f&gt; in &lt;module&gt;
+     20         x = tf.random.uniform([1000, 1000])
+     21         assert x.device.endswith(&#34;GPU:0&#34;)
+---&gt; 22         time_matmul(x)
+
+&lt;ipython-input-8-d627e7e6273f&gt; in time_matmul(x)
+      2     start = time.time()
+      3     for loop in range(10):
+----&gt; 4         tf.matmul(x, x)
+      5     result = time.time() - start
+      6 
+
+c:\users\daizu\miniconda3\envs\daizu\lib\site-packages\tensorflow_core\python\util\dispatch.py in wrapper(*args, **kwargs)
+    178     &#34;&#34;&#34;Call target, and fall back on dispatchers if there is a TypeError.&#34;&#34;&#34;
+    179     try:
+--&gt; 180       return target(*args, **kwargs)
+    181     except (TypeError, ValueError):
+    182       # Note: convert_to_eager_tensor currently raises a ValueError, not a
+
+c:\users\daizu\miniconda3\envs\daizu\lib\site-packages\tensorflow_core\python\ops\math_ops.py in matmul(a, b, transpose_a, transpose_b, adjoint_a, adjoint_b, a_is_sparse, b_is_sparse, name)
+   2763     else:
+   2764       return gen_math_ops.mat_mul(
+-&gt; 2765           a, b, transpose_a=transpose_a, transpose_b=transpose_b, name=name)
+   2766 
+   2767 
+
+c:\users\daizu\miniconda3\envs\daizu\lib\site-packages\tensorflow_core\python\ops\gen_math_ops.py in mat_mul(a, b, transpose_a, transpose_b, name)
+   6124       else:
+   6125         message = e.message
+-&gt; 6126       _six.raise_from(_core._status_to_exception(e.code, message), None)
+   6127   # Add nodes to the TensorFlow graph.
+   6128   if transpose_a is None:
+
+c:\users\daizu\miniconda3\envs\daizu\lib\site-packages\six.py in raise_from(value, from_value)</code></pre></div></div></div>
+
+<h2 id="13"><span class="pheasant-header"><span class="header"><span class="number">1.3</span> <span class="title">データセット</span></span></span></h2>
+<h3 id="131-dataset"><span class="pheasant-header"><span class="header"><span class="number">1.3.1</span> <span class="title">ソースDatasetの作成</span></span></span></h3>
+<div class="pheasant-fenced-code"><div class="cell jupyter input"><div class="code"><pre><code class="python">ds_tensors = tf.data.Dataset.from_tensor_slices([1, 2, 3, 4, 5, 6])
+
+# CSVファイルを作成
+_, filename = tempfile.mkstemp()
+
+with open(filename, &#34;w&#34;) as f:
+    f.write(&#34;Line 1\nLine 2\nLine 3\n&#34;)
+ds_file = tf.data.TextLineDataset(filename)</code></pre></div>
+<div class="report"><p><span class="count">[8]</span>
+<span class="start">2019-11-09 05:38:24</span> (<span class="time">106ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">10.8s</span>)</span></p></div></div></div>
+
+<h3 id="132"><span class="pheasant-header"><span class="header"><span class="number">1.3.2</span> <span class="title">変換の適用</span></span></span></h3>
+<div class="pheasant-fenced-code"><div class="cell jupyter input"><div class="code"><pre><code class="python">ds_tensors = ds_tensors.map(tf.square).shuffle(2).batch(2)
+ds_file = ds_file.batch(2)</code></pre></div>
+<div class="report"><p><span class="count">[9]</span>
+<span class="start">2019-11-09 05:38:24</span> (<span class="time">12.0ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">10.9s</span>)</span></p></div></div></div>
+
+<h3 id="133"><span class="pheasant-header"><span class="header"><span class="number">1.3.3</span> <span class="title">イテレート</span></span></span></h3>
+<div class="pheasant-fenced-code"><div class="cell jupyter input"><div class="code"><pre><code class="python">print(&#34;ds_tensors の要素:&#34;)
+for x in ds_tensors:
+    print(x)
+print(&#34;\nds_file の要素:&#34;)
+for x in ds_file:
+    print(x)</code></pre></div>
+<div class="report"><p><span class="count">[10]</span>
+<span class="start">2019-11-09 05:38:24</span> (<span class="time">27.0ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">10.9s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">ds_tensors の要素:
+tf.Tensor([4 1], shape=(2,), dtype=int32)
+tf.Tensor([ 9 25], shape=(2,), dtype=int32)
+tf.Tensor([16 36], shape=(2,), dtype=int32)
+
+ds_file の要素:
+tf.Tensor([b&#39;Line 1&#39; b&#39;Line 2&#39;], shape=(2,), dtype=string)
+tf.Tensor([b&#39;Line 3&#39;], shape=(1,), dtype=string)</code></pre></div></div></div></div>
+                <footer>
+    <div class="footer-buttons">
+        <div class="previous"><a href="../../../初級/KerasによるMLの基本/モデルの保存と復元/" title="6 モデルの保存と復元"><span>Previous</span></a></div>
+    </div>
+    <div class="footer-note">
+        <p>
+            Built with <a href="http://www.mkdocs.org">MkDocs</a> using
+            <a href="https://github.com/daizutabi/mkdocs-ivory">Ivory theme</a>.
+        </p>
+    </div>
+</footer>
+            </div>
+        </main>
+    </div>
+    <script>
+        var base_url = '.';
+    </script>
+    <script src="../../../../../js/theme.js"></script>
+    <script src="../../../../../js/pheasant.js"></script>
+</body>
+
+</html>
