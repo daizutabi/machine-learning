@@ -20,4 +20,19 @@
      <lastmod>2019-11-08</lastmod>
      <changefreq>daily</changefreq>
     </url>
+    <url>
+     <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/初級/KerasによるMLの基本/回帰：燃費を予測する/</loc>
+     <lastmod>2019-11-08</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
+     <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/初級/KerasによるMLの基本/過学習と学習不足/</loc>
+     <lastmod>2019-11-08</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
+     <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/初級/KerasによるMLの基本/モデルの保存と復元/</loc>
+     <lastmod>2019-11-08</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
 </urlset>

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="daizutabi">
+    <link rel="shortcut icon" href="../../../../../img/favicon.ico">
+    <title>6 モデルの保存と復元 &mdash; Machine Learning</title>
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/tonsky/FiraCode@1.206/distr/fira_code.css">
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/v4-shims.css">
+    <link rel="stylesheet" href="../../../../../css/theme.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/v4-shims.css">
+    <link rel="stylesheet" href="../../../../../css/pheasant.css">
+    <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script>
+        hljs.initHighlightingOnLoad();
+    </script> 
+</head>
+
+<body ontouchstart="">
+    <div id="container">
+        <aside>
+            <div class="home">
+                <div class="title">
+                    <button class="hamburger"></button>
+                    <a href="../../../../.." class="site-name"> Machine Learning</a>
+                </div>
+            </div>
+            <nav class="nav">
+                <ul class="root">
+                    <li class="toctree-l1"><a class="nav-item" href="../../../../..">機械学習自習室</a></li>
+                    <li class="toctree-l1"><button class="section nav-item">TensorFlow</button>
+<ul class="subnav">
+    <li class="toctree-l2 current"><button class="section nav-item">チュートリアル</button>
+<ul class="subnav">
+    <li class="toctree-l3 current"><button class="section nav-item">初級</button>
+<ul class="subnav">
+    <li class="toctree-l4 current"><button class="section nav-item">KerasによるMLの基本</button>
+<ul class="subnav">
+    <li class="toctree-l5"><a class="nav-item" href="../基本的な画像分類/">1 基本的な画像の分類</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../TF.Hubによるテキスト分類/">2 TF.Hubによるテキスト分類</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../映画レビューのテキスト分類/">3 映画レビューのテキスト分類</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../回帰：燃費を予測する/">4 回帰：燃費を予測する</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../過学習と学習不足/">5 過学習と学習不足</a></li>
+    <li class="toctree-l5 current"><a class="nav-item current" href="./">6 モデルの保存と復元</a>
+<ul class="subnav">
+<li class="toctree-l6"><a class="nav-item toc" href="#61">6.1 設定</a></li>
+<li class="toctree-l6"><a class="nav-item toc" href="#62">6.2 訓練中にチェックポイントを保存する</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+                </ul>
+            </nav>
+            <div class="repo">
+    <div class="link">
+        <a href="https://github.com/daizutabi/machine-learning/" class="fa fa-github"> GitHub</a>
+    </div>
+    <div class="previous"><a href="../過学習と学習不足/">&laquo; Previous</a></div>
+</div>
+        </aside>
+        <div id="spacer"><button class="arrow"></button></div>
+        <main>
+            <div class="home-top">
+                <button class="hamburger"></button>
+                <a href="../../../../.." class="site-name"> Machine Learning</a>
+            </div>
+            <div id="main">
+                <nav class="breadcrumbs">
+<ul>
+    <li>TensorFlow &raquo; </li><li>チュートリアル &raquo; </li><li>初級 &raquo; </li><li>KerasによるMLの基本</li>
+</ul>
+</nav>
+                <div id="content">
+<h1 id="6"><span class="pheasant-header"><span class="header"><span class="number">6</span> <span class="title">モデルの保存と復元</span></span></span></h1>
+<h2 id="61"><span class="pheasant-header"><span class="header"><span class="number">6.1</span> <span class="title">設定</span></span></span></h2>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">import os
+import shutil
+
+import tensorflow as tf
+from tensorflow import keras</code></pre></div>
+<div class="report"><p><span class="count">[1]</span>
+<span class="start">2019-11-08 22:31:55</span> (<span class="time">1.94s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">1.94s</span>)</span></p></div></div></div></div>
+
+<h3 id="611"><span class="pheasant-header"><span class="header"><span class="number">6.1.1</span> <span class="title">サンプルデータセットの取得</span></span></span></h3>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">dataset = tf.keras.datasets.mnist.load_data()
+(train_images, train_labels), (test_images, test_labels) = dataset
+
+train_labels = train_labels[:1000]
+test_labels = test_labels[:1000]
+
+train_images = train_images[:1000].reshape(-1, 28 * 28) / 255.0
+test_images = test_images[:1000].reshape(-1, 28 * 28) / 255.0</code></pre></div>
+<div class="report"><p><span class="count">[2]</span>
+<span class="start">2019-11-08 22:31:57</span> (<span class="time">281ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">2.22s</span>)</span></p></div></div></div></div>
+
+<h3 id="612"><span class="pheasant-header"><span class="header"><span class="number">6.1.2</span> <span class="title">モデルの定義</span></span></span></h3>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python"># 短いシーケンシャルモデルを返す関数
+def create_model():
+    model = tf.keras.models.Sequential(
+        [
+            keras.layers.Dense(512, activation=&#34;relu&#34;, input_shape=(784,)),
+            keras.layers.Dropout(0.2),
+            keras.layers.Dense(10, activation=&#34;softmax&#34;),
+        ]
+    )
+
+    model.compile(
+        optimizer=&#34;adam&#34;, loss=&#34;sparse_categorical_crossentropy&#34;, metrics=[&#34;accuracy&#34;]
+    )
+
+    return model
+
+# 基本的なモデルのインスタンスを作る
+model = create_model()
+model.summary()</code></pre></div>
+<div class="report"><p><span class="count">[3]</span>
+<span class="start">2019-11-08 22:31:57</span> (<span class="time">1.55s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">3.78s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">Model: &#34;sequential&#34;
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+dense (Dense)                (None, 512)               401920    
+_________________________________________________________________
+dropout (Dropout)            (None, 512)               0         
+_________________________________________________________________
+dense_1 (Dense)              (None, 10)                5130      
+=================================================================
+Total params: 407,050
+Trainable params: 407,050
+Non-trainable params: 0
+_________________________________________________________________</code></pre></div></div></div></div>
+
+<h2 id="62"><span class="pheasant-header"><span class="header"><span class="number">6.2</span> <span class="title">訓練中にチェックポイントを保存する</span></span></span></h2>
+<h3 id="621"><span class="pheasant-header"><span class="header"><span class="number">6.2.1</span> <span class="title">チェックポイントコールバックの使い方</span></span></span></h3>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">checkpoint_path = &#34;training_1/cp.ckpt&#34;
+checkpoint_dir = os.path.dirname(checkpoint_path)</code></pre></div>
+<div class="report"><p><span class="count">[4]</span>
+<span class="start">2019-11-08 22:31:59</span> (<span class="time">6.01ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">3.78s</span>)</span></p></div></div></div></div>
+
+<p>チェックポイントコールバックを作る</p>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">cp_callback = tf.keras.callbacks.ModelCheckpoint(
+    checkpoint_path, save_weights_only=True, verbose=1
+)
+
+model = create_model()
+
+model.fit(
+    train_images,
+    train_labels,
+    epochs=10,
+    validation_data=(test_images, test_labels),
+    callbacks=[cp_callback],
+)</code></pre></div>
+<div class="report"><p><span class="count">[5]</span>
+<span class="start">2019-11-08 22:31:59</span> (<span class="time">3.84s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">7.62s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">Train on 1000 samples, validate on 1000 samples
+Epoch 1/10
+ 512/1000 [==============&gt;...............] - ETA: 1000/1000 [==============================] - 1s 1ms/sample - loss: 1.1411 - accuracy: 0.6800 - val_loss: 0.7267 - val_accuracy: 0.7840
+Epoch 2/10
+ 800/1000 [=======================&gt;......] - ETA:1000/1000 [==============================] - 0s 283us/sample - loss: 0.4155 - accuracy: 0.8790 - val_loss: 0.5350 - val_accuracy: 0.8320
+Epoch 3/10
+ 768/1000 [======================&gt;.......] - ETA:1000/1000 [==============================] - 0s 288us/sample - loss: 0.2699 - accuracy: 0.9270 - val_loss: 0.4799 - val_accuracy: 0.8480
+Epoch 4/10
+ 768/1000 [======================&gt;.......] - ETA:1000/1000 [==============================] - 0s 289us/sample - loss: 0.2117 - accuracy: 0.9470 - val_loss: 0.4343 - val_accuracy: 0.8560
+Epoch 5/10
+ 800/1000 [=======================&gt;......] - ETA:1000/1000 [==============================] - 0s 287us/sample - loss: 0.1446 - accuracy: 0.9650 - val_loss: 0.4425 - val_accuracy: 0.8650
+Epoch 6/10
+ 832/1000 [=======================&gt;......] - ETA:1000/1000 [==============================] - 0s 290us/sample - loss: 0.1165 - accuracy: 0.9700 - val_loss: 0.4280 - val_accuracy: 0.8690
+Epoch 7/10
+ 800/1000 [=======================&gt;......] - ETA:1000/1000 [==============================] - 0s 290us/sample - loss: 0.0803 - accuracy: 0.9870 - val_loss: 0.4263 - val_accuracy: 0.8580
+Epoch 8/10
+ 800/1000 [=======================&gt;......] - ETA:1000/1000 [==============================] - 0s 286us/sample - loss: 0.0594 - accuracy: 0.9980 - val_loss: 0.4167 - val_accuracy: 0.8680
+Epoch 9/10
+ 864/1000 [========================&gt;.....] - ETA:1000/1000 [==============================] - 0s 285us/sample - loss: 0.0470 - accuracy: 0.9980 - val_loss: 0.4108 - val_accuracy: 0.8670
+Epoch 10/10
+ 896/1000 [=========================&gt;....] - ETA:1000/1000 [==============================] - 0s 272us/sample - loss: 0.0382 - accuracy: 1.0000 - val_loss: 0.4115 - val_accuracy: 0.8700</code></pre></div></div><div class="cell jupyter output"><div class="code"><pre><code class="nohighlight">&lt;tensorflow.python.keras.callbacks.History at 0x2362736fe88&gt;</code></pre></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">model = create_model()
+
+loss, acc = model.evaluate(test_images, test_labels, verbose=2)
+print(&#34;Untrained model, accuracy: {:5.2f}%&#34;.format(100 * acc))</code></pre></div>
+<div class="report"><p><span class="count">[6]</span>
+<span class="start">2019-11-08 22:32:03</span> (<span class="time">272ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">7.89s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">1000/1 - 0s - loss: 2.3667 - accuracy: 0.0820
+Untrained model, accuracy:  8.20%</code></pre></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">model.load_weights(checkpoint_path)
+loss, acc = model.evaluate(test_images, test_labels, verbose=2)
+print(&#34;Restored model, accuracy: {:5.2f}%&#34;.format(100 * acc))
+shutil.rmtree(checkpoint_dir)</code></pre></div>
+<div class="report"><p><span class="count">[7]</span>
+<span class="start">2019-11-08 22:32:03</span> (<span class="time">188ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">8.08s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">1000/1 - 0s - loss: 0.5259 - accuracy: 0.8700
+Restored model, accuracy: 87.00%</code></pre></div></div></div></div>
+
+<h3 id="622"><span class="pheasant-header"><span class="header"><span class="number">6.2.2</span> <span class="title">チェックポイントコールバックのオプション</span></span></span></h3>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python"># ファイル名に(`str.format`を使って)エポック数を埋め込みます
+checkpoint_path = &#34;training_2/cp-{epoch:04d}.ckpt&#34;
+checkpoint_dir = os.path.dirname(checkpoint_path)
+
+cp_callback = tf.keras.callbacks.ModelCheckpoint(
+    checkpoint_path,
+    verbose=1,
+    save_weights_only=True,
+    # 重みを5エポックごとに保存します
+    period=5,
+)
+
+model = create_model()
+model.fit(
+    train_images,
+    train_labels,
+    epochs=50,
+    callbacks=[cp_callback],
+    validation_data=(test_images, test_labels),
+    verbose=0,
+)</code></pre></div>
+<div class="report"><p><span class="count">[8]</span>
+<span class="start">2019-11-08 22:32:03</span> (<span class="time">11.0s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">19.1s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">WARNING:tensorflow:`period` argument is deprecated. Please use `save_freq` to specify the frequency in number of samples seen.
+WARNING:tensorflow:Unresolved object in checkpoint: (root).optimizer.iter
+WARNING:tensorflow:Unresolved object in checkpoint: (root).optimizer.beta_1
+WARNING:tensorflow:Unresolved object in checkpoint: (root).optimizer.beta_2
+WARNING:tensorflow:Unresolved object in checkpoint: (root).optimizer.decay
+WARNING:tensorflow:Unresolved object in checkpoint: (root).optimizer.learning_rate
+WARNING:tensorflow:A checkpoint was restored (e.g. tf.train.Checkpoint.restore or tf.keras.Model.load_weights) but not all checkpointed values were used. See above for specific issues. Use expect_partial() on the load status object, e.g. tf.train.Checkpoint.restore(...).expect_partial(), to silence these warnings, or use assert_consumed() to make the check explicit. See https://www.tensorflow.org/alpha/guide/checkpoints#loading_mechanics for details.
+
+Epoch 00005: saving model to training_2/cp-0005.ckpt
+
+Epoch 00010: saving model to training_2/cp-0010.ckpt
+
+Epoch 00015: saving model to training_2/cp-0015.ckpt
+
+Epoch 00020: saving model to training_2/cp-0020.ckpt
+
+Epoch 00025: saving model to training_2/cp-0025.ckpt
+
+Epoch 00030: saving model to training_2/cp-0030.ckpt
+
+Epoch 00035: saving model to training_2/cp-0035.ckpt
+
+Epoch 00040: saving model to training_2/cp-0040.ckpt
+
+Epoch 00045: saving model to training_2/cp-0045.ckpt
+
+Epoch 00050: saving model to training_2/cp-0050.ckpt</code></pre></div></div><div class="cell jupyter output"><div class="code"><pre><code class="nohighlight">&lt;tensorflow.python.keras.callbacks.History at 0x2362f53f608&gt;</code></pre></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">latest = tf.train.latest_checkpoint(checkpoint_dir)
+latest</code></pre></div>
+<div class="report"><p><span class="count">[9]</span>
+<span class="start">2019-11-08 22:32:14</span> (<span class="time">12.0ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">19.1s</span>)</span></p></div></div><div class="cell jupyter output"><div class="code"><pre><code class="nohighlight">&#39;training_2\\cp-0050.ckpt&#39;</code></pre></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">model = create_model()
+model.load_weights(latest)
+loss, acc = model.evaluate(test_images, test_labels, verbose=2)
+print(&#34;Restored model, accuracy: {:5.2f}%&#34;.format(100 * acc))
+shutil.rmtree(checkpoint_dir)</code></pre></div>
+<div class="report"><p><span class="count">[10]</span>
+<span class="start">2019-11-08 22:32:14</span> (<span class="time">351ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">19.5s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">1000/1 - 0s - loss: 0.5898 - accuracy: 0.8740
+Restored model, accuracy: 87.40%</code></pre></div></div></div></div></div>
+                <footer>
+    <div class="footer-buttons">
+        <div class="previous"><a href="../過学習と学習不足/" title="5 過学習と学習不足"><span>Previous</span></a></div>
+    </div>
+    <div class="footer-note">
+        <p>
+            Built with <a href="http://www.mkdocs.org">MkDocs</a> using
+            <a href="https://github.com/daizutabi/mkdocs-ivory">Ivory theme</a>.
+        </p>
+    </div>
+</footer>
+            </div>
+        </main>
+    </div>
+    <script>
+        var base_url = '.';
+    </script>
+    <script src="../../../../../js/theme.js"></script>
+    <script src="../../../../../js/pheasant.js"></script>
+</body>
+
+</html>

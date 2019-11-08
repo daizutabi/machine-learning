@@ -57,6 +57,9 @@
 <li class="toctree-l6"><a class="nav-item toc" href="#37">3.7 モデルの評価</a></li>
 <li class="toctree-l6"><a class="nav-item toc" href="#38">3.8 正解率と損失の時系列グラフを描く</a></li>
 </ul></li>
+    <li class="toctree-l5"><a class="nav-item" href="../回帰：燃費を予測する/">4 回帰：燃費を予測する</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../過学習と学習不足/">5 過学習と学習不足</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../モデルの保存と復元/">6 モデルの保存と復元</a></li>
 </ul></li>
 </ul></li>
 </ul></li>
@@ -68,6 +71,7 @@
         <a href="https://github.com/daizutabi/machine-learning/" class="fa fa-github"> GitHub</a>
     </div>
     <div class="previous"><a href="../TF.Hubによるテキスト分類/">&laquo; Previous</a></div>
+    <div class="next"><a href="../回帰：燃費を予測する/">Next &raquo;</a></div>
 </div>
         </aside>
         <div id="spacer"><button class="arrow"></button></div>
@@ -92,30 +96,30 @@
 import pandas as pd
 from tensorflow import keras</code></pre></div>
 <div class="report"><p><span class="count">[1]</span>
-<span class="start">2019-11-08 15:36:15</span> (<span class="time">1.94s</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">1.94s</span>)</span></p></div></div></div></div>
+<span class="start">2019-11-08 22:10:56</span> (<span class="time">1.94s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">2min6s</span>)</span></p></div></div></div></div>
 
 <h2 id="31-imdb-dataset"><span class="pheasant-header"><span class="header"><span class="number">3.1</span> <span class="title">IMDB datasetのダウンロード</span></span></span></h2>
 <div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">imdb = keras.datasets.imdb
 (train_data, train_labels), (test_data, test_labels) = imdb.load_data(num_words=10000)</code></pre></div>
 <div class="report"><p><span class="count">[2]</span>
-<span class="start">2019-11-08 15:36:17</span> (<span class="time">3.77s</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">5.70s</span>)</span></p></div></div></div></div>
+<span class="start">2019-11-08 22:10:58</span> (<span class="time">4.21s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">2min10s</span>)</span></p></div></div></div></div>
 
 <h2 id="32"><span class="pheasant-header"><span class="header"><span class="number">3.2</span> <span class="title">データの観察</span></span></span></h2>
 <div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">print(f&#34;Training entries: {len(train_data)}, labels: {len(train_labels)}&#34;)
 print(train_data[0])</code></pre></div>
 <div class="report"><p><span class="count">[3]</span>
-<span class="start">2019-11-08 15:36:21</span> (<span class="time">9.03ms</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">5.71s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+<span class="start">2019-11-08 22:11:03</span> (<span class="time">12.0ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">2min10s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
       <pre><code class="nohighlight">Training entries: 25000, labels: 25000
 [1, 14, 22, 16, 43, 530, 973, 1622, 1385, 65, 458, 4468, 66, 3941, 4, 173, 36, 256, 5, 25, 100, 43, 838, 112, 50, 670, 2, 9, 35, 480, 284, 5, 150, 4, 172, 112, 167, 2, 336, 385, 39, 4, 172, 4536, 1111, 17, 546, 38, 13, 447, 4, 192, 50, 16, 6, 147, 2025, 19, 14, 22, 4, 1920, 4613, 469, 4, 22, 71, 87, 12, 16, 43, 530, 38, 76, 15, 13, 1247, 4, 22, 17, 515, 17, 12, 16, 626, 18, 2, 5, 62, 386, 12, 8, 316, 8, 106, 5, 4, 2223, 5244, 16, 480, 66, 3785, 33, 4, 130, 12, 16, 38, 619, 5, 25, 124, 51, 36, 135, 48, 25, 1415, 33, 6, 22, 12, 215, 28, 77, 52, 5, 14, 407, 16, 82, 2, 8, 4, 107, 117, 5952, 15, 256, 4, 2, 7, 3766, 5, 723, 36, 71, 43, 530, 476, 26, 400, 317, 46, 7, 4, 2, 1029, 13, 104, 88, 4, 381, 15, 297, 98, 32, 2071, 56, 26, 141, 6, 194, 7486, 18, 4, 226, 22, 21, 134, 476, 26, 480, 5, 144, 30, 5535, 18, 51, 36, 28, 224, 92, 25, 104, 4, 226, 65, 16, 38, 1334, 88, 12, 16, 283, 5, 16, 4472, 113, 103, 32, 15, 16, 5345, 19, 178, 32]</code></pre></div></div></div></div>
 
 <div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python"># レビューごとに長さが異なる。
 len(train_data[0]), len(train_data[1])</code></pre></div>
 <div class="report"><p><span class="count">[4]</span>
-<span class="start">2019-11-08 15:36:21</span> (<span class="time">6.97ms</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">5.72s</span>)</span></p></div></div><div class="cell jupyter output"><div class="code"><pre><code class="nohighlight">(218, 189)</code></pre></div></div></div></div>
+<span class="start">2019-11-08 22:11:03</span> (<span class="time">12.0ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">2min10s</span>)</span></p></div></div><div class="cell jupyter output"><div class="code"><pre><code class="nohighlight">(218, 189)</code></pre></div></div></div></div>
 
 <h3 id="321"><span class="pheasant-header"><span class="header"><span class="number">3.2.1</span> <span class="title">整数を単語に戻してみる</span></span></span></h3>
 <div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python"># 単語を整数にマッピングする辞書
@@ -135,8 +139,8 @@ def decode_review(text):
 
 decode_review(train_data[0])</code></pre></div>
 <div class="report"><p><span class="count">[5]</span>
-<span class="start">2019-11-08 15:36:21</span> (<span class="time">120ms</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">5.84s</span>)</span></p></div></div><div class="cell jupyter output"><div class="code"><pre><code class="nohighlight">&#34;&lt;START&gt; this film was just brilliant casting location scenery story direction everyone&#39;s really suited the part they played and you could just imagine being there robert &lt;UNK&gt; is an amazing actor and now the same being director &lt;UNK&gt; father came from the same scottish island as myself so i loved the fact there was a real connection with this film the witty remarks throughout the film were great it was just brilliant so much that i bought the film as soon as it was released for &lt;UNK&gt; and would recommend it to everyone to watch and the fly fishing was amazing really cried at the end it was so sad and you know what they say if you cry at a film it must have been good and this definitely was also &lt;UNK&gt; to the two little boy&#39;s that played the &lt;UNK&gt; of norman and paul they were just brilliant children are often left out of the &lt;UNK&gt; list i think because the stars that play them all grown up are such a big profile for the whole film but these children are amazing and should be praised for what they have done don&#39;t you think the whole story was so lovely because it was true and was someone&#39;s life after all that was shared with us all&#34;</code></pre></div></div></div></div>
+<span class="start">2019-11-08 22:11:03</span> (<span class="time">139ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">2min11s</span>)</span></p></div></div><div class="cell jupyter output"><div class="code"><pre><code class="nohighlight">&#34;&lt;START&gt; this film was just brilliant casting location scenery story direction everyone&#39;s really suited the part they played and you could just imagine being there robert &lt;UNK&gt; is an amazing actor and now the same being director &lt;UNK&gt; father came from the same scottish island as myself so i loved the fact there was a real connection with this film the witty remarks throughout the film were great it was just brilliant so much that i bought the film as soon as it was released for &lt;UNK&gt; and would recommend it to everyone to watch and the fly fishing was amazing really cried at the end it was so sad and you know what they say if you cry at a film it must have been good and this definitely was also &lt;UNK&gt; to the two little boy&#39;s that played the &lt;UNK&gt; of norman and paul they were just brilliant children are often left out of the &lt;UNK&gt; list i think because the stars that play them all grown up are such a big profile for the whole film but these children are amazing and should be praised for what they have done don&#39;t you think the whole story was so lovely because it was true and was someone&#39;s life after all that was shared with us all&#34;</code></pre></div></div></div></div>
 
 <h2 id="33"><span class="pheasant-header"><span class="header"><span class="number">3.3</span> <span class="title">データの準備</span></span></span></h2>
 <div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">#  長さを標準化する
@@ -149,8 +153,8 @@ test_data = keras.preprocessing.sequence.pad_sequences(
 )
 len(train_data[0]), len(train_data[1])</code></pre></div>
 <div class="report"><p><span class="count">[6]</span>
-<span class="start">2019-11-08 15:36:21</span> (<span class="time">759ms</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">6.60s</span>)</span></p></div></div><div class="cell jupyter output"><div class="code"><pre><code class="nohighlight">(256, 256)</code></pre></div></div></div></div>
+<span class="start">2019-11-08 22:11:03</span> (<span class="time">804ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">2min11s</span>)</span></p></div></div><div class="cell jupyter output"><div class="code"><pre><code class="nohighlight">(256, 256)</code></pre></div></div></div></div>
 
 <h2 id="34"><span class="pheasant-header"><span class="header"><span class="number">3.4</span> <span class="title">モデルの構築</span></span></span></h2>
 <div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python"># 入力の形式は映画レビューで使われている語彙数（10,000語）
@@ -162,8 +166,8 @@ model.add(keras.layers.Dense(16, activation=&#34;relu&#34;))
 model.add(keras.layers.Dense(1, activation=&#34;sigmoid&#34;))
 model.summary()</code></pre></div>
 <div class="report"><p><span class="count">[7]</span>
-<span class="start">2019-11-08 15:36:22</span> (<span class="time">1.59s</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">8.19s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+<span class="start">2019-11-08 22:11:04</span> (<span class="time">1.59s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">2min13s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
       <pre><code class="nohighlight">Model: &#34;sequential&#34;
 _________________________________________________________________
 Layer (type)                 Output Shape              Param #   
@@ -184,8 +188,8 @@ _________________________________________________________________</code></pre></
 <h3 id="341"><span class="pheasant-header"><span class="header"><span class="number">3.4.1</span> <span class="title">損失関数とオプティマイザ</span></span></span></h3>
 <div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">model.compile(optimizer=&#34;adam&#34;, loss=&#34;binary_crossentropy&#34;, metrics=[&#34;accuracy&#34;])</code></pre></div>
 <div class="report"><p><span class="count">[8]</span>
-<span class="start">2019-11-08 15:36:23</span> (<span class="time">45.2ms</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">8.24s</span>)</span></p></div></div></div></div>
+<span class="start">2019-11-08 22:11:05</span> (<span class="time">44.5ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">2min13s</span>)</span></p></div></div></div></div>
 
 <h2 id="35"><span class="pheasant-header"><span class="header"><span class="number">3.5</span> <span class="title">検証用データを作る</span></span></span></h2>
 <div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">x_val = train_data[:10000]
@@ -193,8 +197,8 @@ partial_x_train = train_data[10000:]
 y_val = train_labels[:10000]
 partial_y_train = train_labels[10000:]</code></pre></div>
 <div class="report"><p><span class="count">[9]</span>
-<span class="start">2019-11-08 15:36:24</span> (<span class="time">6.07ms</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">8.24s</span>)</span></p></div></div></div></div>
+<span class="start">2019-11-08 22:11:05</span> (<span class="time">5.00ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">2min13s</span>)</span></p></div></div></div></div>
 
 <h2 id="36"><span class="pheasant-header"><span class="header"><span class="number">3.6</span> <span class="title">モデルの訓練</span></span></span></h2>
 <div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">history = model.fit(
@@ -206,98 +210,98 @@ partial_y_train = train_labels[10000:]</code></pre></div>
     verbose=1,
 )</code></pre></div>
 <div class="report"><p><span class="count">[10]</span>
-<span class="start">2019-11-08 15:36:24</span> (<span class="time">35.8s</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">44.1s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+<span class="start">2019-11-08 22:11:05</span> (<span class="time">37.4s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">2min50s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
       <pre><code class="nohighlight">Train on 15000 samples, validate on 10000 samples
 Epoch 1/40
-15000/15000 [==============================] - 2s 120us/sample - loss: 0.6916 - accuracy: 0.5744 - val_loss: 0.6894 - val_accuracy: 0.5293
+15000/15000 [==============================] - 2s 136us/sample - loss: 0.6921 - accuracy: 0.5691 - val_loss: 0.6908 - val_accuracy: 0.5382
 Epoch 2/40
-15000/15000 [==============================] - 1s 58us/sample - loss: 0.6845 - accuracy: 0.6624 - val_loss: 0.6792 - val_accuracy: 0.7137
+15000/15000 [==============================] - 1s 59us/sample - loss: 0.6877 - accuracy: 0.6209 - val_loss: 0.6842 - val_accuracy: 0.7393
 Epoch 3/40
-15000/15000 [==============================] - 1s 58us/sample - loss: 0.6688 - accuracy: 0.7359 - val_loss: 0.6600 - val_accuracy: 0.7362
+15000/15000 [==============================] - 1s 59us/sample - loss: 0.6770 - accuracy: 0.7475 - val_loss: 0.6702 - val_accuracy: 0.7376
 Epoch 4/40
-15000/15000 [==============================] - 1s 59us/sample - loss: 0.6416 - accuracy: 0.7695 - val_loss: 0.6291 - val_accuracy: 0.7720
+15000/15000 [==============================] - 1s 60us/sample - loss: 0.6566 - accuracy: 0.7640 - val_loss: 0.6463 - val_accuracy: 0.7603
 Epoch 5/40
-15000/15000 [==============================] - 1s 58us/sample - loss: 0.6025 - accuracy: 0.7981 - val_loss: 0.5893 - val_accuracy: 0.7906
+15000/15000 [==============================] - 1s 62us/sample - loss: 0.6252 - accuracy: 0.7848 - val_loss: 0.6129 - val_accuracy: 0.7780
 Epoch 6/40
-15000/15000 [==============================] - 1s 58us/sample - loss: 0.5552 - accuracy: 0.8185 - val_loss: 0.5443 - val_accuracy: 0.8093
+15000/15000 [==============================] - 1s 60us/sample - loss: 0.5844 - accuracy: 0.8072 - val_loss: 0.5728 - val_accuracy: 0.7998
 Epoch 7/40
-15000/15000 [==============================] - 1s 58us/sample - loss: 0.5046 - accuracy: 0.8376 - val_loss: 0.4981 - val_accuracy: 0.8265
+15000/15000 [==============================] - 1s 63us/sample - loss: 0.5384 - accuracy: 0.8243 - val_loss: 0.5298 - val_accuracy: 0.8134
 Epoch 8/40
-15000/15000 [==============================] - 1s 58us/sample - loss: 0.4559 - accuracy: 0.8553 - val_loss: 0.4569 - val_accuracy: 0.8393
+15000/15000 [==============================] - 1s 58us/sample - loss: 0.4915 - accuracy: 0.8410 - val_loss: 0.4885 - val_accuracy: 0.8296
 Epoch 9/40
-15000/15000 [==============================] - 1s 58us/sample - loss: 0.4121 - accuracy: 0.8675 - val_loss: 0.4216 - val_accuracy: 0.8506
+15000/15000 [==============================] - 1s 59us/sample - loss: 0.4474 - accuracy: 0.8557 - val_loss: 0.4519 - val_accuracy: 0.8397
 Epoch 10/40
-15000/15000 [==============================] - 1s 58us/sample - loss: 0.3749 - accuracy: 0.8787 - val_loss: 0.3935 - val_accuracy: 0.8545
+15000/15000 [==============================] - 1s 60us/sample - loss: 0.4082 - accuracy: 0.8697 - val_loss: 0.4200 - val_accuracy: 0.8482
 Epoch 11/40
-15000/15000 [==============================] - 1s 58us/sample - loss: 0.3440 - accuracy: 0.8847 - val_loss: 0.3713 - val_accuracy: 0.8612
+15000/15000 [==============================] - 1s 62us/sample - loss: 0.3745 - accuracy: 0.8785 - val_loss: 0.3941 - val_accuracy: 0.8548
 Epoch 12/40
-15000/15000 [==============================] - 1s 59us/sample - loss: 0.3179 - accuracy: 0.8949 - val_loss: 0.3526 - val_accuracy: 0.8672
+15000/15000 [==============================] - 1s 61us/sample - loss: 0.3462 - accuracy: 0.8869 - val_loss: 0.3730 - val_accuracy: 0.8611
 Epoch 13/40
-15000/15000 [==============================] - 1s 58us/sample - loss: 0.2956 - accuracy: 0.8997 - val_loss: 0.3385 - val_accuracy: 0.8704
+15000/15000 [==============================] - 1s 70us/sample - loss: 0.3223 - accuracy: 0.8931 - val_loss: 0.3565 - val_accuracy: 0.8643
 Epoch 14/40
-15000/15000 [==============================] - 1s 58us/sample - loss: 0.2770 - accuracy: 0.9051 - val_loss: 0.3263 - val_accuracy: 0.8740
+15000/15000 [==============================] - 1s 61us/sample - loss: 0.3017 - accuracy: 0.8993 - val_loss: 0.3426 - val_accuracy: 0.8692
 Epoch 15/40
-15000/15000 [==============================] - 1s 58us/sample - loss: 0.2602 - accuracy: 0.9097 - val_loss: 0.3172 - val_accuracy: 0.8761
+15000/15000 [==============================] - 1s 61us/sample - loss: 0.2842 - accuracy: 0.9033 - val_loss: 0.3313 - val_accuracy: 0.8720
 Epoch 16/40
-15000/15000 [==============================] - 1s 57us/sample - loss: 0.2453 - accuracy: 0.9161 - val_loss: 0.3099 - val_accuracy: 0.8797
+15000/15000 [==============================] - 1s 58us/sample - loss: 0.2682 - accuracy: 0.9081 - val_loss: 0.3230 - val_accuracy: 0.8749
 Epoch 17/40
-15000/15000 [==============================] - 1s 59us/sample - loss: 0.2322 - accuracy: 0.9217 - val_loss: 0.3039 - val_accuracy: 0.8811
+15000/15000 [==============================] - 1s 58us/sample - loss: 0.2541 - accuracy: 0.9134 - val_loss: 0.3142 - val_accuracy: 0.8776
 Epoch 18/40
-15000/15000 [==============================] - 1s 58us/sample - loss: 0.2201 - accuracy: 0.9251 - val_loss: 0.2990 - val_accuracy: 0.8816
+15000/15000 [==============================] - 1s 59us/sample - loss: 0.2415 - accuracy: 0.9168 - val_loss: 0.3083 - val_accuracy: 0.8801
 Epoch 19/40
-15000/15000 [==============================] - 1s 58us/sample - loss: 0.2091 - accuracy: 0.9280 - val_loss: 0.2949 - val_accuracy: 0.8824
+15000/15000 [==============================] - 1s 58us/sample - loss: 0.2302 - accuracy: 0.9214 - val_loss: 0.3026 - val_accuracy: 0.8824
 Epoch 20/40
-15000/15000 [==============================] - 1s 58us/sample - loss: 0.1990 - accuracy: 0.9322 - val_loss: 0.2919 - val_accuracy: 0.8835
+15000/15000 [==============================] - 1s 58us/sample - loss: 0.2194 - accuracy: 0.9257 - val_loss: 0.2985 - val_accuracy: 0.8809
 Epoch 21/40
-15000/15000 [==============================] - 1s 58us/sample - loss: 0.1897 - accuracy: 0.9364 - val_loss: 0.2905 - val_accuracy: 0.8838
+15000/15000 [==============================] - 1s 58us/sample - loss: 0.2096 - accuracy: 0.9287 - val_loss: 0.2949 - val_accuracy: 0.8833
 Epoch 22/40
-15000/15000 [==============================] - 1s 58us/sample - loss: 0.1809 - accuracy: 0.9407 - val_loss: 0.2879 - val_accuracy: 0.8843
+15000/15000 [==============================] - 1s 58us/sample - loss: 0.2010 - accuracy: 0.9319 - val_loss: 0.2928 - val_accuracy: 0.8830
 Epoch 23/40
-15000/15000 [==============================] - 1s 58us/sample - loss: 0.1723 - accuracy: 0.9443 - val_loss: 0.2868 - val_accuracy: 0.8843
+15000/15000 [==============================] - 1s 59us/sample - loss: 0.1927 - accuracy: 0.9345 - val_loss: 0.2903 - val_accuracy: 0.8842
 Epoch 24/40
-15000/15000 [==============================] - 1s 58us/sample - loss: 0.1649 - accuracy: 0.9480 - val_loss: 0.2865 - val_accuracy: 0.8854
+15000/15000 [==============================] - 1s 59us/sample - loss: 0.1848 - accuracy: 0.9398 - val_loss: 0.2883 - val_accuracy: 0.8853
 Epoch 25/40
-15000/15000 [==============================] - 1s 58us/sample - loss: 0.1574 - accuracy: 0.9507 - val_loss: 0.2855 - val_accuracy: 0.8867
+15000/15000 [==============================] - 1s 58us/sample - loss: 0.1774 - accuracy: 0.9419 - val_loss: 0.2867 - val_accuracy: 0.8845
 Epoch 26/40
-15000/15000 [==============================] - 1s 58us/sample - loss: 0.1507 - accuracy: 0.9540 - val_loss: 0.2860 - val_accuracy: 0.8870
+15000/15000 [==============================] - 1s 59us/sample - loss: 0.1700 - accuracy: 0.9463 - val_loss: 0.2862 - val_accuracy: 0.8865
 Epoch 27/40
-15000/15000 [==============================] - 1s 57us/sample - loss: 0.1440 - accuracy: 0.9562 - val_loss: 0.2869 - val_accuracy: 0.8868
+15000/15000 [==============================] - 1s 61us/sample - loss: 0.1630 - accuracy: 0.9487 - val_loss: 0.2858 - val_accuracy: 0.8857
 Epoch 28/40
-15000/15000 [==============================] - 1s 59us/sample - loss: 0.1383 - accuracy: 0.9585 - val_loss: 0.2888 - val_accuracy: 0.8855
+15000/15000 [==============================] - 1s 59us/sample - loss: 0.1566 - accuracy: 0.9524 - val_loss: 0.2861 - val_accuracy: 0.8855
 Epoch 29/40
-15000/15000 [==============================] - 1s 58us/sample - loss: 0.1327 - accuracy: 0.9597 - val_loss: 0.2892 - val_accuracy: 0.8865
+15000/15000 [==============================] - 1s 61us/sample - loss: 0.1507 - accuracy: 0.9541 - val_loss: 0.2859 - val_accuracy: 0.8860
 Epoch 30/40
-15000/15000 [==============================] - 1s 58us/sample - loss: 0.1269 - accuracy: 0.9630 - val_loss: 0.2926 - val_accuracy: 0.8860
+15000/15000 [==============================] - 1s 59us/sample - loss: 0.1448 - accuracy: 0.9563 - val_loss: 0.2871 - val_accuracy: 0.8849
 Epoch 31/40
-15000/15000 [==============================] - 1s 58us/sample - loss: 0.1214 - accuracy: 0.9661 - val_loss: 0.2927 - val_accuracy: 0.8865
+15000/15000 [==============================] - 1s 60us/sample - loss: 0.1394 - accuracy: 0.9583 - val_loss: 0.2871 - val_accuracy: 0.8866
 Epoch 32/40
-15000/15000 [==============================] - 1s 58us/sample - loss: 0.1165 - accuracy: 0.9669 - val_loss: 0.2956 - val_accuracy: 0.8846
+15000/15000 [==============================] - 1s 61us/sample - loss: 0.1343 - accuracy: 0.9603 - val_loss: 0.2905 - val_accuracy: 0.8836
 Epoch 33/40
-15000/15000 [==============================] - 1s 58us/sample - loss: 0.1124 - accuracy: 0.9683 - val_loss: 0.2978 - val_accuracy: 0.8845
+15000/15000 [==============================] - 1s 62us/sample - loss: 0.1301 - accuracy: 0.9619 - val_loss: 0.2901 - val_accuracy: 0.8854
 Epoch 34/40
-15000/15000 [==============================] - 1s 58us/sample - loss: 0.1075 - accuracy: 0.9701 - val_loss: 0.3002 - val_accuracy: 0.8848
+15000/15000 [==============================] - 1s 62us/sample - loss: 0.1245 - accuracy: 0.9651 - val_loss: 0.2911 - val_accuracy: 0.8843
 Epoch 35/40
-15000/15000 [==============================] - 1s 59us/sample - loss: 0.1031 - accuracy: 0.9717 - val_loss: 0.3029 - val_accuracy: 0.8847
+15000/15000 [==============================] - 1s 59us/sample - loss: 0.1200 - accuracy: 0.9662 - val_loss: 0.2931 - val_accuracy: 0.8847
 Epoch 36/40
-15000/15000 [==============================] - 1s 59us/sample - loss: 0.0988 - accuracy: 0.9733 - val_loss: 0.3062 - val_accuracy: 0.8839
+15000/15000 [==============================] - 1s 62us/sample - loss: 0.1155 - accuracy: 0.9681 - val_loss: 0.2965 - val_accuracy: 0.8841
 Epoch 37/40
-15000/15000 [==============================] - 1s 58us/sample - loss: 0.0945 - accuracy: 0.9752 - val_loss: 0.3092 - val_accuracy: 0.8824
+15000/15000 [==============================] - 1s 63us/sample - loss: 0.1119 - accuracy: 0.9692 - val_loss: 0.2972 - val_accuracy: 0.8834
 Epoch 38/40
-15000/15000 [==============================] - 1s 57us/sample - loss: 0.0908 - accuracy: 0.9762 - val_loss: 0.3131 - val_accuracy: 0.8822
+15000/15000 [==============================] - 1s 60us/sample - loss: 0.1075 - accuracy: 0.9711 - val_loss: 0.2998 - val_accuracy: 0.8830
 Epoch 39/40
-15000/15000 [==============================] - 1s 58us/sample - loss: 0.0870 - accuracy: 0.9781 - val_loss: 0.3171 - val_accuracy: 0.8815
+15000/15000 [==============================] - 1s 63us/sample - loss: 0.1040 - accuracy: 0.9715 - val_loss: 0.3024 - val_accuracy: 0.8833
 Epoch 40/40
-15000/15000 [==============================] - 1s 58us/sample - loss: 0.0832 - accuracy: 0.9790 - val_loss: 0.3202 - val_accuracy: 0.8809</code></pre></div></div></div></div>
+15000/15000 [==============================] - 1s 61us/sample - loss: 0.1001 - accuracy: 0.9736 - val_loss: 0.3047 - val_accuracy: 0.8829</code></pre></div></div></div></div>
 
 <h2 id="37"><span class="pheasant-header"><span class="header"><span class="number">3.7</span> <span class="title">モデルの評価</span></span></span></h2>
 <div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">results = model.evaluate(test_data, test_labels, verbose=2)
 print(results)</code></pre></div>
 <div class="report"><p><span class="count">[11]</span>
-<span class="start">2019-11-08 15:36:59</span> (<span class="time">1.90s</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">46.0s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
-      <pre><code class="nohighlight">25000/1 - 2s - loss: 0.3336 - accuracy: 0.8708
-[0.3421444439506531, 0.8708]</code></pre></div></div></div></div>
+<span class="start">2019-11-08 22:11:43</span> (<span class="time">2.02s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">2min52s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">25000/1 - 2s - loss: 0.3214 - accuracy: 0.8733
+[0.3239115720844269, 0.87328]</code></pre></div></div></div></div>
 
 <h2 id="38"><span class="pheasant-header"><span class="header"><span class="number">3.8</span> <span class="title">正解率と損失の時系列グラフを描く</span></span></span></h2>
 <div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">df = pd.DataFrame(history.history)
@@ -309,12 +313,12 @@ chart.encode(
     x=&#34;epoch&#34;, y=alt.Y(&#34;value&#34;, scale=alt.Scale(domain=[0.5, 1])), color=&#34;variable&#34;
 )</code></pre></div>
 <div class="report"><p><span class="count">[12]</span>
-<span class="start">2019-11-08 15:37:01</span> (<span class="time">45.0ms</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">46.0s</span>)</span></p></div></div>
+<span class="start">2019-11-08 22:11:45</span> (<span class="time">42.0ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">2min53s</span>)</span></p></div></div>
 
 <div class="cell jupyter display"><div class="content"><div id="pheasant-altair-1"><script>
   document.addEventListener("DOMContentLoaded", function(event) {
-    var spec = {"config": {"view": {"width": 400, "height": 300}, "mark": {"tooltip": null}}, "data": {"name": "data-c071fbe1d023b7f1205be888709e4d95"}, "mark": {"type": "line", "point": true}, "encoding": {"color": {"type": "nominal", "field": "variable"}, "x": {"type": "quantitative", "field": "epoch"}, "y": {"type": "quantitative", "field": "value", "scale": {"domain": [0.5, 1]}}}, "height": 150, "width": 200, "$schema": "https://vega.github.io/schema/vega-lite/v3.4.0.json", "datasets": {"data-c071fbe1d023b7f1205be888709e4d95": [{"epoch": 0, "variable": "accuracy", "value": 0.574400007724762}, {"epoch": 1, "variable": "accuracy", "value": 0.6624000072479248}, {"epoch": 2, "variable": "accuracy", "value": 0.7358666658401489}, {"epoch": 3, "variable": "accuracy", "value": 0.7695333361625671}, {"epoch": 4, "variable": "accuracy", "value": 0.7980666756629944}, {"epoch": 5, "variable": "accuracy", "value": 0.8184666633605957}, {"epoch": 6, "variable": "accuracy", "value": 0.8375999927520752}, {"epoch": 7, "variable": "accuracy", "value": 0.8552666902542114}, {"epoch": 8, "variable": "accuracy", "value": 0.8674666881561279}, {"epoch": 9, "variable": "accuracy", "value": 0.8786666393280029}, {"epoch": 10, "variable": "accuracy", "value": 0.8847333192825317}, {"epoch": 11, "variable": "accuracy", "value": 0.8948666453361511}, {"epoch": 12, "variable": "accuracy", "value": 0.899733304977417}, {"epoch": 13, "variable": "accuracy", "value": 0.9051333069801331}, {"epoch": 14, "variable": "accuracy", "value": 0.9097333550453186}, {"epoch": 15, "variable": "accuracy", "value": 0.9161333441734314}, {"epoch": 16, "variable": "accuracy", "value": 0.92166668176651}, {"epoch": 17, "variable": "accuracy", "value": 0.9250666499137878}, {"epoch": 18, "variable": "accuracy", "value": 0.9279999732971191}, {"epoch": 19, "variable": "accuracy", "value": 0.932200014591217}, {"epoch": 20, "variable": "accuracy", "value": 0.9363999962806702}, {"epoch": 21, "variable": "accuracy", "value": 0.940666675567627}, {"epoch": 22, "variable": "accuracy", "value": 0.944266676902771}, {"epoch": 23, "variable": "accuracy", "value": 0.9480000138282776}, {"epoch": 24, "variable": "accuracy", "value": 0.9506666660308838}, {"epoch": 25, "variable": "accuracy", "value": 0.9539999961853027}, {"epoch": 26, "variable": "accuracy", "value": 0.9562000036239624}, {"epoch": 27, "variable": "accuracy", "value": 0.9585333466529846}, {"epoch": 28, "variable": "accuracy", "value": 0.9597333073616028}, {"epoch": 29, "variable": "accuracy", "value": 0.9629999995231628}, {"epoch": 30, "variable": "accuracy", "value": 0.9661333560943604}, {"epoch": 31, "variable": "accuracy", "value": 0.966866672039032}, {"epoch": 32, "variable": "accuracy", "value": 0.9683333039283752}, {"epoch": 33, "variable": "accuracy", "value": 0.9701333045959473}, {"epoch": 34, "variable": "accuracy", "value": 0.971666693687439}, {"epoch": 35, "variable": "accuracy", "value": 0.9732666611671448}, {"epoch": 36, "variable": "accuracy", "value": 0.9751999974250793}, {"epoch": 37, "variable": "accuracy", "value": 0.9761999845504761}, {"epoch": 38, "variable": "accuracy", "value": 0.9781333208084106}, {"epoch": 39, "variable": "accuracy", "value": 0.9789999723434448}, {"epoch": 0, "variable": "val_accuracy", "value": 0.5292999744415283}, {"epoch": 1, "variable": "val_accuracy", "value": 0.713699996471405}, {"epoch": 2, "variable": "val_accuracy", "value": 0.7361999750137329}, {"epoch": 3, "variable": "val_accuracy", "value": 0.7720000147819519}, {"epoch": 4, "variable": "val_accuracy", "value": 0.7906000018119812}, {"epoch": 5, "variable": "val_accuracy", "value": 0.8093000054359436}, {"epoch": 6, "variable": "val_accuracy", "value": 0.8264999985694885}, {"epoch": 7, "variable": "val_accuracy", "value": 0.8392999768257141}, {"epoch": 8, "variable": "val_accuracy", "value": 0.850600004196167}, {"epoch": 9, "variable": "val_accuracy", "value": 0.8544999957084656}, {"epoch": 10, "variable": "val_accuracy", "value": 0.8611999750137329}, {"epoch": 11, "variable": "val_accuracy", "value": 0.8672000169754028}, {"epoch": 12, "variable": "val_accuracy", "value": 0.8704000115394592}, {"epoch": 13, "variable": "val_accuracy", "value": 0.8740000128746033}, {"epoch": 14, "variable": "val_accuracy", "value": 0.8761000037193298}, {"epoch": 15, "variable": "val_accuracy", "value": 0.8797000050544739}, {"epoch": 16, "variable": "val_accuracy", "value": 0.8810999989509583}, {"epoch": 17, "variable": "val_accuracy", "value": 0.881600022315979}, {"epoch": 18, "variable": "val_accuracy", "value": 0.8823999762535095}, {"epoch": 19, "variable": "val_accuracy", "value": 0.8834999799728394}, {"epoch": 20, "variable": "val_accuracy", "value": 0.8838000297546387}, {"epoch": 21, "variable": "val_accuracy", "value": 0.8842999935150146}, {"epoch": 22, "variable": "val_accuracy", "value": 0.8842999935150146}, {"epoch": 23, "variable": "val_accuracy", "value": 0.8853999972343445}, {"epoch": 24, "variable": "val_accuracy", "value": 0.8866999745368958}, {"epoch": 25, "variable": "val_accuracy", "value": 0.8870000243186951}, {"epoch": 26, "variable": "val_accuracy", "value": 0.8867999911308289}, {"epoch": 27, "variable": "val_accuracy", "value": 0.8855000138282776}, {"epoch": 28, "variable": "val_accuracy", "value": 0.8865000009536743}, {"epoch": 29, "variable": "val_accuracy", "value": 0.8859999775886536}, {"epoch": 30, "variable": "val_accuracy", "value": 0.8865000009536743}, {"epoch": 31, "variable": "val_accuracy", "value": 0.8845999836921692}, {"epoch": 32, "variable": "val_accuracy", "value": 0.8845000267028809}, {"epoch": 33, "variable": "val_accuracy", "value": 0.8848000168800354}, {"epoch": 34, "variable": "val_accuracy", "value": 0.8847000002861023}, {"epoch": 35, "variable": "val_accuracy", "value": 0.883899986743927}, {"epoch": 36, "variable": "val_accuracy", "value": 0.8823999762535095}, {"epoch": 37, "variable": "val_accuracy", "value": 0.8822000026702881}, {"epoch": 38, "variable": "val_accuracy", "value": 0.8815000057220459}, {"epoch": 39, "variable": "val_accuracy", "value": 0.8809000253677368}]}};
+    var spec = {"config": {"view": {"width": 400, "height": 300}, "mark": {"tooltip": null}}, "data": {"name": "data-4954cc01b037ef440ed0c97a9fa50ce1"}, "mark": {"type": "line", "point": true}, "encoding": {"color": {"type": "nominal", "field": "variable"}, "x": {"type": "quantitative", "field": "epoch"}, "y": {"type": "quantitative", "field": "value", "scale": {"domain": [0.5, 1]}}}, "height": 150, "width": 200, "$schema": "https://vega.github.io/schema/vega-lite/v3.4.0.json", "datasets": {"data-4954cc01b037ef440ed0c97a9fa50ce1": [{"epoch": 0, "variable": "accuracy", "value": 0.5691333413124084}, {"epoch": 1, "variable": "accuracy", "value": 0.6209333539009094}, {"epoch": 2, "variable": "accuracy", "value": 0.7475333213806152}, {"epoch": 3, "variable": "accuracy", "value": 0.7639999985694885}, {"epoch": 4, "variable": "accuracy", "value": 0.7847999930381775}, {"epoch": 5, "variable": "accuracy", "value": 0.807200014591217}, {"epoch": 6, "variable": "accuracy", "value": 0.8242666721343994}, {"epoch": 7, "variable": "accuracy", "value": 0.8410000205039978}, {"epoch": 8, "variable": "accuracy", "value": 0.8556666374206543}, {"epoch": 9, "variable": "accuracy", "value": 0.8697333335876465}, {"epoch": 10, "variable": "accuracy", "value": 0.8784666657447815}, {"epoch": 11, "variable": "accuracy", "value": 0.8868666887283325}, {"epoch": 12, "variable": "accuracy", "value": 0.8930666446685791}, {"epoch": 13, "variable": "accuracy", "value": 0.8992666602134705}, {"epoch": 14, "variable": "accuracy", "value": 0.9032666683197021}, {"epoch": 15, "variable": "accuracy", "value": 0.9080666899681091}, {"epoch": 16, "variable": "accuracy", "value": 0.9133999943733215}, {"epoch": 17, "variable": "accuracy", "value": 0.9168000221252441}, {"epoch": 18, "variable": "accuracy", "value": 0.9214000105857849}, {"epoch": 19, "variable": "accuracy", "value": 0.9257333278656006}, {"epoch": 20, "variable": "accuracy", "value": 0.9286666512489319}, {"epoch": 21, "variable": "accuracy", "value": 0.9319333434104919}, {"epoch": 22, "variable": "accuracy", "value": 0.9345333576202393}, {"epoch": 23, "variable": "accuracy", "value": 0.9398000240325928}, {"epoch": 24, "variable": "accuracy", "value": 0.9419333338737488}, {"epoch": 25, "variable": "accuracy", "value": 0.9462666511535645}, {"epoch": 26, "variable": "accuracy", "value": 0.9487333297729492}, {"epoch": 27, "variable": "accuracy", "value": 0.9524000287055969}, {"epoch": 28, "variable": "accuracy", "value": 0.9541333317756653}, {"epoch": 29, "variable": "accuracy", "value": 0.9562666416168213}, {"epoch": 30, "variable": "accuracy", "value": 0.9583333134651184}, {"epoch": 31, "variable": "accuracy", "value": 0.960266649723053}, {"epoch": 32, "variable": "accuracy", "value": 0.9618666768074036}, {"epoch": 33, "variable": "accuracy", "value": 0.9651333093643188}, {"epoch": 34, "variable": "accuracy", "value": 0.9661999940872192}, {"epoch": 35, "variable": "accuracy", "value": 0.9681333303451538}, {"epoch": 36, "variable": "accuracy", "value": 0.9692000150680542}, {"epoch": 37, "variable": "accuracy", "value": 0.9711333513259888}, {"epoch": 38, "variable": "accuracy", "value": 0.9715333580970764}, {"epoch": 39, "variable": "accuracy", "value": 0.9735999703407288}, {"epoch": 0, "variable": "val_accuracy", "value": 0.5382000207901001}, {"epoch": 1, "variable": "val_accuracy", "value": 0.739300012588501}, {"epoch": 2, "variable": "val_accuracy", "value": 0.7376000285148621}, {"epoch": 3, "variable": "val_accuracy", "value": 0.7602999806404114}, {"epoch": 4, "variable": "val_accuracy", "value": 0.777999997138977}, {"epoch": 5, "variable": "val_accuracy", "value": 0.7997999787330627}, {"epoch": 6, "variable": "val_accuracy", "value": 0.8133999705314636}, {"epoch": 7, "variable": "val_accuracy", "value": 0.8295999765396118}, {"epoch": 8, "variable": "val_accuracy", "value": 0.8396999835968018}, {"epoch": 9, "variable": "val_accuracy", "value": 0.8482000231742859}, {"epoch": 10, "variable": "val_accuracy", "value": 0.8547999858856201}, {"epoch": 11, "variable": "val_accuracy", "value": 0.8611000180244446}, {"epoch": 12, "variable": "val_accuracy", "value": 0.864300012588501}, {"epoch": 13, "variable": "val_accuracy", "value": 0.8691999912261963}, {"epoch": 14, "variable": "val_accuracy", "value": 0.871999979019165}, {"epoch": 15, "variable": "val_accuracy", "value": 0.8748999834060669}, {"epoch": 16, "variable": "val_accuracy", "value": 0.8776000142097473}, {"epoch": 17, "variable": "val_accuracy", "value": 0.8801000118255615}, {"epoch": 18, "variable": "val_accuracy", "value": 0.8823999762535095}, {"epoch": 19, "variable": "val_accuracy", "value": 0.8809000253677368}, {"epoch": 20, "variable": "val_accuracy", "value": 0.8833000063896179}, {"epoch": 21, "variable": "val_accuracy", "value": 0.8830000162124634}, {"epoch": 22, "variable": "val_accuracy", "value": 0.8841999769210815}, {"epoch": 23, "variable": "val_accuracy", "value": 0.8852999806404114}, {"epoch": 24, "variable": "val_accuracy", "value": 0.8845000267028809}, {"epoch": 25, "variable": "val_accuracy", "value": 0.8865000009536743}, {"epoch": 26, "variable": "val_accuracy", "value": 0.885699987411499}, {"epoch": 27, "variable": "val_accuracy", "value": 0.8855000138282776}, {"epoch": 28, "variable": "val_accuracy", "value": 0.8859999775886536}, {"epoch": 29, "variable": "val_accuracy", "value": 0.8848999738693237}, {"epoch": 30, "variable": "val_accuracy", "value": 0.8866000175476074}, {"epoch": 31, "variable": "val_accuracy", "value": 0.8835999965667725}, {"epoch": 32, "variable": "val_accuracy", "value": 0.8853999972343445}, {"epoch": 33, "variable": "val_accuracy", "value": 0.8842999935150146}, {"epoch": 34, "variable": "val_accuracy", "value": 0.8847000002861023}, {"epoch": 35, "variable": "val_accuracy", "value": 0.8841000199317932}, {"epoch": 36, "variable": "val_accuracy", "value": 0.883400022983551}, {"epoch": 37, "variable": "val_accuracy", "value": 0.8830000162124634}, {"epoch": 38, "variable": "val_accuracy", "value": 0.8833000063896179}, {"epoch": 39, "variable": "val_accuracy", "value": 0.8828999996185303}]}};
     var opt = {
       "mode": "vega-lite",
       "renderer": "canvas",
@@ -325,6 +329,7 @@ chart.encode(
                 <footer>
     <div class="footer-buttons">
         <div class="previous"><a href="../TF.Hubによるテキスト分類/" title="2 TF.Hubによるテキスト分類"><span>Previous</span></a></div>
+        <div class="next"><a href="../回帰：燃費を予測する/" title="4 回帰：燃費を予測する"><span>Next</span></a></div>
     </div>
     <div class="footer-note">
         <p>

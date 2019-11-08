@@ -1,3 +1,4 @@
+# #!
 # # 基本的な画像の分類
 
 import matplotlib.pyplot as plt
@@ -68,7 +69,7 @@ model.fit(train_images, train_labels, epochs=5)
 
 # ## 正解率の評価
 test_loss, test_acc = model.evaluate(test_images, test_labels, verbose=2)
-print('\nTest accuracy:', test_acc)
+print("\nTest accuracy:", test_acc)
 
 # ## 予測する
 predictions = model.predict(test_images)
