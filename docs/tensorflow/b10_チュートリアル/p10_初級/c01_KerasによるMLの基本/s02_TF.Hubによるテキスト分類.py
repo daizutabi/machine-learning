@@ -1,6 +1,5 @@
 # # TF.Hubによるテキスト分類
 
-import numpy as np
 import tensorflow as tf
 import tensorflow_datasets as tfds
 import tensorflow_hub as hub
@@ -58,4 +57,3 @@ results = model.evaluate(test_data.batch(512), verbose=2)
 
 for name, value in zip(model.metrics_names, results):
     print("%s: %.3f" % (name, value))
-  

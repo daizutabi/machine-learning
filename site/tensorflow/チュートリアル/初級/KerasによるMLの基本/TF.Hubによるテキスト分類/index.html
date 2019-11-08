@@ -53,6 +53,7 @@
 <li class="toctree-l6"><a class="nav-item toc" href="#24-train-the-model">2.4 Train the model</a></li>
 <li class="toctree-l6"><a class="nav-item toc" href="#25-evaluate-the-model">2.5 Evaluate the model</a></li>
 </ul></li>
+    <li class="toctree-l5"><a class="nav-item" href="../映画レビューのテキスト分類/">3 映画レビューのテキスト分類</a></li>
 </ul></li>
 </ul></li>
 </ul></li>
@@ -64,6 +65,7 @@
         <a href="https://github.com/daizutabi/machine-learning/" class="fa fa-github"> GitHub</a>
     </div>
     <div class="previous"><a href="../基本的な画像分類/">&laquo; Previous</a></div>
+    <div class="next"><a href="../映画レビューのテキスト分類/">Next &raquo;</a></div>
 </div>
         </aside>
         <div id="spacer"><button class="arrow"></button></div>
@@ -80,8 +82,7 @@
 </nav>
                 <div id="content">
 <h1 id="2-tfhub"><span class="pheasant-header"><span class="header"><span class="number">2</span> <span class="title">TF.Hubによるテキスト分類</span></span></span></h1>
-<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">import numpy as np
-import tensorflow as tf
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">import tensorflow as tf
 import tensorflow_datasets as tfds
 import tensorflow_hub as hub
 
@@ -95,8 +96,8 @@ print(
     else &#34;NOT AVAILABLE&#34;,
 )</code></pre></div>
 <div class="report"><p><span class="count">[1]</span>
-<span class="start">2019-11-08 14:49:19</span> (<span class="time">2.96s</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">2.96s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+<span class="start">2019-11-08 14:53:11</span> (<span class="time">2.95s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">2.95s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
       <pre><code class="nohighlight">Version:  2.0.0
 Eager mode:  True
 Hub version:  0.7.0
@@ -111,15 +112,15 @@ GPU is available</code></pre></div></div></div></div>
     as_supervised=True,
 )</code></pre></div>
 <div class="report"><p><span class="count">[2]</span>
-<span class="start">2019-11-08 14:49:22</span> (<span class="time">1.02s</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">3.98s</span>)</span></p></div></div></div></div>
+<span class="start">2019-11-08 14:53:14</span> (<span class="time">1.08s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">4.03s</span>)</span></p></div></div></div></div>
 
 <h2 id="22-explore-the-data"><span class="pheasant-header"><span class="header"><span class="number">2.2</span> <span class="title">Explore the data</span></span></span></h2>
 <div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">train_examples_batch, train_labels_batch = next(iter(train_data.batch(10)))
 train_examples_batch</code></pre></div>
 <div class="report"><p><span class="count">[3]</span>
-<span class="start">2019-11-08 14:49:23</span> (<span class="time">84.8ms</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">4.07s</span>)</span></p></div></div><div class="cell jupyter output"><div class="code"><pre><code class="nohighlight">&lt;tf.Tensor: id=219, shape=(10,), dtype=string, numpy=
+<span class="start">2019-11-08 14:53:15</span> (<span class="time">77.8ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">4.11s</span>)</span></p></div></div><div class="cell jupyter output"><div class="code"><pre><code class="nohighlight">&lt;tf.Tensor: id=219, shape=(10,), dtype=string, numpy=
 array([b&#34;As a lifelong fan of Dickens, I have invariably been disappointed by adaptations of his novels.&lt;br /&gt;&lt;br /&gt;Although his works presented an extremely accurate re-telling of human life at every level in Victorian Britain, throughout them all was a pervasive thread of humour that could be both playful or sarcastic as the narrative dictated. In a way, he was a literary caricaturist and cartoonist. He could be serious and hilarious in the same sentence. He pricked pride, lampooned arrogance, celebrated modesty, and empathised with loneliness and poverty. It may be a clich\xc3\xa9, but he was a people&#39;s writer.&lt;br /&gt;&lt;br /&gt;And it is the comedy that is so often missing from his interpretations. At the time of writing, Oliver Twist is being dramatised in serial form on BBC television. All of the misery and cruelty is their, but non of the humour, irony, and savage lampoonery. The result is just a dark, dismal experience: the story penned by a journalist rather than a novelist. It&#39;s not really Dickens at all.&lt;br /&gt;&lt;br /&gt;&#39;Oliver!&#39;, on the other hand, is much closer to the mark. The mockery of officialdom is perfectly interpreted, from the blustering beadle to the drunken magistrate. The classic stand-off between the beadle and Mr Brownlow, in which the law is described as &#39;a ass, a idiot&#39; couldn&#39;t have been better done. Harry Secombe is an ideal choice.&lt;br /&gt;&lt;br /&gt;But the blinding cruelty is also there, the callous indifference of the state, the cold, hunger, poverty and loneliness are all presented just as surely as The Master would have wished.&lt;br /&gt;&lt;br /&gt;And then there is crime. Ron Moody is a treasure as the sleazy Jewish fence, whilst Oliver Reid has Bill Sykes to perfection.&lt;br /&gt;&lt;br /&gt;Perhaps not surprisingly, Lionel Bart - himself a Jew from London&#39;s east-end - takes a liberty with Fagin by re-interpreting him as a much more benign fellow than was Dicken&#39;s original. In the novel, he was utterly ruthless, sending some of his own boys to the gallows in order to protect himself (though he was also caught and hanged). Whereas in the movie, he is presented as something of a wayward father-figure, a sort of charitable thief rather than a corrupter of children, the latter being a long-standing anti-semitic sentiment. Otherwise, very few liberties are taken with Dickens&#39;s original. All of the most memorable elements are included. Just enough menace and violence is retained to ensure narrative fidelity whilst at the same time allowing for children&#39; sensibilities. Nancy is still beaten to death, Bullseye narrowly escapes drowning, and Bill Sykes gets a faithfully graphic come-uppance.&lt;br /&gt;&lt;br /&gt;Every song is excellent, though they do incline towards schmaltz. Mark Lester mimes his wonderfully. Both his and my favourite scene is the one in which the world comes alive to &#39;who will buy&#39;. It&#39;s schmaltzy, but it&#39;s Dickens through and through.&lt;br /&gt;&lt;br /&gt;I could go on. I could commend the wonderful set-pieces, the contrast of the rich and poor. There is top-quality acting from more British regulars than you could shake a stick at.&lt;br /&gt;&lt;br /&gt;I ought to give it 10 points, but I&#39;m feeling more like Scrooge today. Soak it up with your Christmas dinner. No original has been better realised.&#34;,
        b&#34;Oh yeah! Jenna Jameson did it again! Yeah Baby! This movie rocks. It was one of the 1st movies i saw of her. And i have to say i feel in love with her, she was great in this move.&lt;br /&gt;&lt;br /&gt;Her performance was outstanding and what i liked the most was the scenery and the wardrobe it was amazing you can tell that they put a lot into the movie the girls cloth were amazing.&lt;br /&gt;&lt;br /&gt;I hope this comment helps and u can buy the movie, the storyline is awesome is very unique and i&#39;m sure u are going to like it. Jenna amazed us once more and no wonder the movie won so many awards. Her make-up and wardrobe is very very sexy and the girls on girls scene is amazing. specially the one where she looks like an angel. It&#39;s a must see and i hope u share my interests&#34;,
        b&#34;I saw this film on True Movies (which automatically made me sceptical) but actually - it was good. Why? Not because of the amazing plot twists or breathtaking dialogue (of which there is little) but because actually, despite what people say I thought the film was accurate in it&#39;s depiction of teenagers dealing with pregnancy.&lt;br /&gt;&lt;br /&gt;It&#39;s NOT Dawson&#39;s Creek, they&#39;re not graceful, cool witty characters who breeze through sexuality with effortless knowledge. They&#39;re kids and they act like kids would. &lt;br /&gt;&lt;br /&gt;They&#39;re blunt, awkward and annoyingly confused about everything. Yes, this could be by accident and they could just be bad actors but I don&#39;t think so. Dermot Mulroney gives (when not trying to be cool) a very believable performance and I loved him for it. Patricia Arquette IS whiny and annoying, but she was pregnant and a teenagers? The combination of the two isn&#39;t exactly lavender on your pillow. The plot was VERY predictable and but so what? I believed them, his stress and inability to cope - her brave, yet slightly misguided attempts to bring them closer together. I think the characters, acted by anyone else, WOULD indeed have been annoying and unbelievable but they weren&#39;t. It reflects the surreality of the situation they&#39;re in, that he&#39;s sitting in class and she walks on campus with the baby. I felt angry at her for that, I felt angry at him for being such a child and for blaming her. I felt it all.&lt;br /&gt;&lt;br /&gt;In the end, I loved it and would recommend it.&lt;br /&gt;&lt;br /&gt;Watch out for the scene where Dermot Mulroney runs from the disastrous counselling session - career performance.&#34;,
@@ -134,16 +135,16 @@ array([b&#34;As a lifelong fan of Dickens, I have invariably been disappointed b
 
 <div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">train_labels_batch</code></pre></div>
 <div class="report"><p><span class="count">[4]</span>
-<span class="start">2019-11-08 14:49:23</span> (<span class="time">15.7ms</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">4.09s</span>)</span></p></div></div><div class="cell jupyter output"><div class="code"><pre><code class="nohighlight">&lt;tf.Tensor: id=220, shape=(10,), dtype=int64, numpy=array([1, 1, 1, 1, 1, 1, 0, 1, 1, 0], dtype=int64)&gt;</code></pre></div></div></div></div>
+<span class="start">2019-11-08 14:53:15</span> (<span class="time">16.8ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">4.13s</span>)</span></p></div></div><div class="cell jupyter output"><div class="code"><pre><code class="nohighlight">&lt;tf.Tensor: id=220, shape=(10,), dtype=int64, numpy=array([1, 1, 1, 1, 1, 1, 0, 1, 1, 0], dtype=int64)&gt;</code></pre></div></div></div></div>
 
 <h2 id="23-build-the-model"><span class="pheasant-header"><span class="header"><span class="number">2.3</span> <span class="title">Build the model</span></span></span></h2>
 <div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">embedding = &#34;https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim/1&#34;
 hub_layer = hub.KerasLayer(embedding, input_shape=[], dtype=tf.string, trainable=True)
 hub_layer(train_examples_batch[:3])</code></pre></div>
 <div class="report"><p><span class="count">[5]</span>
-<span class="start">2019-11-08 14:49:23</span> (<span class="time">345ms</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">4.43s</span>)</span></p></div></div><div class="cell jupyter output"><div class="code"><pre><code class="nohighlight">&lt;tf.Tensor: id=402, shape=(3, 20), dtype=float32, numpy=
+<span class="start">2019-11-08 14:53:15</span> (<span class="time">274ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">4.40s</span>)</span></p></div></div><div class="cell jupyter output"><div class="code"><pre><code class="nohighlight">&lt;tf.Tensor: id=402, shape=(3, 20), dtype=float32, numpy=
 array([[ 3.9819887 , -4.4838037 ,  5.177359  , -2.3643482 , -3.2938678 ,
         -3.5364532 , -2.4786978 ,  2.5525482 ,  6.688532  , -2.3076782 ,
         -1.9807833 ,  1.1315885 , -3.0339816 , -0.7604128 , -5.743445  ,
@@ -164,8 +165,8 @@ model.add(tf.keras.layers.Dense(16, activation=&#34;relu&#34;))
 model.add(tf.keras.layers.Dense(1, activation=&#34;sigmoid&#34;))
 model.summary()</code></pre></div>
 <div class="report"><p><span class="count">[6]</span>
-<span class="start">2019-11-08 14:49:24</span> (<span class="time">507ms</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">4.94s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+<span class="start">2019-11-08 14:53:16</span> (<span class="time">498ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">4.90s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
       <pre><code class="nohighlight">Model: &#34;sequential&#34;
 _________________________________________________________________
 Layer (type)                 Output Shape              Param #   
@@ -184,8 +185,8 @@ _________________________________________________________________</code></pre></
 <h3 id="231-loss-function-and-optimizer"><span class="pheasant-header"><span class="header"><span class="number">2.3.1</span> <span class="title">Loss function and optimizer</span></span></span></h3>
 <div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">model.compile(optimizer=&#34;adam&#34;, loss=&#34;binary_crossentropy&#34;, metrics=[&#34;accuracy&#34;])</code></pre></div>
 <div class="report"><p><span class="count">[7]</span>
-<span class="start">2019-11-08 14:49:24</span> (<span class="time">43.3ms</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">4.98s</span>)</span></p></div></div></div></div>
+<span class="start">2019-11-08 14:53:16</span> (<span class="time">41.4ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">4.94s</span>)</span></p></div></div></div></div>
 
 <h2 id="24-train-the-model"><span class="pheasant-header"><span class="header"><span class="number">2.4</span> <span class="title">Train the model</span></span></span></h2>
 <div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">history = model.fit(
@@ -195,64 +196,64 @@ _________________________________________________________________</code></pre></
     verbose=1,
 )</code></pre></div>
 <div class="report"><p><span class="count">[8]</span>
-<span class="start">2019-11-08 14:49:24</span> (<span class="time">1min23s</span>)
+<span class="start">2019-11-08 14:53:16</span> (<span class="time">1min23s</span>)
 <span class="right"><span class="kernel">python3</span> (<span class="total">1min28s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
       <pre><code class="nohighlight">Epoch 1/20
-30/30 [==============================] - 5s 165ms/step - loss: 0.6641 - accuracy: 0.6152 - val_loss: 0.0000e+00 - val_accuracy: 0.0000e+00
+30/30 [==============================] - 5s 163ms/step - loss: 0.8751 - accuracy: 0.5061 - val_loss: 0.0000e+00 - val_accuracy: 0.0000e+00
 Epoch 2/20
-30/30 [==============================] - 4s 136ms/step - loss: 0.6215 - accuracy: 0.6619 - val_loss: 0.6006 - val_accuracy: 0.6811
+30/30 [==============================] - 4s 136ms/step - loss: 0.6848 - accuracy: 0.5675 - val_loss: 0.6620 - val_accuracy: 0.6068
 Epoch 3/20
-30/30 [==============================] - 4s 134ms/step - loss: 0.5874 - accuracy: 0.6983 - val_loss: 0.5700 - val_accuracy: 0.7157
+30/30 [==============================] - 4s 135ms/step - loss: 0.6528 - accuracy: 0.6247 - val_loss: 0.6385 - val_accuracy: 0.6434
 Epoch 4/20
-30/30 [==============================] - 4s 134ms/step - loss: 0.5491 - accuracy: 0.7367 - val_loss: 0.5342 - val_accuracy: 0.7478
+30/30 [==============================] - 4s 136ms/step - loss: 0.6261 - accuracy: 0.6591 - val_loss: 0.6132 - val_accuracy: 0.6704
 Epoch 5/20
-30/30 [==============================] - 4s 138ms/step - loss: 0.5113 - accuracy: 0.7707 - val_loss: 0.4977 - val_accuracy: 0.7742
+30/30 [==============================] - 4s 136ms/step - loss: 0.5964 - accuracy: 0.6911 - val_loss: 0.5802 - val_accuracy: 0.7039
 Epoch 6/20
-30/30 [==============================] - 4s 137ms/step - loss: 0.4690 - accuracy: 0.7993 - val_loss: 0.4641 - val_accuracy: 0.7921
+30/30 [==============================] - 4s 138ms/step - loss: 0.5599 - accuracy: 0.7229 - val_loss: 0.5434 - val_accuracy: 0.7341
 Epoch 7/20
-30/30 [==============================] - 4s 136ms/step - loss: 0.4296 - accuracy: 0.8210 - val_loss: 0.4282 - val_accuracy: 0.8091
+30/30 [==============================] - 4s 136ms/step - loss: 0.5182 - accuracy: 0.7625 - val_loss: 0.5080 - val_accuracy: 0.7656
 Epoch 8/20
-30/30 [==============================] - 4s 136ms/step - loss: 0.3892 - accuracy: 0.8401 - val_loss: 0.3978 - val_accuracy: 0.8277
+30/30 [==============================] - 4s 136ms/step - loss: 0.4795 - accuracy: 0.7936 - val_loss: 0.4739 - val_accuracy: 0.7876
 Epoch 9/20
-30/30 [==============================] - 4s 135ms/step - loss: 0.3533 - accuracy: 0.8567 - val_loss: 0.3737 - val_accuracy: 0.8390
+30/30 [==============================] - 4s 137ms/step - loss: 0.4390 - accuracy: 0.8176 - val_loss: 0.4426 - val_accuracy: 0.8069
 Epoch 10/20
-30/30 [==============================] - 4s 136ms/step - loss: 0.3218 - accuracy: 0.8721 - val_loss: 0.3564 - val_accuracy: 0.8441
+30/30 [==============================] - 4s 136ms/step - loss: 0.4048 - accuracy: 0.8395 - val_loss: 0.4143 - val_accuracy: 0.8211
 Epoch 11/20
-30/30 [==============================] - 4s 137ms/step - loss: 0.2964 - accuracy: 0.8853 - val_loss: 0.3386 - val_accuracy: 0.8552
+30/30 [==============================] - 4s 137ms/step - loss: 0.3683 - accuracy: 0.8595 - val_loss: 0.3844 - val_accuracy: 0.8371
 Epoch 12/20
-30/30 [==============================] - 4s 135ms/step - loss: 0.2723 - accuracy: 0.8977 - val_loss: 0.3261 - val_accuracy: 0.8597
+30/30 [==============================] - 4s 141ms/step - loss: 0.3282 - accuracy: 0.8723 - val_loss: 0.3588 - val_accuracy: 0.8450
 Epoch 13/20
-30/30 [==============================] - 4s 137ms/step - loss: 0.2491 - accuracy: 0.9085 - val_loss: 0.3158 - val_accuracy: 0.8651
+30/30 [==============================] - 4s 136ms/step - loss: 0.2948 - accuracy: 0.8869 - val_loss: 0.3378 - val_accuracy: 0.8562
 Epoch 14/20
-30/30 [==============================] - 4s 145ms/step - loss: 0.2293 - accuracy: 0.9157 - val_loss: 0.3083 - val_accuracy: 0.8678
+30/30 [==============================] - 4s 138ms/step - loss: 0.2694 - accuracy: 0.8994 - val_loss: 0.3222 - val_accuracy: 0.8640
 Epoch 15/20
-30/30 [==============================] - 4s 139ms/step - loss: 0.2097 - accuracy: 0.9219 - val_loss: 0.3045 - val_accuracy: 0.8716
+30/30 [==============================] - 4s 136ms/step - loss: 0.2453 - accuracy: 0.9102 - val_loss: 0.3097 - val_accuracy: 0.8679
 Epoch 16/20
-30/30 [==============================] - 4s 141ms/step - loss: 0.1993 - accuracy: 0.9284 - val_loss: 0.2983 - val_accuracy: 0.8732
+30/30 [==============================] - 4s 142ms/step - loss: 0.2233 - accuracy: 0.9193 - val_loss: 0.3024 - val_accuracy: 0.8736
 Epoch 17/20
-30/30 [==============================] - 4s 141ms/step - loss: 0.1835 - accuracy: 0.9347 - val_loss: 0.2983 - val_accuracy: 0.8759
+30/30 [==============================] - 4s 136ms/step - loss: 0.2087 - accuracy: 0.9276 - val_loss: 0.2954 - val_accuracy: 0.8772
 Epoch 18/20
-30/30 [==============================] - 4s 136ms/step - loss: 0.1728 - accuracy: 0.9405 - val_loss: 0.2946 - val_accuracy: 0.8771
+30/30 [==============================] - 4s 135ms/step - loss: 0.1912 - accuracy: 0.9337 - val_loss: 0.2923 - val_accuracy: 0.8763
 Epoch 19/20
-30/30 [==============================] - 4s 139ms/step - loss: 0.1604 - accuracy: 0.9449 - val_loss: 0.2935 - val_accuracy: 0.8793
+30/30 [==============================] - 4s 138ms/step - loss: 0.1778 - accuracy: 0.9394 - val_loss: 0.2879 - val_accuracy: 0.8798
 Epoch 20/20
-30/30 [==============================] - 4s 138ms/step - loss: 0.1496 - accuracy: 0.9515 - val_loss: 0.2942 - val_accuracy: 0.8775</code></pre></div></div></div></div>
+30/30 [==============================] - 4s 138ms/step - loss: 0.1672 - accuracy: 0.9442 - val_loss: 0.2866 - val_accuracy: 0.8812</code></pre></div></div></div></div>
 
 <h2 id="25-evaluate-the-model"><span class="pheasant-header"><span class="header"><span class="number">2.5</span> <span class="title">Evaluate the model</span></span></span></h2>
 <div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">results = model.evaluate(test_data.batch(512), verbose=2)
 
 for name, value in zip(model.metrics_names, results):
-    print(&#34;%s: %.3f&#34; % (name, value))
-  </code></pre></div>
+    print(&#34;%s: %.3f&#34; % (name, value))</code></pre></div>
 <div class="report"><p><span class="count">[9]</span>
-<span class="start">2019-11-08 14:50:47</span> (<span class="time">3.22s</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">1min32s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
-      <pre><code class="nohighlight">49/49 - 3s - loss: 0.3150 - accuracy: 0.8662
-loss: 0.315
-accuracy: 0.866</code></pre></div></div></div></div></div>
+<span class="start">2019-11-08 14:54:39</span> (<span class="time">3.22s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">1min31s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">49/49 - 3s - loss: 0.3089 - accuracy: 0.8676
+loss: 0.309
+accuracy: 0.868</code></pre></div></div></div></div></div>
                 <footer>
     <div class="footer-buttons">
         <div class="previous"><a href="../基本的な画像分類/" title="1 基本的な画像の分類"><span>Previous</span></a></div>
+        <div class="next"><a href="../映画レビューのテキスト分類/" title="3 映画レビューのテキスト分類"><span>Next</span></a></div>
     </div>
     <div class="footer-note">
         <p>

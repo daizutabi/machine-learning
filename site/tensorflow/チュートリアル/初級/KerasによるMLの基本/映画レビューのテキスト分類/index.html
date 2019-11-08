@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="daizutabi">
+    <link rel="shortcut icon" href="../../../../../img/favicon.ico">
+    <title>3 映画レビューのテキスト分類 &mdash; Machine Learning</title>
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/tonsky/FiraCode@1.206/distr/fira_code.css">
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/v4-shims.css">
+    <link rel="stylesheet" href="../../../../../css/theme.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/v4-shims.css">
+    <link rel="stylesheet" href="../../../../../css/pheasant.css">
+    <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script>
+        hljs.initHighlightingOnLoad();
+    </script> 
+</head>
+
+<body ontouchstart="">
+    <div id="container">
+        <aside>
+            <div class="home">
+                <div class="title">
+                    <button class="hamburger"></button>
+                    <a href="../../../../.." class="site-name"> Machine Learning</a>
+                </div>
+            </div>
+            <nav class="nav">
+                <ul class="root">
+                    <li class="toctree-l1"><a class="nav-item" href="../../../../..">機械学習自習室</a></li>
+                    <li class="toctree-l1"><button class="section nav-item">TensorFlow</button>
+<ul class="subnav">
+    <li class="toctree-l2 current"><button class="section nav-item">チュートリアル</button>
+<ul class="subnav">
+    <li class="toctree-l3 current"><button class="section nav-item">初級</button>
+<ul class="subnav">
+    <li class="toctree-l4 current"><button class="section nav-item">KerasによるMLの基本</button>
+<ul class="subnav">
+    <li class="toctree-l5"><a class="nav-item" href="../基本的な画像分類/">1 基本的な画像の分類</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../TF.Hubによるテキスト分類/">2 TF.Hubによるテキスト分類</a></li>
+    <li class="toctree-l5 current"><a class="nav-item current" href="./">3 映画レビューのテキスト分類</a>
+<ul class="subnav">
+<li class="toctree-l6"><a class="nav-item toc" href="#31-imdb-dataset">3.1 IMDB datasetのダウンロード</a></li>
+<li class="toctree-l6"><a class="nav-item toc" href="#32">3.2 データの観察</a></li>
+<li class="toctree-l6"><a class="nav-item toc" href="#33">3.3 データの準備</a></li>
+<li class="toctree-l6"><a class="nav-item toc" href="#34">3.4 モデルの構築</a></li>
+<li class="toctree-l6"><a class="nav-item toc" href="#35">3.5 検証用データを作る</a></li>
+<li class="toctree-l6"><a class="nav-item toc" href="#36">3.6 モデルの訓練</a></li>
+<li class="toctree-l6"><a class="nav-item toc" href="#37">3.7 モデルの評価</a></li>
+<li class="toctree-l6"><a class="nav-item toc" href="#38">3.8 正解率と損失の時系列グラフを描く</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+                </ul>
+            </nav>
+            <div class="repo">
+    <div class="link">
+        <a href="https://github.com/daizutabi/machine-learning/" class="fa fa-github"> GitHub</a>
+    </div>
+    <div class="previous"><a href="../TF.Hubによるテキスト分類/">&laquo; Previous</a></div>
+</div>
+        </aside>
+        <div id="spacer"><button class="arrow"></button></div>
+        <main>
+            <div class="home-top">
+                <button class="hamburger"></button>
+                <a href="../../../../.." class="site-name"> Machine Learning</a>
+            </div>
+            <div id="main">
+                <nav class="breadcrumbs">
+<ul>
+    <li>TensorFlow &raquo; </li><li>チュートリアル &raquo; </li><li>初級 &raquo; </li><li>KerasによるMLの基本</li>
+</ul>
+</nav>
+                <div id="content"><style>
+ .vega-actions a { margin-right: 12px; color: #757575; font-weight: normal; font-size: 13px; } .error { color: red; } </style>
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@3.4.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@4"></script>
+<h1 id="3"><span class="pheasant-header"><span class="header"><span class="number">3</span> <span class="title">映画レビューのテキスト分類</span></span></span></h1>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">import altair as alt
+import pandas as pd
+from tensorflow import keras</code></pre></div>
+<div class="report"><p><span class="count">[1]</span>
+<span class="start">2019-11-08 15:36:15</span> (<span class="time">1.94s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">1.94s</span>)</span></p></div></div></div></div>
+
+<h2 id="31-imdb-dataset"><span class="pheasant-header"><span class="header"><span class="number">3.1</span> <span class="title">IMDB datasetのダウンロード</span></span></span></h2>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">imdb = keras.datasets.imdb
+(train_data, train_labels), (test_data, test_labels) = imdb.load_data(num_words=10000)</code></pre></div>
+<div class="report"><p><span class="count">[2]</span>
+<span class="start">2019-11-08 15:36:17</span> (<span class="time">3.77s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">5.70s</span>)</span></p></div></div></div></div>
+
+<h2 id="32"><span class="pheasant-header"><span class="header"><span class="number">3.2</span> <span class="title">データの観察</span></span></span></h2>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">print(f&#34;Training entries: {len(train_data)}, labels: {len(train_labels)}&#34;)
+print(train_data[0])</code></pre></div>
+<div class="report"><p><span class="count">[3]</span>
+<span class="start">2019-11-08 15:36:21</span> (<span class="time">9.03ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">5.71s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">Training entries: 25000, labels: 25000
+[1, 14, 22, 16, 43, 530, 973, 1622, 1385, 65, 458, 4468, 66, 3941, 4, 173, 36, 256, 5, 25, 100, 43, 838, 112, 50, 670, 2, 9, 35, 480, 284, 5, 150, 4, 172, 112, 167, 2, 336, 385, 39, 4, 172, 4536, 1111, 17, 546, 38, 13, 447, 4, 192, 50, 16, 6, 147, 2025, 19, 14, 22, 4, 1920, 4613, 469, 4, 22, 71, 87, 12, 16, 43, 530, 38, 76, 15, 13, 1247, 4, 22, 17, 515, 17, 12, 16, 626, 18, 2, 5, 62, 386, 12, 8, 316, 8, 106, 5, 4, 2223, 5244, 16, 480, 66, 3785, 33, 4, 130, 12, 16, 38, 619, 5, 25, 124, 51, 36, 135, 48, 25, 1415, 33, 6, 22, 12, 215, 28, 77, 52, 5, 14, 407, 16, 82, 2, 8, 4, 107, 117, 5952, 15, 256, 4, 2, 7, 3766, 5, 723, 36, 71, 43, 530, 476, 26, 400, 317, 46, 7, 4, 2, 1029, 13, 104, 88, 4, 381, 15, 297, 98, 32, 2071, 56, 26, 141, 6, 194, 7486, 18, 4, 226, 22, 21, 134, 476, 26, 480, 5, 144, 30, 5535, 18, 51, 36, 28, 224, 92, 25, 104, 4, 226, 65, 16, 38, 1334, 88, 12, 16, 283, 5, 16, 4472, 113, 103, 32, 15, 16, 5345, 19, 178, 32]</code></pre></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python"># レビューごとに長さが異なる。
+len(train_data[0]), len(train_data[1])</code></pre></div>
+<div class="report"><p><span class="count">[4]</span>
+<span class="start">2019-11-08 15:36:21</span> (<span class="time">6.97ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">5.72s</span>)</span></p></div></div><div class="cell jupyter output"><div class="code"><pre><code class="nohighlight">(218, 189)</code></pre></div></div></div></div>
+
+<h3 id="321"><span class="pheasant-header"><span class="header"><span class="number">3.2.1</span> <span class="title">整数を単語に戻してみる</span></span></span></h3>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python"># 単語を整数にマッピングする辞書
+word_index = imdb.get_word_index()
+
+# インデックスの最初の方は予約済み
+word_index = {k: (v + 3) for k, v in word_index.items()}
+word_index[&#34;&lt;PAD&gt;&#34;] = 0
+word_index[&#34;&lt;START&gt;&#34;] = 1
+word_index[&#34;&lt;UNK&gt;&#34;] = 2  # unknown
+word_index[&#34;&lt;UNUSED&gt;&#34;] = 3
+
+reverse_word_index = dict([(value, key) for (key, value) in word_index.items()])
+
+def decode_review(text):
+    return &#34; &#34;.join([reverse_word_index.get(i, &#34;?&#34;) for i in text])
+
+decode_review(train_data[0])</code></pre></div>
+<div class="report"><p><span class="count">[5]</span>
+<span class="start">2019-11-08 15:36:21</span> (<span class="time">120ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">5.84s</span>)</span></p></div></div><div class="cell jupyter output"><div class="code"><pre><code class="nohighlight">&#34;&lt;START&gt; this film was just brilliant casting location scenery story direction everyone&#39;s really suited the part they played and you could just imagine being there robert &lt;UNK&gt; is an amazing actor and now the same being director &lt;UNK&gt; father came from the same scottish island as myself so i loved the fact there was a real connection with this film the witty remarks throughout the film were great it was just brilliant so much that i bought the film as soon as it was released for &lt;UNK&gt; and would recommend it to everyone to watch and the fly fishing was amazing really cried at the end it was so sad and you know what they say if you cry at a film it must have been good and this definitely was also &lt;UNK&gt; to the two little boy&#39;s that played the &lt;UNK&gt; of norman and paul they were just brilliant children are often left out of the &lt;UNK&gt; list i think because the stars that play them all grown up are such a big profile for the whole film but these children are amazing and should be praised for what they have done don&#39;t you think the whole story was so lovely because it was true and was someone&#39;s life after all that was shared with us all&#34;</code></pre></div></div></div></div>
+
+<h2 id="33"><span class="pheasant-header"><span class="header"><span class="number">3.3</span> <span class="title">データの準備</span></span></span></h2>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">#  長さを標準化する
+train_data = keras.preprocessing.sequence.pad_sequences(
+    train_data, value=word_index[&#34;&lt;PAD&gt;&#34;], padding=&#34;post&#34;, maxlen=256
+)
+
+test_data = keras.preprocessing.sequence.pad_sequences(
+    test_data, value=word_index[&#34;&lt;PAD&gt;&#34;], padding=&#34;post&#34;, maxlen=256
+)
+len(train_data[0]), len(train_data[1])</code></pre></div>
+<div class="report"><p><span class="count">[6]</span>
+<span class="start">2019-11-08 15:36:21</span> (<span class="time">759ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">6.60s</span>)</span></p></div></div><div class="cell jupyter output"><div class="code"><pre><code class="nohighlight">(256, 256)</code></pre></div></div></div></div>
+
+<h2 id="34"><span class="pheasant-header"><span class="header"><span class="number">3.4</span> <span class="title">モデルの構築</span></span></span></h2>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python"># 入力の形式は映画レビューで使われている語彙数（10,000語）
+vocab_size = 10000
+model = keras.Sequential()
+model.add(keras.layers.Embedding(vocab_size, 16))
+model.add(keras.layers.GlobalAveragePooling1D())
+model.add(keras.layers.Dense(16, activation=&#34;relu&#34;))
+model.add(keras.layers.Dense(1, activation=&#34;sigmoid&#34;))
+model.summary()</code></pre></div>
+<div class="report"><p><span class="count">[7]</span>
+<span class="start">2019-11-08 15:36:22</span> (<span class="time">1.59s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">8.19s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">Model: &#34;sequential&#34;
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+embedding (Embedding)        (None, None, 16)          160000    
+_________________________________________________________________
+global_average_pooling1d (Gl (None, 16)                0         
+_________________________________________________________________
+dense (Dense)                (None, 16)                272       
+_________________________________________________________________
+dense_1 (Dense)              (None, 1)                 17        
+=================================================================
+Total params: 160,289
+Trainable params: 160,289
+Non-trainable params: 0
+_________________________________________________________________</code></pre></div></div></div></div>
+
+<h3 id="341"><span class="pheasant-header"><span class="header"><span class="number">3.4.1</span> <span class="title">損失関数とオプティマイザ</span></span></span></h3>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">model.compile(optimizer=&#34;adam&#34;, loss=&#34;binary_crossentropy&#34;, metrics=[&#34;accuracy&#34;])</code></pre></div>
+<div class="report"><p><span class="count">[8]</span>
+<span class="start">2019-11-08 15:36:23</span> (<span class="time">45.2ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">8.24s</span>)</span></p></div></div></div></div>
+
+<h2 id="35"><span class="pheasant-header"><span class="header"><span class="number">3.5</span> <span class="title">検証用データを作る</span></span></span></h2>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">x_val = train_data[:10000]
+partial_x_train = train_data[10000:]
+y_val = train_labels[:10000]
+partial_y_train = train_labels[10000:]</code></pre></div>
+<div class="report"><p><span class="count">[9]</span>
+<span class="start">2019-11-08 15:36:24</span> (<span class="time">6.07ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">8.24s</span>)</span></p></div></div></div></div>
+
+<h2 id="36"><span class="pheasant-header"><span class="header"><span class="number">3.6</span> <span class="title">モデルの訓練</span></span></span></h2>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">history = model.fit(
+    partial_x_train,
+    partial_y_train,
+    epochs=40,
+    batch_size=512,
+    validation_data=(x_val, y_val),
+    verbose=1,
+)</code></pre></div>
+<div class="report"><p><span class="count">[10]</span>
+<span class="start">2019-11-08 15:36:24</span> (<span class="time">35.8s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">44.1s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">Train on 15000 samples, validate on 10000 samples
+Epoch 1/40
+15000/15000 [==============================] - 2s 120us/sample - loss: 0.6916 - accuracy: 0.5744 - val_loss: 0.6894 - val_accuracy: 0.5293
+Epoch 2/40
+15000/15000 [==============================] - 1s 58us/sample - loss: 0.6845 - accuracy: 0.6624 - val_loss: 0.6792 - val_accuracy: 0.7137
+Epoch 3/40
+15000/15000 [==============================] - 1s 58us/sample - loss: 0.6688 - accuracy: 0.7359 - val_loss: 0.6600 - val_accuracy: 0.7362
+Epoch 4/40
+15000/15000 [==============================] - 1s 59us/sample - loss: 0.6416 - accuracy: 0.7695 - val_loss: 0.6291 - val_accuracy: 0.7720
+Epoch 5/40
+15000/15000 [==============================] - 1s 58us/sample - loss: 0.6025 - accuracy: 0.7981 - val_loss: 0.5893 - val_accuracy: 0.7906
+Epoch 6/40
+15000/15000 [==============================] - 1s 58us/sample - loss: 0.5552 - accuracy: 0.8185 - val_loss: 0.5443 - val_accuracy: 0.8093
+Epoch 7/40
+15000/15000 [==============================] - 1s 58us/sample - loss: 0.5046 - accuracy: 0.8376 - val_loss: 0.4981 - val_accuracy: 0.8265
+Epoch 8/40
+15000/15000 [==============================] - 1s 58us/sample - loss: 0.4559 - accuracy: 0.8553 - val_loss: 0.4569 - val_accuracy: 0.8393
+Epoch 9/40
+15000/15000 [==============================] - 1s 58us/sample - loss: 0.4121 - accuracy: 0.8675 - val_loss: 0.4216 - val_accuracy: 0.8506
+Epoch 10/40
+15000/15000 [==============================] - 1s 58us/sample - loss: 0.3749 - accuracy: 0.8787 - val_loss: 0.3935 - val_accuracy: 0.8545
+Epoch 11/40
+15000/15000 [==============================] - 1s 58us/sample - loss: 0.3440 - accuracy: 0.8847 - val_loss: 0.3713 - val_accuracy: 0.8612
+Epoch 12/40
+15000/15000 [==============================] - 1s 59us/sample - loss: 0.3179 - accuracy: 0.8949 - val_loss: 0.3526 - val_accuracy: 0.8672
+Epoch 13/40
+15000/15000 [==============================] - 1s 58us/sample - loss: 0.2956 - accuracy: 0.8997 - val_loss: 0.3385 - val_accuracy: 0.8704
+Epoch 14/40
+15000/15000 [==============================] - 1s 58us/sample - loss: 0.2770 - accuracy: 0.9051 - val_loss: 0.3263 - val_accuracy: 0.8740
+Epoch 15/40
+15000/15000 [==============================] - 1s 58us/sample - loss: 0.2602 - accuracy: 0.9097 - val_loss: 0.3172 - val_accuracy: 0.8761
+Epoch 16/40
+15000/15000 [==============================] - 1s 57us/sample - loss: 0.2453 - accuracy: 0.9161 - val_loss: 0.3099 - val_accuracy: 0.8797
+Epoch 17/40
+15000/15000 [==============================] - 1s 59us/sample - loss: 0.2322 - accuracy: 0.9217 - val_loss: 0.3039 - val_accuracy: 0.8811
+Epoch 18/40
+15000/15000 [==============================] - 1s 58us/sample - loss: 0.2201 - accuracy: 0.9251 - val_loss: 0.2990 - val_accuracy: 0.8816
+Epoch 19/40
+15000/15000 [==============================] - 1s 58us/sample - loss: 0.2091 - accuracy: 0.9280 - val_loss: 0.2949 - val_accuracy: 0.8824
+Epoch 20/40
+15000/15000 [==============================] - 1s 58us/sample - loss: 0.1990 - accuracy: 0.9322 - val_loss: 0.2919 - val_accuracy: 0.8835
+Epoch 21/40
+15000/15000 [==============================] - 1s 58us/sample - loss: 0.1897 - accuracy: 0.9364 - val_loss: 0.2905 - val_accuracy: 0.8838
+Epoch 22/40
+15000/15000 [==============================] - 1s 58us/sample - loss: 0.1809 - accuracy: 0.9407 - val_loss: 0.2879 - val_accuracy: 0.8843
+Epoch 23/40
+15000/15000 [==============================] - 1s 58us/sample - loss: 0.1723 - accuracy: 0.9443 - val_loss: 0.2868 - val_accuracy: 0.8843
+Epoch 24/40
+15000/15000 [==============================] - 1s 58us/sample - loss: 0.1649 - accuracy: 0.9480 - val_loss: 0.2865 - val_accuracy: 0.8854
+Epoch 25/40
+15000/15000 [==============================] - 1s 58us/sample - loss: 0.1574 - accuracy: 0.9507 - val_loss: 0.2855 - val_accuracy: 0.8867
+Epoch 26/40
+15000/15000 [==============================] - 1s 58us/sample - loss: 0.1507 - accuracy: 0.9540 - val_loss: 0.2860 - val_accuracy: 0.8870
+Epoch 27/40
+15000/15000 [==============================] - 1s 57us/sample - loss: 0.1440 - accuracy: 0.9562 - val_loss: 0.2869 - val_accuracy: 0.8868
+Epoch 28/40
+15000/15000 [==============================] - 1s 59us/sample - loss: 0.1383 - accuracy: 0.9585 - val_loss: 0.2888 - val_accuracy: 0.8855
+Epoch 29/40
+15000/15000 [==============================] - 1s 58us/sample - loss: 0.1327 - accuracy: 0.9597 - val_loss: 0.2892 - val_accuracy: 0.8865
+Epoch 30/40
+15000/15000 [==============================] - 1s 58us/sample - loss: 0.1269 - accuracy: 0.9630 - val_loss: 0.2926 - val_accuracy: 0.8860
+Epoch 31/40
+15000/15000 [==============================] - 1s 58us/sample - loss: 0.1214 - accuracy: 0.9661 - val_loss: 0.2927 - val_accuracy: 0.8865
+Epoch 32/40
+15000/15000 [==============================] - 1s 58us/sample - loss: 0.1165 - accuracy: 0.9669 - val_loss: 0.2956 - val_accuracy: 0.8846
+Epoch 33/40
+15000/15000 [==============================] - 1s 58us/sample - loss: 0.1124 - accuracy: 0.9683 - val_loss: 0.2978 - val_accuracy: 0.8845
+Epoch 34/40
+15000/15000 [==============================] - 1s 58us/sample - loss: 0.1075 - accuracy: 0.9701 - val_loss: 0.3002 - val_accuracy: 0.8848
+Epoch 35/40
+15000/15000 [==============================] - 1s 59us/sample - loss: 0.1031 - accuracy: 0.9717 - val_loss: 0.3029 - val_accuracy: 0.8847
+Epoch 36/40
+15000/15000 [==============================] - 1s 59us/sample - loss: 0.0988 - accuracy: 0.9733 - val_loss: 0.3062 - val_accuracy: 0.8839
+Epoch 37/40
+15000/15000 [==============================] - 1s 58us/sample - loss: 0.0945 - accuracy: 0.9752 - val_loss: 0.3092 - val_accuracy: 0.8824
+Epoch 38/40
+15000/15000 [==============================] - 1s 57us/sample - loss: 0.0908 - accuracy: 0.9762 - val_loss: 0.3131 - val_accuracy: 0.8822
+Epoch 39/40
+15000/15000 [==============================] - 1s 58us/sample - loss: 0.0870 - accuracy: 0.9781 - val_loss: 0.3171 - val_accuracy: 0.8815
+Epoch 40/40
+15000/15000 [==============================] - 1s 58us/sample - loss: 0.0832 - accuracy: 0.9790 - val_loss: 0.3202 - val_accuracy: 0.8809</code></pre></div></div></div></div>
+
+<h2 id="37"><span class="pheasant-header"><span class="header"><span class="number">3.7</span> <span class="title">モデルの評価</span></span></span></h2>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">results = model.evaluate(test_data, test_labels, verbose=2)
+print(results)</code></pre></div>
+<div class="report"><p><span class="count">[11]</span>
+<span class="start">2019-11-08 15:36:59</span> (<span class="time">1.90s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">46.0s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">25000/1 - 2s - loss: 0.3336 - accuracy: 0.8708
+[0.3421444439506531, 0.8708]</code></pre></div></div></div></div>
+
+<h2 id="38"><span class="pheasant-header"><span class="header"><span class="number">3.8</span> <span class="title">正解率と損失の時系列グラフを描く</span></span></span></h2>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">df = pd.DataFrame(history.history)
+df.index.name = &#34;epoch&#34;
+df.reset_index(inplace=True)
+df = pd.melt(df, id_vars=[&#34;epoch&#34;], value_vars=[&#34;accuracy&#34;, &#34;val_accuracy&#34;])
+chart = alt.Chart(df).mark_line(point=True).properties(width=200, height=150)
+chart.encode(
+    x=&#34;epoch&#34;, y=alt.Y(&#34;value&#34;, scale=alt.Scale(domain=[0.5, 1])), color=&#34;variable&#34;
+)</code></pre></div>
+<div class="report"><p><span class="count">[12]</span>
+<span class="start">2019-11-08 15:37:01</span> (<span class="time">45.0ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">46.0s</span>)</span></p></div></div>
+
+<div class="cell jupyter display"><div class="content"><div id="pheasant-altair-1"><script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var spec = {"config": {"view": {"width": 400, "height": 300}, "mark": {"tooltip": null}}, "data": {"name": "data-c071fbe1d023b7f1205be888709e4d95"}, "mark": {"type": "line", "point": true}, "encoding": {"color": {"type": "nominal", "field": "variable"}, "x": {"type": "quantitative", "field": "epoch"}, "y": {"type": "quantitative", "field": "value", "scale": {"domain": [0.5, 1]}}}, "height": 150, "width": 200, "$schema": "https://vega.github.io/schema/vega-lite/v3.4.0.json", "datasets": {"data-c071fbe1d023b7f1205be888709e4d95": [{"epoch": 0, "variable": "accuracy", "value": 0.574400007724762}, {"epoch": 1, "variable": "accuracy", "value": 0.6624000072479248}, {"epoch": 2, "variable": "accuracy", "value": 0.7358666658401489}, {"epoch": 3, "variable": "accuracy", "value": 0.7695333361625671}, {"epoch": 4, "variable": "accuracy", "value": 0.7980666756629944}, {"epoch": 5, "variable": "accuracy", "value": 0.8184666633605957}, {"epoch": 6, "variable": "accuracy", "value": 0.8375999927520752}, {"epoch": 7, "variable": "accuracy", "value": 0.8552666902542114}, {"epoch": 8, "variable": "accuracy", "value": 0.8674666881561279}, {"epoch": 9, "variable": "accuracy", "value": 0.8786666393280029}, {"epoch": 10, "variable": "accuracy", "value": 0.8847333192825317}, {"epoch": 11, "variable": "accuracy", "value": 0.8948666453361511}, {"epoch": 12, "variable": "accuracy", "value": 0.899733304977417}, {"epoch": 13, "variable": "accuracy", "value": 0.9051333069801331}, {"epoch": 14, "variable": "accuracy", "value": 0.9097333550453186}, {"epoch": 15, "variable": "accuracy", "value": 0.9161333441734314}, {"epoch": 16, "variable": "accuracy", "value": 0.92166668176651}, {"epoch": 17, "variable": "accuracy", "value": 0.9250666499137878}, {"epoch": 18, "variable": "accuracy", "value": 0.9279999732971191}, {"epoch": 19, "variable": "accuracy", "value": 0.932200014591217}, {"epoch": 20, "variable": "accuracy", "value": 0.9363999962806702}, {"epoch": 21, "variable": "accuracy", "value": 0.940666675567627}, {"epoch": 22, "variable": "accuracy", "value": 0.944266676902771}, {"epoch": 23, "variable": "accuracy", "value": 0.9480000138282776}, {"epoch": 24, "variable": "accuracy", "value": 0.9506666660308838}, {"epoch": 25, "variable": "accuracy", "value": 0.9539999961853027}, {"epoch": 26, "variable": "accuracy", "value": 0.9562000036239624}, {"epoch": 27, "variable": "accuracy", "value": 0.9585333466529846}, {"epoch": 28, "variable": "accuracy", "value": 0.9597333073616028}, {"epoch": 29, "variable": "accuracy", "value": 0.9629999995231628}, {"epoch": 30, "variable": "accuracy", "value": 0.9661333560943604}, {"epoch": 31, "variable": "accuracy", "value": 0.966866672039032}, {"epoch": 32, "variable": "accuracy", "value": 0.9683333039283752}, {"epoch": 33, "variable": "accuracy", "value": 0.9701333045959473}, {"epoch": 34, "variable": "accuracy", "value": 0.971666693687439}, {"epoch": 35, "variable": "accuracy", "value": 0.9732666611671448}, {"epoch": 36, "variable": "accuracy", "value": 0.9751999974250793}, {"epoch": 37, "variable": "accuracy", "value": 0.9761999845504761}, {"epoch": 38, "variable": "accuracy", "value": 0.9781333208084106}, {"epoch": 39, "variable": "accuracy", "value": 0.9789999723434448}, {"epoch": 0, "variable": "val_accuracy", "value": 0.5292999744415283}, {"epoch": 1, "variable": "val_accuracy", "value": 0.713699996471405}, {"epoch": 2, "variable": "val_accuracy", "value": 0.7361999750137329}, {"epoch": 3, "variable": "val_accuracy", "value": 0.7720000147819519}, {"epoch": 4, "variable": "val_accuracy", "value": 0.7906000018119812}, {"epoch": 5, "variable": "val_accuracy", "value": 0.8093000054359436}, {"epoch": 6, "variable": "val_accuracy", "value": 0.8264999985694885}, {"epoch": 7, "variable": "val_accuracy", "value": 0.8392999768257141}, {"epoch": 8, "variable": "val_accuracy", "value": 0.850600004196167}, {"epoch": 9, "variable": "val_accuracy", "value": 0.8544999957084656}, {"epoch": 10, "variable": "val_accuracy", "value": 0.8611999750137329}, {"epoch": 11, "variable": "val_accuracy", "value": 0.8672000169754028}, {"epoch": 12, "variable": "val_accuracy", "value": 0.8704000115394592}, {"epoch": 13, "variable": "val_accuracy", "value": 0.8740000128746033}, {"epoch": 14, "variable": "val_accuracy", "value": 0.8761000037193298}, {"epoch": 15, "variable": "val_accuracy", "value": 0.8797000050544739}, {"epoch": 16, "variable": "val_accuracy", "value": 0.8810999989509583}, {"epoch": 17, "variable": "val_accuracy", "value": 0.881600022315979}, {"epoch": 18, "variable": "val_accuracy", "value": 0.8823999762535095}, {"epoch": 19, "variable": "val_accuracy", "value": 0.8834999799728394}, {"epoch": 20, "variable": "val_accuracy", "value": 0.8838000297546387}, {"epoch": 21, "variable": "val_accuracy", "value": 0.8842999935150146}, {"epoch": 22, "variable": "val_accuracy", "value": 0.8842999935150146}, {"epoch": 23, "variable": "val_accuracy", "value": 0.8853999972343445}, {"epoch": 24, "variable": "val_accuracy", "value": 0.8866999745368958}, {"epoch": 25, "variable": "val_accuracy", "value": 0.8870000243186951}, {"epoch": 26, "variable": "val_accuracy", "value": 0.8867999911308289}, {"epoch": 27, "variable": "val_accuracy", "value": 0.8855000138282776}, {"epoch": 28, "variable": "val_accuracy", "value": 0.8865000009536743}, {"epoch": 29, "variable": "val_accuracy", "value": 0.8859999775886536}, {"epoch": 30, "variable": "val_accuracy", "value": 0.8865000009536743}, {"epoch": 31, "variable": "val_accuracy", "value": 0.8845999836921692}, {"epoch": 32, "variable": "val_accuracy", "value": 0.8845000267028809}, {"epoch": 33, "variable": "val_accuracy", "value": 0.8848000168800354}, {"epoch": 34, "variable": "val_accuracy", "value": 0.8847000002861023}, {"epoch": 35, "variable": "val_accuracy", "value": 0.883899986743927}, {"epoch": 36, "variable": "val_accuracy", "value": 0.8823999762535095}, {"epoch": 37, "variable": "val_accuracy", "value": 0.8822000026702881}, {"epoch": 38, "variable": "val_accuracy", "value": 0.8815000057220459}, {"epoch": 39, "variable": "val_accuracy", "value": 0.8809000253677368}]}};
+    var opt = {
+      "mode": "vega-lite",
+      "renderer": "canvas",
+      "actions": {"editor": true, "source": true, "export": true}
+    };
+    vegaEmbed("#pheasant-altair-1", spec, opt).catch(console.err);
+  });</script></div></div></div></div></div></div>
+                <footer>
+    <div class="footer-buttons">
+        <div class="previous"><a href="../TF.Hubによるテキスト分類/" title="2 TF.Hubによるテキスト分類"><span>Previous</span></a></div>
+    </div>
+    <div class="footer-note">
+        <p>
+            Built with <a href="http://www.mkdocs.org">MkDocs</a> using
+            <a href="https://github.com/daizutabi/mkdocs-ivory">Ivory theme</a>.
+        </p>
+    </div>
+</footer>
+            </div>
+        </main>
+    </div>
+    <script>
+        var base_url = '.';
+    </script>
+    <script src="../../../../../js/theme.js"></script>
+    <script src="../../../../../js/pheasant.js"></script>
+</body>
+
+</html>
