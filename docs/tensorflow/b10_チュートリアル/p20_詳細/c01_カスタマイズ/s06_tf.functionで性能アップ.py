@@ -180,7 +180,7 @@ measure_graph_size(train, generator(lambda: small_data, (tf.int32, tf.int32)))
 measure_graph_size(train, generator(lambda: big_data, (tf.int32, tf.int32)))
 
 
-# # 自動的な依存関係の制御
+# ## 自動的な依存関係の制御
 # !自動的な依存関係の制御
 a = tf.Variable(1.0)
 b = tf.Variable(2.0)
