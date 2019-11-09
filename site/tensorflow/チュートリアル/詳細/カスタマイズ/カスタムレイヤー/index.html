@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="daizutabi">
+    <link rel="shortcut icon" href="../../../../../img/favicon.ico">
+    <title>2 カスタムレイヤー &mdash; Machine Learning</title>
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/tonsky/FiraCode@1.206/distr/fira_code.css">
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/v4-shims.css">
+    <link rel="stylesheet" href="../../../../../css/theme.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/v4-shims.css">
+    <link rel="stylesheet" href="../../../../../css/pheasant.css">
+    <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script>
+        hljs.initHighlightingOnLoad();
+    </script> 
+</head>
+
+<body ontouchstart="">
+    <div id="container">
+        <aside>
+            <div class="home">
+                <div class="title">
+                    <button class="hamburger"></button>
+                    <a href="../../../../.." class="site-name"> Machine Learning</a>
+                </div>
+            </div>
+            <nav class="nav">
+                <ul class="root">
+                    <li class="toctree-l1"><a class="nav-item" href="../../../../..">機械学習自習室</a></li>
+                    <li class="toctree-l1"><button class="section nav-item">TensorFlow</button>
+<ul class="subnav">
+    <li class="toctree-l2 current"><button class="section nav-item">チュートリアル</button>
+<ul class="subnav">
+    <li class="toctree-l3"><button class="section nav-item hide">初級</button>
+<ul class="subnav hide">
+    <li class="toctree-l4"><button class="section nav-item hide">KerasによるMLの基本</button>
+<ul class="subnav hide">
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/KerasによるMLの基本/基本的な画像分類/">1 基本的な画像の分類</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/KerasによるMLの基本/TF.Hubによるテキスト分類/">2 TF.Hubによるテキスト分類</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/KerasによるMLの基本/映画レビューのテキスト分類/">3 映画レビューのテキスト分類</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/KerasによるMLの基本/回帰：燃費を予測する/">4 回帰：燃費を予測する</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/KerasによるMLの基本/過学習と学習不足/">5 過学習と学習不足</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/KerasによるMLの基本/モデルの保存と復元/">6 モデルの保存と復元</a></li>
+</ul></li>
+    <li class="toctree-l4"><button class="section nav-item hide">データの読み込みと前処理</button>
+<ul class="subnav hide">
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/データの読み込みと前処理/CSV/">1 tf.data を使って CSV をロードする</a></li>
+</ul></li>
+</ul></li>
+    <li class="toctree-l3 current"><button class="section nav-item">詳細</button>
+<ul class="subnav">
+    <li class="toctree-l4 current"><button class="section nav-item">カスタマイズ</button>
+<ul class="subnav">
+    <li class="toctree-l5"><a class="nav-item" href="../テンソルと演算/">1 テンソルと演算</a></li>
+    <li class="toctree-l5 current"><a class="nav-item current" href="./">2 カスタムレイヤー</a>
+<ul class="subnav">
+<li class="toctree-l6"><a class="nav-item toc" href="#21">2.1 レイヤー：有用な演算の共通セット</a></li>
+<li class="toctree-l6"><a class="nav-item toc" href="#22">2.2 カスタムレイヤーの実装</a></li>
+<li class="toctree-l6"><a class="nav-item toc" href="#23">2.3 モデル：レイヤーの組み合わせ</a></li>
+</ul></li>
+    <li class="toctree-l5"><a class="nav-item" href="../自動微分と勾配テープ/">3 自動微分と勾配テープ</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../カスタム訓練：基本/">4 カスタム訓練：基本</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../カスタム訓練：ウォークスルー/">5 カスタム訓練：ウォークスルー</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../tf.functionで性能アップ/">6 tf.functionで性能アップ</a><a class="nav-item" href="../tf.functionで性能アップ/">7 自動的な依存関係の制御</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+                </ul>
+            </nav>
+            <div class="repo">
+    <div class="link">
+        <a href="https://github.com/daizutabi/machine-learning/" class="fa fa-github"> GitHub</a>
+    </div>
+    <div class="previous"><a href="../テンソルと演算/">&laquo; Previous</a></div>
+    <div class="next"><a href="../自動微分と勾配テープ/">Next &raquo;</a></div>
+</div>
+        </aside>
+        <div id="spacer"><button class="arrow"></button></div>
+        <main>
+            <div class="home-top">
+                <button class="hamburger"></button>
+                <a href="../../../../.." class="site-name"> Machine Learning</a>
+            </div>
+            <div id="main">
+                <nav class="breadcrumbs">
+<ul>
+    <li>TensorFlow &raquo; </li><li>チュートリアル &raquo; </li><li>詳細 &raquo; </li><li>カスタマイズ</li>
+</ul>
+</nav>
+                <div id="content">
+<h1 id="2"><span class="pheasant-header"><span class="header"><span class="number">2</span> <span class="title">カスタムレイヤー</span></span></span></h1>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">import tensorflow as tf</code></pre></div>
+<div class="report"><p><span class="count">[1]</span>
+<span class="start">2019-11-09 09:26:24</span> (<span class="time">1.97s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">1.97s</span>)</span></p></div></div></div></div>
+
+<h2 id="21"><span class="pheasant-header"><span class="header"><span class="number">2.1</span> <span class="title">レイヤー：有用な演算の共通セット</span></span></span></h2>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python"># tf.keras.layers パッケージの中では、レイヤーはオブジェクトです。
+# レイヤーを構築するためにすることは、単にオブジェクトを作成するだけです。
+# ほとんどのレイヤーでは、最初の引数が出力の次元あるいはチャネル数を表します。
+layer = tf.keras.layers.Dense(100)
+# 入力の次元数は多くの場合不要となっています。それは、レイヤーが最初に使われる際に
+# 推定可能だからです。ただし、引数として渡すことで手動で指定することも可能です。
+# これは複雑なモデルを構築する場合に役に立つでしょう。
+layer = tf.keras.layers.Dense(3, input_shape=(None, 4))
+# レイヤーを使うには、単純にcallします。
+layer(tf.zeros([5, 4]))</code></pre></div>
+<div class="report"><p><span class="count">[2]</span>
+<span class="start">2019-11-09 09:26:26</span> (<span class="time">1.72s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">3.69s</span>)</span></p></div></div><div class="cell jupyter output"><div class="code"><pre><code class="nohighlight">&lt;tf.Tensor: id=29, shape=(5, 3), dtype=float32, numpy=
+array([[0., 0., 0.],
+       [0., 0., 0.],
+       [0., 0., 0.],
+       [0., 0., 0.],
+       [0., 0., 0.]], dtype=float32)&gt;</code></pre></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python"># レイヤーにはたくさんの便利なメソッドがあります。例えば、`layer.variables`を使って
+# レイヤーのすべての変数を調べることができます。訓練可能な変数は、 `layer.trainable_variables`
+# でわかります。この例では、全結合レイヤーには重みとバイアスの変数があります。
+layer.variables
+# これらの変数には便利なアクセサを使ってアクセス可能です。
+layer.kernel, layer.bias</code></pre></div>
+<div class="report"><p><span class="count">[3]</span>
+<span class="start">2019-11-09 09:26:28</span> (<span class="time">8.05ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">3.70s</span>)</span></p></div></div><div class="cell jupyter output"><div class="code"><pre><code class="nohighlight">(&lt;tf.Variable &#39;dense_1/kernel:0&#39; shape=(4, 3) dtype=float32, numpy=
+ array([[ 0.6184348 , -0.7266614 , -0.47862953],
+        [-0.21389818, -0.54135317,  0.63715935],
+        [ 0.6099521 ,  0.46995866,  0.8407798 ],
+        [ 0.05550611,  0.29965746,  0.69437087]], dtype=float32)&gt;,
+ &lt;tf.Variable &#39;dense_1/bias:0&#39; shape=(3,) dtype=float32, numpy=array([0., 0., 0.], dtype=float32)&gt;)</code></pre></div></div></div></div>
+
+<h2 id="22"><span class="pheasant-header"><span class="header"><span class="number">2.2</span> <span class="title">カスタムレイヤーの実装</span></span></span></h2>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">class MyDenseLayer(tf.keras.layers.Layer):
+    def __init__(self, num_outputs):
+        super(MyDenseLayer, self).__init__()
+        self.num_outputs = num_outputs
+
+    def build(self, input_shape):
+        self.kernel = self.add_weight(
+            &#34;kernel&#34;, shape=[int(input_shape[-1]), self.num_outputs]
+        )
+
+    def call(self, input):
+        return tf.matmul(input, self.kernel)
+
+layer = MyDenseLayer(4)
+print(layer(tf.zeros([3, 5])))
+print(layer.trainable_variables)</code></pre></div>
+<div class="report"><p><span class="count">[4]</span>
+<span class="start">2019-11-09 09:26:28</span> (<span class="time">17.0ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">3.72s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">tf.Tensor(
+[[0. 0. 0. 0.]
+ [0. 0. 0. 0.]
+ [0. 0. 0. 0.]], shape=(3, 4), dtype=float32)
+[&lt;tf.Variable &#39;my_dense_layer/kernel:0&#39; shape=(5, 4) dtype=float32, numpy=
+array([[-0.14878726,  0.23644221,  0.16245663, -0.7636992 ],
+       [-0.5915245 ,  0.7763189 ,  0.35008836, -0.49146262],
+       [ 0.5481906 ,  0.43274498, -0.42622355,  0.538576  ],
+       [-0.6251575 , -0.8063135 , -0.41266435,  0.4611094 ],
+       [ 0.7525511 , -0.6791276 , -0.5638112 ,  0.210073  ]],
+      dtype=float32)&gt;]</code></pre></div></div></div></div>
+
+<h2 id="23"><span class="pheasant-header"><span class="header"><span class="number">2.3</span> <span class="title">モデル：レイヤーの組み合わせ</span></span></span></h2>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">class ResnetIdentityBlock(tf.keras.Model):
+    def __init__(self, kernel_size, filters):
+        super(ResnetIdentityBlock, self).__init__(name=&#34;&#34;)
+        filters1, filters2, filters3 = filters
+
+        self.conv2a = tf.keras.layers.Conv2D(filters1, (1, 1))
+        self.bn2a = tf.keras.layers.BatchNormalization()
+
+        self.conv2b = tf.keras.layers.Conv2D(filters2, kernel_size, padding=&#34;same&#34;)
+        self.bn2b = tf.keras.layers.BatchNormalization()
+
+        self.conv2c = tf.keras.layers.Conv2D(filters3, (1, 1))
+        self.bn2c = tf.keras.layers.BatchNormalization()
+
+    def call(self, input_tensor, training=False):
+        x = self.conv2a(input_tensor)
+        x = self.bn2a(x, training=training)
+        x = tf.nn.relu(x)
+
+        x = self.conv2b(x)
+        x = self.bn2b(x, training=training)
+        x = tf.nn.relu(x)
+
+        x = self.conv2c(x)
+        x = self.bn2c(x, training=training)
+
+        x += input_tensor
+        return tf.nn.relu(x)
+
+block = ResnetIdentityBlock(1, [1, 2, 3])
+with tf.device(&#34;CPU:0&#34;):
+    print(block(tf.zeros([1, 2, 3, 3])))
+    print([x.name for x in block.trainable_variables])</code></pre></div>
+<div class="report"><p><span class="count">[5]</span>
+<span class="start">2019-11-09 09:26:28</span> (<span class="time">47.0ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">3.77s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">tf.Tensor(
+[[[[0. 0. 0.]
+   [0. 0. 0.]
+   [0. 0. 0.]]
+
+  [[0. 0. 0.]
+   [0. 0. 0.]
+   [0. 0. 0.]]]], shape=(1, 2, 3, 3), dtype=float32)
+[&#39;resnet_identity_block/conv2d/kernel:0&#39;, &#39;resnet_identity_block/conv2d/bias:0&#39;, &#39;resnet_identity_block/batch_normalization/gamma:0&#39;, &#39;resnet_identity_block/batch_normalization/beta:0&#39;, &#39;resnet_identity_block/conv2d_1/kernel:0&#39;, &#39;resnet_identity_block/conv2d_1/bias:0&#39;, &#39;resnet_identity_block/batch_normalization_1/gamma:0&#39;, &#39;resnet_identity_block/batch_normalization_1/beta:0&#39;, &#39;resnet_identity_block/conv2d_2/kernel:0&#39;, &#39;resnet_identity_block/conv2d_2/bias:0&#39;, &#39;resnet_identity_block/batch_normalization_2/gamma:0&#39;, &#39;resnet_identity_block/batch_normalization_2/beta:0&#39;]</code></pre></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">my_seq = tf.keras.Sequential(
+    [
+        tf.keras.layers.Conv2D(1, (1, 1), input_shape=(None, None, 3)),
+        tf.keras.layers.BatchNormalization(),
+        tf.keras.layers.Conv2D(2, 1, padding=&#34;same&#34;),
+        tf.keras.layers.BatchNormalization(),
+        tf.keras.layers.Conv2D(3, (1, 1)),
+        tf.keras.layers.BatchNormalization(),
+    ]
+)
+
+with tf.device(&#34;CPU:0&#34;):
+    my_seq(tf.zeros([1, 2, 3, 3]))</code></pre></div>
+<div class="report"><p><span class="count">[6]</span>
+<span class="start">2019-11-09 09:26:28</span> (<span class="time">157ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">3.92s</span>)</span></p></div></div></div></div></div>
+                <footer>
+    <div class="footer-buttons">
+        <div class="previous"><a href="../テンソルと演算/" title="1 テンソルと演算"><span>Previous</span></a></div>
+        <div class="next"><a href="../自動微分と勾配テープ/" title="3 自動微分と勾配テープ"><span>Next</span></a></div>
+    </div>
+    <div class="footer-note">
+        <p>
+            Built with <a href="http://www.mkdocs.org">MkDocs</a> using
+            <a href="https://github.com/daizutabi/mkdocs-ivory">Ivory theme</a>.
+        </p>
+    </div>
+</footer>
+            </div>
+        </main>
+    </div>
+    <script>
+        var base_url = '.';
+    </script>
+    <script src="../../../../../js/theme.js"></script>
+    <script src="../../../../../js/pheasant.js"></script>
+</body>
+
+</html>

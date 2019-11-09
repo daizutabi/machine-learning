@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="daizutabi">
+    <link rel="shortcut icon" href="../../../../../img/favicon.ico">
+    <title>6 tf.functionで性能アップ &mdash; Machine Learning</title>
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/tonsky/FiraCode@1.206/distr/fira_code.css">
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/v4-shims.css">
+    <link rel="stylesheet" href="../../../../../css/theme.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/v4-shims.css">
+    <link rel="stylesheet" href="../../../../../css/pheasant.css">
+    <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script>
+        hljs.initHighlightingOnLoad();
+    </script> 
+</head>
+
+<body ontouchstart="">
+    <div id="container">
+        <aside>
+            <div class="home">
+                <div class="title">
+                    <button class="hamburger"></button>
+                    <a href="../../../../.." class="site-name"> Machine Learning</a>
+                </div>
+            </div>
+            <nav class="nav">
+                <ul class="root">
+                    <li class="toctree-l1"><a class="nav-item" href="../../../../..">機械学習自習室</a></li>
+                    <li class="toctree-l1"><button class="section nav-item">TensorFlow</button>
+<ul class="subnav">
+    <li class="toctree-l2 current"><button class="section nav-item">チュートリアル</button>
+<ul class="subnav">
+    <li class="toctree-l3"><button class="section nav-item hide">初級</button>
+<ul class="subnav hide">
+    <li class="toctree-l4"><button class="section nav-item hide">KerasによるMLの基本</button>
+<ul class="subnav hide">
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/KerasによるMLの基本/基本的な画像分類/">1 基本的な画像の分類</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/KerasによるMLの基本/TF.Hubによるテキスト分類/">2 TF.Hubによるテキスト分類</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/KerasによるMLの基本/映画レビューのテキスト分類/">3 映画レビューのテキスト分類</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/KerasによるMLの基本/回帰：燃費を予測する/">4 回帰：燃費を予測する</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/KerasによるMLの基本/過学習と学習不足/">5 過学習と学習不足</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/KerasによるMLの基本/モデルの保存と復元/">6 モデルの保存と復元</a></li>
+</ul></li>
+    <li class="toctree-l4"><button class="section nav-item hide">データの読み込みと前処理</button>
+<ul class="subnav hide">
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/データの読み込みと前処理/CSV/">1 tf.data を使って CSV をロードする</a></li>
+</ul></li>
+</ul></li>
+    <li class="toctree-l3 current"><button class="section nav-item">詳細</button>
+<ul class="subnav">
+    <li class="toctree-l4 current"><button class="section nav-item">カスタマイズ</button>
+<ul class="subnav">
+    <li class="toctree-l5"><a class="nav-item" href="../テンソルと演算/">1 テンソルと演算</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../カスタムレイヤー/">2 カスタムレイヤー</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../自動微分と勾配テープ/">3 自動微分と勾配テープ</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../カスタム訓練：基本/">4 カスタム訓練：基本</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../カスタム訓練：ウォークスルー/">5 カスタム訓練：ウォークスルー</a></li>
+    <li class="toctree-l5 current"><a class="nav-item current" href="./">6 tf.functionで性能アップ</a><a class="nav-item current" href="./">7 自動的な依存関係の制御</a>
+<ul class="subnav">
+<li class="toctree-l6"><a class="nav-item toc" href="#61">6.1 トレーシングとポリモーフィズム</a></li>
+<li class="toctree-l6"><a class="nav-item toc" href="#62-pythontensor">6.2 引数はPythonか？Tensorか？</a></li>
+<li class="toctree-l6"><a class="nav-item toc" href="#63-tffunction">6.3 tf.function の中の副作用</a></li>
+<li class="toctree-l6"><a class="nav-item toc" href="#64-python">6.4 Python の状態に注意</a></li>
+<li class="toctree-l6"><a class="nav-item toc" href="#71">7.1 変数</a></li>
+<li class="toctree-l6"><a class="nav-item toc" href="#72-autograph">7.2 AutoGraphの使用</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+                </ul>
+            </nav>
+            <div class="repo">
+    <div class="link">
+        <a href="https://github.com/daizutabi/machine-learning/" class="fa fa-github"> GitHub</a>
+    </div>
+    <div class="previous"><a href="../カスタム訓練：ウォークスルー/">&laquo; Previous</a></div>
+</div>
+        </aside>
+        <div id="spacer"><button class="arrow"></button></div>
+        <main>
+            <div class="home-top">
+                <button class="hamburger"></button>
+                <a href="../../../../.." class="site-name"> Machine Learning</a>
+            </div>
+            <div id="main">
+                <nav class="breadcrumbs">
+<ul>
+    <li>TensorFlow &raquo; </li><li>チュートリアル &raquo; </li><li>詳細 &raquo; </li><li>カスタマイズ</li>
+</ul>
+</nav>
+                <div id="content">
+<h1 id="6-tffunction"><span class="pheasant-header"><span class="header"><span class="number">6</span> <span class="title">tf.functionで性能アップ</span></span></span></h1>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">import contextlib
+
+import tensorflow as tf
+
+# 遭遇するかもしれないいくつかのエラーをデモするためのヘルパー関数
+@contextlib.contextmanager
+def assert_raises(error_class):
+    try:
+        yield
+    except error_class as e:
+        print(&#34;Caught expected exception \n  {}: {}&#34;.format(error_class, e))
+    except Exception as e:
+        print(&#34;Got unexpected exception \n  {}: {}&#34;.format(type(e), e))
+    else:
+        raise Exception(
+            &#34;Expected {} to be raised but no error was raised!&#34;.format(error_class)
+        )</code></pre></div>
+<div class="report"><p><span class="count">[1]</span>
+<span class="start">2019-11-09 09:26:46</span> (<span class="time">7.01ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">21.3s</span>)</span></p></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python"># function は演算のように振る舞う
+@tf.function
+def add(a, b):
+    return a + b
+
+add(tf.ones([2, 2]), tf.ones([2, 2]))  # [[2., 2.], [2., 2.]]</code></pre></div>
+<div class="report"><p><span class="count">[2]</span>
+<span class="start">2019-11-09 09:26:46</span> (<span class="time">74.0ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">21.4s</span>)</span></p></div></div><div class="cell jupyter output"><div class="code"><pre><code class="nohighlight">&lt;tf.Tensor: id=116648, shape=(2, 2), dtype=float32, numpy=
+array([[2., 2.],
+       [2., 2.]], dtype=float32)&gt;</code></pre></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python"># function は勾配を計算できる
+v = tf.Variable(1.0)
+with tf.GradientTape() as tape:
+    result = add(v, 1.0)
+tape.gradient(result, v)</code></pre></div>
+<div class="report"><p><span class="count">[3]</span>
+<span class="start">2019-11-09 09:26:46</span> (<span class="time">28.1ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">21.4s</span>)</span></p></div></div><div class="cell jupyter output"><div class="code"><pre><code class="nohighlight">&lt;tf.Tensor: id=116671, shape=(), dtype=float32, numpy=1.0&gt;</code></pre></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python"># function 内で function を使うこともできる
+@tf.function
+def dense_layer(x, w, b):
+    return add(tf.matmul(x, w), b)
+
+dense_layer(tf.ones([3, 2]), tf.ones([2, 2]), tf.ones([2]))</code></pre></div>
+<div class="report"><p><span class="count">[4]</span>
+<span class="start">2019-11-09 09:26:46</span> (<span class="time">68.0ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">21.5s</span>)</span></p></div></div><div class="cell jupyter output"><div class="code"><pre><code class="nohighlight">&lt;tf.Tensor: id=116697, shape=(3, 2), dtype=float32, numpy=
+array([[3., 3.],
+       [3., 3.],
+       [3., 3.]], dtype=float32)&gt;</code></pre></div></div></div></div>
+
+<h2 id="61"><span class="pheasant-header"><span class="header"><span class="number">6.1</span> <span class="title">トレーシングとポリモーフィズム</span></span></span></h2>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python"># Function はポリモーフィック
+@tf.function
+def double(a):
+    print(&#34;Tracing with&#34;, a)
+    return a + a
+
+print(double(tf.constant(1)))
+print()
+print(double(tf.constant(1.1)))
+print()
+print(double(tf.constant(&#34;a&#34;)))
+print()</code></pre></div>
+<div class="report"><p><span class="count">[5]</span>
+<span class="start">2019-11-09 09:26:46</span> (<span class="time">84.0ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">21.6s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">Tracing with Tensor(&#34;a:0&#34;, shape=(), dtype=int32)
+tf.Tensor(2, shape=(), dtype=int32)
+
+Tracing with Tensor(&#34;a:0&#34;, shape=(), dtype=float32)
+tf.Tensor(2.2, shape=(), dtype=float32)
+
+Tracing with Tensor(&#34;a:0&#34;, shape=(), dtype=string)
+tf.Tensor(b&#39;aa&#39;, shape=(), dtype=string)</code></pre></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">print(&#34;Obtaining concrete trace&#34;)
+double_strings = double.get_concrete_function(
+    tf.TensorSpec(shape=None, dtype=tf.string)
+)
+print(&#34;Executing traced function&#34;)
+print(double_strings(tf.constant(&#34;a&#34;)))
+print(double_strings(a=tf.constant(&#34;b&#34;)))
+print(&#34;Using a concrete trace with incompatible types will throw an error&#34;)
+with assert_raises(tf.errors.InvalidArgumentError):
+    double_strings(tf.constant(1))</code></pre></div>
+<div class="report"><p><span class="count">[6]</span>
+<span class="start">2019-11-09 09:26:46</span> (<span class="time">19.1ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">21.6s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">Obtaining concrete trace
+Tracing with Tensor(&#34;a:0&#34;, dtype=string)
+Executing traced function
+tf.Tensor(b&#39;aa&#39;, shape=(), dtype=string)
+tf.Tensor(b&#39;bb&#39;, shape=(), dtype=string)
+Using a concrete trace with incompatible types will throw an error
+Caught expected exception 
+  &lt;class &#39;tensorflow.python.framework.errors_impl.InvalidArgumentError&#39;&gt;: cannot compute __inference_double_116724 as input #0(zero-based) was expected to be a string tensor but is a int32 tensor [Op:__inference_double_116724]</code></pre></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">@tf.function(input_signature=(tf.TensorSpec(shape=[None], dtype=tf.int32),))
+def next_collatz(x):
+    print(&#34;Tracing with&#34;, x)
+    return tf.where(tf.equal(x % 2, 0), x // 2, 3 * x + 1)
+
+print(next_collatz(tf.constant([1, 2])))
+# 1次元のテンソルを input signature として指定しているので、これは失敗する
+with assert_raises(ValueError):
+    next_collatz(tf.constant([[1, 2], [3, 4]]))</code></pre></div>
+<div class="report"><p><span class="count">[7]</span>
+<span class="start">2019-11-09 09:26:46</span> (<span class="time">85.0ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">21.7s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">Tracing with Tensor(&#34;x:0&#34;, shape=(None,), dtype=int32)
+tf.Tensor([4 1], shape=(2,), dtype=int32)
+Caught expected exception 
+  &lt;class &#39;ValueError&#39;&gt;: Python inputs incompatible with input_signature:
+  inputs: (
+    tf.Tensor(
+[[1 2]
+ [3 4]], shape=(2, 2), dtype=int32))
+  input_signature: (
+    TensorSpec(shape=(None,), dtype=tf.int32, name=None))</code></pre></div></div></div></div>
+
+<h2 id="62-pythontensor"><span class="pheasant-header"><span class="header"><span class="number">6.2</span> <span class="title">引数はPythonか？Tensorか？</span></span></span></h2>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">def train_one_step():
+    pass
+
+@tf.function
+def train(num_steps):
+    print(&#34;Tracing with num_steps = {}&#34;.format(num_steps))
+    for _ in tf.range(num_steps):
+        train_one_step()
+
+train(num_steps=10)
+train(num_steps=20)</code></pre></div>
+<div class="report"><p><span class="count">[8]</span>
+<span class="start">2019-11-09 09:26:46</span> (<span class="time">147ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">21.8s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">Tracing with num_steps = 10
+Tracing with num_steps = 20</code></pre></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">train(num_steps=tf.constant(10))
+train(num_steps=tf.constant(20))</code></pre></div>
+<div class="report"><p><span class="count">[9]</span>
+<span class="start">2019-11-09 09:26:47</span> (<span class="time">46.0ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">21.9s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">Tracing with num_steps = Tensor(&#34;num_steps:0&#34;, shape=(), dtype=int32)</code></pre></div></div></div></div>
+
+<h2 id="63-tffunction"><span class="pheasant-header"><span class="header"><span class="number">6.3</span> <span class="title">tf.function の中の副作用</span></span></span></h2>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">@tf.function
+def f(x):
+    print(&#34;Traced with&#34;, x)
+    tf.print(&#34;Executed with&#34;, x)
+
+f(1)
+f(1)
+f(2)</code></pre></div>
+<div class="report"><p><span class="count">[10]</span>
+<span class="start">2019-11-09 09:26:47</span> (<span class="time">76.0ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">22.0s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">Traced with 1
+Executed with 1
+Executed with 1
+Traced with 2
+Executed with 2</code></pre></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">external_list = []
+
+def side_effect(x):
+    print(&#34;Python side effect&#34;)
+    external_list.append(x)
+
+@tf.function
+def f2(x):
+    tf.py_function(side_effect, inp=[x], Tout=[])
+
+f2(1)
+f2(1)
+f2(1)
+assert len(external_list) == 3
+# .numpy() call required because py_function casts 1 to tf.constant(1)
+assert external_list[0].numpy() == 1</code></pre></div>
+<div class="report"><p><span class="count">[11]</span>
+<span class="start">2019-11-09 09:26:47</span> (<span class="time">62.0ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">22.0s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">Python side effect
+Python side effect
+Python side effect</code></pre></div></div></div></div>
+
+<h2 id="64-python"><span class="pheasant-header"><span class="header"><span class="number">6.4</span> <span class="title">Python の状態に注意</span></span></span></h2>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">external_var = tf.Variable(0)
+
+@tf.function
+def buggy_consume_next(iterator):
+    external_var.assign_add(next(iterator))
+    tf.print(&#34;Value of external_var:&#34;, external_var)
+
+iterator = iter([0, 1, 2, 3])
+buggy_consume_next(iterator)
+# 次のコードは、イテレーターの次の値を使うのではなく、最初の値を再利用する
+buggy_consume_next(iterator)
+buggy_consume_next(iterator)</code></pre></div>
+<div class="report"><p><span class="count">[12]</span>
+<span class="start">2019-11-09 09:26:47</span> (<span class="time">73.0ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">22.1s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">Value of external_var: 0
+Value of external_var: 0
+Value of external_var: 0</code></pre></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">def measure_graph_size(f, *args):
+    g = f.get_concrete_function(*args).graph
+    print(
+        &#34;{}({}) contains {} nodes in its graph&#34;.format(
+            f.__name__, &#34;, &#34;.join(map(str, args)), len(g.as_graph_def().node)
+        )
+    )
+
+@tf.function  # type: ignore
+def train(dataset):
+    loss = tf.constant(0)
+    for x, y in dataset:
+        loss += tf.abs(y - x)  # ダミー計算
+    return loss
+
+small_data = [(1, 1)] * 2
+big_data = [(1, 1)] * 10
+measure_graph_size(train, small_data)
+measure_graph_size(train, big_data)
+
+generator = tf.data.Dataset.from_generator
+measure_graph_size(train, generator(lambda: small_data, (tf.int32, tf.int32)))
+measure_graph_size(train, generator(lambda: big_data, (tf.int32, tf.int32)))</code></pre></div>
+<div class="report"><p><span class="count">[13]</span>
+<span class="start">2019-11-09 09:26:47</span> (<span class="time">281ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">22.4s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">train([(1, 1), (1, 1)]) contains 8 nodes in its graph
+train([(1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1)]) contains 32 nodes in its graph
+train(&lt;DatasetV1Adapter shapes: (&lt;unknown&gt;, &lt;unknown&gt;), types: (tf.int32, tf.int32)&gt;) contains 5 nodes in its graph
+train(&lt;DatasetV1Adapter shapes: (&lt;unknown&gt;, &lt;unknown&gt;), types: (tf.int32, tf.int32)&gt;) contains 5 nodes in its graph</code></pre></div></div></div></div>
+
+<h1 id="7"><span class="pheasant-header"><span class="header"><span class="number">7</span> <span class="title">自動的な依存関係の制御</span></span></span></h1>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python"># 自動的な依存関係の制御
+a = tf.Variable(1.0)
+b = tf.Variable(2.0)
+
+@tf.function
+def f(x, y):
+    a.assign(y * b)
+    b.assign_add(x * a)
+    return a + b
+
+f(1.0, 2.0)  # 10.0</code></pre></div>
+<div class="report"><p><span class="count">[14]</span>
+<span class="start">2019-11-09 09:26:47</span> (<span class="time">83.0ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">22.5s</span>)</span></p></div></div><div class="cell jupyter output"><div class="code"><pre><code class="nohighlight">&lt;tf.Tensor: id=117051, shape=(), dtype=float32, numpy=10.0&gt;</code></pre></div></div></div></div>
+
+<h2 id="71"><span class="pheasant-header"><span class="header"><span class="number">7.1</span> <span class="title">変数</span></span></span></h2>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">@tf.function
+def f(x):
+    v = tf.Variable(1.0)
+    v.assign_add(x)
+    return v
+
+with assert_raises(ValueError):
+    f(1.0)</code></pre></div>
+<div class="report"><p><span class="count">[15]</span>
+<span class="start">2019-11-09 09:26:47</span> (<span class="time">77.0ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">22.5s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">WARNING:tensorflow:From c:\users\daizu\miniconda3\envs\daizu\lib\site-packages\tensorflow_core\python\ops\resource_variable_ops.py:1781: calling BaseResourceVariable.__init__ (from tensorflow.python.ops.resource_variable_ops) with constraint is deprecated and will be removed in a future version.
+Instructions for updating:
+If using Keras pass *_constraint arguments to layers.
+Caught expected exception 
+  &lt;class &#39;ValueError&#39;&gt;: in converted code:
+
+    &lt;ipython-input-54-5990b9e714fd&gt;:3 f  *
+        v = tf.Variable(1.0)
+    c:\users\daizu\miniconda3\envs\daizu\lib\site-packages\tensorflow_core\python\ops\variables.py:260 __call__
+        return cls._variable_v2_call(*args, **kwargs)
+    c:\users\daizu\miniconda3\envs\daizu\lib\site-packages\tensorflow_core\python\ops\variables.py:254 _variable_v2_call
+        shape=shape)
+    c:\users\daizu\miniconda3\envs\daizu\lib\site-packages\tensorflow_core\python\ops\variables.py:65 getter
+        return captured_getter(captured_previous, **kwargs)
+    c:\users\daizu\miniconda3\envs\daizu\lib\site-packages\tensorflow_core\python\eager\def_function.py:413 invalid_creator_scope
+        &#34;tf.function-decorated function tried to create &#34;
+
+    ValueError: tf.function-decorated function tried to create variables on non-first call.</code></pre></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python"># しかし、曖昧さの無いコードは大丈夫
+v = tf.Variable(1.0)
+
+@tf.function
+def f(x):
+    return v.assign_add(x)
+
+print(f(1.0))  # 2.0
+print(f(2.0))  # 4.0</code></pre></div>
+<div class="report"><p><span class="count">[16]</span>
+<span class="start">2019-11-09 09:26:47</span> (<span class="time">68.0ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">22.6s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">tf.Tensor(2.0, shape=(), dtype=float32)
+tf.Tensor(4.0, shape=(), dtype=float32)</code></pre></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python"># 初めて関数が実行されるときだけ変数が生成されることを保証できれば
+# tf.function 内で変数を作成できる
+
+class C:
+    pass
+
+obj = C()
+obj.v = None
+
+@tf.function
+def g(x):
+    if obj.v is None:
+        obj.v = tf.Variable(1.0)
+    return obj.v.assign_add(x)
+
+print(g(1.0))  # 2.0
+print(g(2.0))  # 4.0</code></pre></div>
+<div class="report"><p><span class="count">[17]</span>
+<span class="start">2019-11-09 09:26:47</span> (<span class="time">115ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">22.7s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">tf.Tensor(2.0, shape=(), dtype=float32)
+tf.Tensor(4.0, shape=(), dtype=float32)</code></pre></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python"># 変数の初期化は、関数の引数や他の変数の値に依存可能
+# 制御の依存関係を生成するのと同じ手法で、正しい初期化の順序を発見可能
+state = []  # type: ignore
+
+@tf.function
+def fn(x):
+    if not state:
+        state.append(tf.Variable(2.0 * x))
+        state.append(tf.Variable(state[0] * 3.0))
+    return state[0] * x * state[1]
+
+print(fn(tf.constant(1.0)))
+print(fn(tf.constant(3.0)))</code></pre></div>
+<div class="report"><p><span class="count">[18]</span>
+<span class="start">2019-11-09 09:26:48</span> (<span class="time">329ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">23.1s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">tf.Tensor(12.0, shape=(), dtype=float32)
+tf.Tensor(36.0, shape=(), dtype=float32)</code></pre></div></div></div></div>
+
+<h2 id="72-autograph"><span class="pheasant-header"><span class="header"><span class="number">7.2</span> <span class="title">AutoGraphの使用</span></span></span></h2>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python"># 単純な繰り返し
+
+@tf.function  # type: ignore
+def f(x):
+    while tf.reduce_sum(x) &gt; 1:
+        tf.print(x)
+        x = tf.tanh(x)
+    return x
+
+f(tf.random.uniform([5]))</code></pre></div>
+<div class="report"><p><span class="count">[19]</span>
+<span class="start">2019-11-09 09:26:48</span> (<span class="time">235ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">23.3s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">[0.735783815 0.72101438 0.523161173 0.881791353 0.864503]
+[0.626591086 0.61753726 0.480136096 0.707315564 0.69857049]
+[0.555700421 0.549411 0.446352601 0.608990729 0.603459597]
+[0.504780293 0.500078678 0.418896258 0.543416262 0.539506793]
+[0.465868264 0.462179035 0.396000206 0.495569587 0.492614537]
+[0.434854925 0.43185854 0.376521409 0.458625734 0.456289083]
+[0.409370661 0.406873345 0.359682709 0.428963512 0.427054912]
+[0.387938201 0.385814667 0.344934523 0.404454738 0.402857125]
+[0.369581401 0.367746502 0.331875592 0.383754164 0.382390976]
+[0.353625506 0.352019 0.320205063 0.36596331 0.364782095]
+[0.339586884 0.338164866 0.309692323 0.350455821 0.349419266]
+[0.327108532 0.325838059 0.30015716 0.336779714 0.335860401]
+[0.315920264 0.314776123 0.291456431 0.324599415 0.323776722]
+[0.305813342 0.304775834 0.283474743 0.313659787 0.312917829]
+[0.296623558 0.295677036 0.27611798 0.303762853 0.303089201]
+[0.288219661 0.287351549 0.269308388 0.29475233 0.29413709]
+[0.280495346 0.279695362 0.262981176 0.286502957 0.285938114]
+[0.273363471 0.272623092 0.257081807 0.278912961 0.278392]
+[0.266751766 0.266063929 0.251564026 0.271898687 0.271416157]
+[0.260599762 0.259958535 0.246388301 0.265390664 0.26494208]
+[0.254856408 0.254256755 0.241520613 0.25933066 0.258912176]
+[0.249478295 0.248915881 0.236931518 0.253669351 0.253277779]
+[0.244428188 0.243899301 0.232595354 0.248364791 0.247997344]
+[0.239673972 0.239175409 0.228489667 0.243380919 0.243035212]
+[0.235187784 0.234716743 0.224594697 0.238686621 0.238360584]
+[0.230945289 0.230499327 0.220892981 0.234254822 0.233946651]
+[0.22692515 0.22650212 0.21736902 0.230061904 0.22977002]
+[0.223108575 0.222706571 0.214009 0.226087093 0.225810111]
+[0.219478905 0.219096228 0.210800573 0.222312078 0.222048774]
+[0.216021344 0.215656489 0.207732663 0.218720645 0.218469918]
+[0.212722674 0.2123743 0.204795271 0.215298355 0.215059236]
+[0.209571078 0.209237978 0.201979399 0.212032303 0.211803913]
+[0.206555918 0.206237 0.199276865 0.208910927 0.208692506]
+[0.203667611 0.203361899 0.196680263 0.20592384 0.205714673]
+[0.200897485 0.200604096 0.194182828 0.20306167 0.20286113]</code></pre></div></div><div class="cell jupyter output"><div class="code"><pre><code class="nohighlight">&lt;tf.Tensor: id=117308, shape=(5,), dtype=float32, numpy=
+array([0.19823769, 0.19795582, 0.1917784 , 0.20031594, 0.20012343],
+      dtype=float32)&gt;</code></pre></div></div></div></div>
+
+<h3 id="721"><span class="pheasant-header"><span class="header"><span class="number">7.2.1</span> <span class="title">条件分岐</span></span></span></h3>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">def test_tf_cond(f, *args):
+    g = f.get_concrete_function(*args).graph
+    if any(node.name == &#34;cond&#34; for node in g.as_graph_def().node):
+        print(&#34;{}({}) uses tf.cond.&#34;.format(f.__name__, &#34;, &#34;.join(map(str, args))))
+    else:
+        print(&#34;{}({}) executes normally.&#34;.format(f.__name__, &#34;, &#34;.join(map(str, args))))
+
+@tf.function
+def hyperparam_cond(x, training=True):
+    if training:
+        x = tf.nn.dropout(x, rate=0.5)
+    return x
+
+@tf.function
+def maybe_tensor_cond(x):
+    if x &lt; 0:
+        x = -x
+    return x
+
+test_tf_cond(hyperparam_cond, tf.ones([1], dtype=tf.float32))
+test_tf_cond(maybe_tensor_cond, tf.constant(-1))
+test_tf_cond(maybe_tensor_cond, -1)</code></pre></div>
+<div class="report"><p><span class="count">[20]</span>
+<span class="start">2019-11-09 09:26:48</span> (<span class="time">153ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">23.4s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">hyperparam_cond(tf.Tensor([1.], shape=(1,), dtype=float32)) executes normally.
+maybe_tensor_cond(tf.Tensor(-1, shape=(), dtype=int32)) uses tf.cond.
+maybe_tensor_cond(-1) executes normally.</code></pre></div></div></div></div>
+
+<h3 id="722"><span class="pheasant-header"><span class="header"><span class="number">7.2.2</span> <span class="title">繰り返し</span></span></span></h3>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">def test_dynamically_unrolled(f, *args):
+    g = f.get_concrete_function(*args).graph
+    if any(node.name == &#34;while&#34; for node in g.as_graph_def().node):
+        print(
+            &#34;{}({}) uses tf.while_loop.&#34;.format(f.__name__, &#34;, &#34;.join(map(str, args)))
+        )
+    elif any(node.name == &#34;ReduceDataset&#34; for node in g.as_graph_def().node):
+        print(
+            &#34;{}({}) uses tf.data.Dataset.reduce.&#34;.format(
+                f.__name__, &#34;, &#34;.join(map(str, args))
+            )
+        )
+    else:
+        print(&#34;{}({}) gets unrolled.&#34;.format(f.__name__, &#34;, &#34;.join(map(str, args))))
+
+@tf.function
+def for_in_range():
+    x = 0
+    for i in range(5):
+        x += i
+    return x
+
+test_dynamically_unrolled(for_in_range)</code></pre></div>
+<div class="report"><p><span class="count">[21]</span>
+<span class="start">2019-11-09 09:26:48</span> (<span class="time">71.0ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">23.5s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">for_in_range() gets unrolled.</code></pre></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">@tf.function
+def for_in_tfrange():
+    x = tf.constant(0, dtype=tf.int32)
+    for i in tf.range(5):
+        x += i
+    return x
+
+test_dynamically_unrolled(for_in_tfrange)</code></pre></div>
+<div class="report"><p><span class="count">[22]</span>
+<span class="start">2019-11-09 09:26:48</span> (<span class="time">91.0ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">23.6s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">for_in_tfrange() uses tf.while_loop.</code></pre></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">@tf.function
+def for_in_tfdataset():
+    x = tf.constant(0, dtype=tf.int64)
+    for i in tf.data.Dataset.range(5):
+        x += i
+    return x
+
+test_dynamically_unrolled(for_in_tfdataset)</code></pre></div>
+<div class="report"><p><span class="count">[23]</span>
+<span class="start">2019-11-09 09:26:49</span> (<span class="time">92.0ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">23.7s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">for_in_tfdataset() uses tf.data.Dataset.reduce.</code></pre></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">@tf.function
+def while_py_cond():
+    x = 5
+    while x &gt; 0:
+        x -= 1
+    return x
+
+test_dynamically_unrolled(while_py_cond)</code></pre></div>
+<div class="report"><p><span class="count">[24]</span>
+<span class="start">2019-11-09 09:26:49</span> (<span class="time">77.0ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">23.8s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">while_py_cond() gets unrolled.</code></pre></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">@tf.function
+def while_tf_cond():
+    x = tf.constant(5)
+    while x &gt; 0:
+        x -= 1
+    return x
+
+test_dynamically_unrolled(while_tf_cond)</code></pre></div>
+<div class="report"><p><span class="count">[25]</span>
+<span class="start">2019-11-09 09:26:49</span> (<span class="time">87.0ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">23.9s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">while_tf_cond() uses tf.while_loop.</code></pre></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">@tf.function
+def while_py_true_py_break(x):
+    while True:  # py true
+        if x == 0:  # py break
+            break
+        x -= 1
+    return x
+
+test_dynamically_unrolled(while_py_true_py_break, 5)</code></pre></div>
+<div class="report"><p><span class="count">[26]</span>
+<span class="start">2019-11-09 09:26:49</span> (<span class="time">200ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">24.1s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">while_py_true_py_break(5) gets unrolled.</code></pre></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">@tf.function
+def buggy_while_py_true_tf_break(x):
+    while True:  # py true
+        if tf.equal(x, 0):  # tf break
+            break
+        x -= 1
+    return x
+
+with assert_raises(TypeError):
+    test_dynamically_unrolled(buggy_while_py_true_tf_break, 5)</code></pre></div>
+<div class="report"><p><span class="count">[27]</span>
+<span class="start">2019-11-09 09:26:49</span> (<span class="time">135ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">24.2s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">Caught expected exception 
+  &lt;class &#39;TypeError&#39;&gt;: in converted code:
+
+    &lt;ipython-input-66-fb9abbd3b879&gt;:3 buggy_while_py_true_tf_break  *
+        while True:  # py true
+    c:\users\daizu\miniconda3\envs\daizu\lib\site-packages\tensorflow_core\python\autograph\operators\control_flow.py:730 while_stmt
+        return _py_while_stmt(test, body, get_state, set_state, init_vars, opts)
+    c:\users\daizu\miniconda3\envs\daizu\lib\site-packages\tensorflow_core\python\autograph\operators\control_flow.py:845 _py_while_stmt
+        while test(*loop_vars):
+    c:\users\daizu\miniconda3\envs\daizu\lib\site-packages\tensorflow_core\python\framework\ops.py:765 __bool__
+        self._disallow_bool_casting()
+    c:\users\daizu\miniconda3\envs\daizu\lib\site-packages\tensorflow_core\python\framework\ops.py:531 _disallow_bool_casting
+        &#34;using a `tf.Tensor` as a Python `bool`&#34;)
+    c:\users\daizu\miniconda3\envs\daizu\lib\site-packages\tensorflow_core\python\framework\ops.py:518 _disallow_when_autograph_enabled
+        &#34; decorating it directly with @tf.function.&#34;.format(task))
+
+    OperatorNotAllowedInGraphError: using a `tf.Tensor` as a Python `bool` is not allowed: AutoGraph did not convert this function. Try decorating it directly with @tf.function.</code></pre></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">@tf.function
+def while_tf_true_tf_break(x):
+    while tf.constant(True):  # tf true
+        if x == 0:  # py break
+            break
+        x -= 1
+    return x
+
+test_dynamically_unrolled(while_tf_true_tf_break, 5)</code></pre></div>
+<div class="report"><p><span class="count">[28]</span>
+<span class="start">2019-11-09 09:26:49</span> (<span class="time">180ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">24.4s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">while_tf_true_tf_break(5) uses tf.while_loop.</code></pre></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">@tf.function
+def buggy_py_for_tf_break():
+    x = 0
+    for i in range(5):  # py for
+        if tf.equal(i, 3):  # tf break
+            break
+        x += i
+    return x
+
+with assert_raises(TypeError):
+    test_dynamically_unrolled(buggy_py_for_tf_break)</code></pre></div>
+<div class="report"><p><span class="count">[29]</span>
+<span class="start">2019-11-09 09:26:49</span> (<span class="time">151ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">24.5s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">Caught expected exception 
+  &lt;class &#39;TypeError&#39;&gt;: in converted code:
+
+    &lt;ipython-input-68-7ab9b89a87b4&gt;:4 buggy_py_for_tf_break  *
+        for i in range(5):  # py for
+    c:\users\daizu\miniconda3\envs\daizu\lib\site-packages\tensorflow_core\python\autograph\operators\control_flow.py:339 for_stmt
+        return _py_for_stmt(iter_, extra_test, body, get_state, set_state, init_vars)
+    c:\users\daizu\miniconda3\envs\daizu\lib\site-packages\tensorflow_core\python\autograph\operators\control_flow.py:348 _py_for_stmt
+        if extra_test is not None and not extra_test(*state):
+    c:\users\daizu\miniconda3\envs\daizu\lib\site-packages\tensorflow_core\python\framework\ops.py:765 __bool__
+        self._disallow_bool_casting()
+    c:\users\daizu\miniconda3\envs\daizu\lib\site-packages\tensorflow_core\python\framework\ops.py:531 _disallow_bool_casting
+        &#34;using a `tf.Tensor` as a Python `bool`&#34;)
+    c:\users\daizu\miniconda3\envs\daizu\lib\site-packages\tensorflow_core\python\framework\ops.py:518 _disallow_when_autograph_enabled
+        &#34; decorating it directly with @tf.function.&#34;.format(task))
+
+    OperatorNotAllowedInGraphError: using a `tf.Tensor` as a Python `bool` is not allowed: AutoGraph did not convert this function. Try decorating it directly with @tf.function.</code></pre></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">@tf.function
+def tf_for_py_break():
+    x = 0
+    for i in tf.range(5):  # tf for
+        if i == 3:  # py break
+            break
+        x += i
+    return x
+
+test_dynamically_unrolled(tf_for_py_break)</code></pre></div>
+<div class="report"><p><span class="count">[30]</span>
+<span class="start">2019-11-09 09:26:49</span> (<span class="time">154ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">24.7s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">tf_for_py_break() uses tf.while_loop.</code></pre></div></div></div></div></div>
+                <footer>
+    <div class="footer-buttons">
+        <div class="previous"><a href="../カスタム訓練：ウォークスルー/" title="5 カスタム訓練：ウォークスルー"><span>Previous</span></a></div>
+    </div>
+    <div class="footer-note">
+        <p>
+            Built with <a href="http://www.mkdocs.org">MkDocs</a> using
+            <a href="https://github.com/daizutabi/mkdocs-ivory">Ivory theme</a>.
+        </p>
+    </div>
+</footer>
+            </div>
+        </main>
+    </div>
+    <script>
+        var base_url = '.';
+    </script>
+    <script src="../../../../../js/theme.js"></script>
+    <script src="../../../../../js/pheasant.js"></script>
+</body>
+
+</html>

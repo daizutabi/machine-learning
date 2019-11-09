@@ -36,7 +36,37 @@
      <changefreq>daily</changefreq>
     </url>
     <url>
+     <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/初級/データの読み込みと前処理/CSV/</loc>
+     <lastmod>2019-11-09</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
      <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/詳細/カスタマイズ/テンソルと演算/</loc>
+     <lastmod>2019-11-09</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
+     <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/詳細/カスタマイズ/カスタムレイヤー/</loc>
+     <lastmod>2019-11-09</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
+     <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/詳細/カスタマイズ/自動微分と勾配テープ/</loc>
+     <lastmod>2019-11-09</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
+     <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/詳細/カスタマイズ/カスタム訓練：基本/</loc>
+     <lastmod>2019-11-09</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
+     <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/詳細/カスタマイズ/カスタム訓練：ウォークスルー/</loc>
+     <lastmod>2019-11-09</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
+     <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/詳細/カスタマイズ/tf.functionで性能アップ/</loc>
      <lastmod>2019-11-09</lastmod>
      <changefreq>daily</changefreq>
     </url>

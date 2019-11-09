@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="daizutabi">
+    <link rel="shortcut icon" href="../../../../../img/favicon.ico">
+    <title>3 自動微分と勾配テープ &mdash; Machine Learning</title>
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/tonsky/FiraCode@1.206/distr/fira_code.css">
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/v4-shims.css">
+    <link rel="stylesheet" href="../../../../../css/theme.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/v4-shims.css">
+    <link rel="stylesheet" href="../../../../../css/pheasant.css">
+    <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script>
+        hljs.initHighlightingOnLoad();
+    </script> 
+</head>
+
+<body ontouchstart="">
+    <div id="container">
+        <aside>
+            <div class="home">
+                <div class="title">
+                    <button class="hamburger"></button>
+                    <a href="../../../../.." class="site-name"> Machine Learning</a>
+                </div>
+            </div>
+            <nav class="nav">
+                <ul class="root">
+                    <li class="toctree-l1"><a class="nav-item" href="../../../../..">機械学習自習室</a></li>
+                    <li class="toctree-l1"><button class="section nav-item">TensorFlow</button>
+<ul class="subnav">
+    <li class="toctree-l2 current"><button class="section nav-item">チュートリアル</button>
+<ul class="subnav">
+    <li class="toctree-l3"><button class="section nav-item hide">初級</button>
+<ul class="subnav hide">
+    <li class="toctree-l4"><button class="section nav-item hide">KerasによるMLの基本</button>
+<ul class="subnav hide">
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/KerasによるMLの基本/基本的な画像分類/">1 基本的な画像の分類</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/KerasによるMLの基本/TF.Hubによるテキスト分類/">2 TF.Hubによるテキスト分類</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/KerasによるMLの基本/映画レビューのテキスト分類/">3 映画レビューのテキスト分類</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/KerasによるMLの基本/回帰：燃費を予測する/">4 回帰：燃費を予測する</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/KerasによるMLの基本/過学習と学習不足/">5 過学習と学習不足</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/KerasによるMLの基本/モデルの保存と復元/">6 モデルの保存と復元</a></li>
+</ul></li>
+    <li class="toctree-l4"><button class="section nav-item hide">データの読み込みと前処理</button>
+<ul class="subnav hide">
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/データの読み込みと前処理/CSV/">1 tf.data を使って CSV をロードする</a></li>
+</ul></li>
+</ul></li>
+    <li class="toctree-l3 current"><button class="section nav-item">詳細</button>
+<ul class="subnav">
+    <li class="toctree-l4 current"><button class="section nav-item">カスタマイズ</button>
+<ul class="subnav">
+    <li class="toctree-l5"><a class="nav-item" href="../テンソルと演算/">1 テンソルと演算</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../カスタムレイヤー/">2 カスタムレイヤー</a></li>
+    <li class="toctree-l5 current"><a class="nav-item current" href="./">3 自動微分と勾配テープ</a>
+<ul class="subnav">
+<li class="toctree-l6"><a class="nav-item toc" href="#31">3.1 勾配テープ</a></li>
+</ul></li>
+    <li class="toctree-l5"><a class="nav-item" href="../カスタム訓練：基本/">4 カスタム訓練：基本</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../カスタム訓練：ウォークスルー/">5 カスタム訓練：ウォークスルー</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../tf.functionで性能アップ/">6 tf.functionで性能アップ</a><a class="nav-item" href="../tf.functionで性能アップ/">7 自動的な依存関係の制御</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+                </ul>
+            </nav>
+            <div class="repo">
+    <div class="link">
+        <a href="https://github.com/daizutabi/machine-learning/" class="fa fa-github"> GitHub</a>
+    </div>
+    <div class="previous"><a href="../カスタムレイヤー/">&laquo; Previous</a></div>
+    <div class="next"><a href="../カスタム訓練：基本/">Next &raquo;</a></div>
+</div>
+        </aside>
+        <div id="spacer"><button class="arrow"></button></div>
+        <main>
+            <div class="home-top">
+                <button class="hamburger"></button>
+                <a href="../../../../.." class="site-name"> Machine Learning</a>
+            </div>
+            <div id="main">
+                <nav class="breadcrumbs">
+<ul>
+    <li>TensorFlow &raquo; </li><li>チュートリアル &raquo; </li><li>詳細 &raquo; </li><li>カスタマイズ</li>
+</ul>
+</nav>
+                <div id="content">
+<h1 id="3"><span class="pheasant-header"><span class="header"><span class="number">3</span> <span class="title">自動微分と勾配テープ</span></span></span></h1>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">import tensorflow as tf</code></pre></div>
+<div class="report"><p><span class="count">[1]</span>
+<span class="start">2019-11-09 09:26:28</span> (<span class="time">6.02ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">3.93s</span>)</span></p></div></div></div></div>
+
+<h2 id="31"><span class="pheasant-header"><span class="header"><span class="number">3.1</span> <span class="title">勾配テープ</span></span></span></h2>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">x = tf.ones((2, 2))
+
+with tf.GradientTape() as t:
+    t.watch(x)
+    y = tf.reduce_sum(x)
+    z = tf.multiply(y, y)
+# 元の入力テンソル x に対する z の微分
+dz_dx = t.gradient(z, x)
+for i in [0, 1]:
+    for j in [0, 1]:
+        assert dz_dx[i][j].numpy() == 8.0</code></pre></div>
+<div class="report"><p><span class="count">[2]</span>
+<span class="start">2019-11-09 09:26:28</span> (<span class="time">15.0ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">3.94s</span>)</span></p></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">x = tf.ones((2, 2))
+
+with tf.GradientTape() as t:
+    t.watch(x)
+    y = tf.reduce_sum(x)
+    z = tf.multiply(y, y)
+# テープを使って中間値 y に対する z の微分を計算
+dz_dy = t.gradient(z, y)
+assert dz_dy.numpy() == 8.0</code></pre></div>
+<div class="report"><p><span class="count">[3]</span>
+<span class="start">2019-11-09 09:26:28</span> (<span class="time">10.0ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">3.95s</span>)</span></p></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">x = tf.constant(3.0)
+with tf.GradientTape(persistent=True) as t:
+    t.watch(x)
+    y = x * x
+    z = y * y
+print(t.gradient(z, x))  # 108.0 (4*x^3 at x = 3)
+print(t.gradient(y, x))  # 6.0
+del t  # テープへの参照を削除</code></pre></div>
+<div class="report"><p><span class="count">[4]</span>
+<span class="start">2019-11-09 09:26:28</span> (<span class="time">12.0ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">3.97s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">tf.Tensor(108.0, shape=(), dtype=float32)
+tf.Tensor(6.0, shape=(), dtype=float32)</code></pre></div></div></div></div>
+
+<h3 id="311"><span class="pheasant-header"><span class="header"><span class="number">3.1.1</span> <span class="title">制御フローの記録</span></span></span></h3>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">def f(x, y):
+    output = 1.0
+    for i in range(y):
+        if i &gt; 1 and i &lt; 5:
+            output = tf.multiply(output, x)
+    return output
+
+def grad(x, y):
+    with tf.GradientTape() as t:
+        t.watch(x)
+        out = f(x, y)
+    return t.gradient(out, x)
+
+x = tf.convert_to_tensor(2.0)
+
+assert grad(x, 6).numpy() == 12.0
+assert grad(x, 5).numpy() == 12.0
+assert grad(x, 4).numpy() == 4.0</code></pre></div>
+<div class="report"><p><span class="count">[5]</span>
+<span class="start">2019-11-09 09:26:29</span> (<span class="time">18.0ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">3.98s</span>)</span></p></div></div></div></div>
+
+<h3 id="312"><span class="pheasant-header"><span class="header"><span class="number">3.1.2</span> <span class="title">高次勾配</span></span></span></h3>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">x = tf.Variable(1.0)  # 1.0 で初期化された TensorFlow 変数を作成
+
+with tf.GradientTape() as t:
+    with tf.GradientTape() as t2:
+        y = x * x * x
+    # ’t’ コンテキストマネジャー内で勾配を計算
+    # これは勾配計算も同様に微分可能であるということ
+    dy_dx = t2.gradient(y, x)
+d2y_dx2 = t.gradient(dy_dx, x)
+
+assert dy_dx.numpy() == 3.0
+assert d2y_dx2.numpy() == 6.0</code></pre></div>
+<div class="report"><p><span class="count">[6]</span>
+<span class="start">2019-11-09 09:26:29</span> (<span class="time">15.0ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">4.00s</span>)</span></p></div></div></div></div></div>
+                <footer>
+    <div class="footer-buttons">
+        <div class="previous"><a href="../カスタムレイヤー/" title="2 カスタムレイヤー"><span>Previous</span></a></div>
+        <div class="next"><a href="../カスタム訓練：基本/" title="4 カスタム訓練：基本"><span>Next</span></a></div>
+    </div>
+    <div class="footer-note">
+        <p>
+            Built with <a href="http://www.mkdocs.org">MkDocs</a> using
+            <a href="https://github.com/daizutabi/mkdocs-ivory">Ivory theme</a>.
+        </p>
+    </div>
+</footer>
+            </div>
+        </main>
+    </div>
+    <script>
+        var base_url = '.';
+    </script>
+    <script src="../../../../../js/theme.js"></script>
+    <script src="../../../../../js/pheasant.js"></script>
+</body>
+
+</html>
