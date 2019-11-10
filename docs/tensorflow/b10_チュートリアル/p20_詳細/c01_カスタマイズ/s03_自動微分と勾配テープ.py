@@ -1,4 +1,6 @@
 # # 自動微分と勾配テープ
+# # (https://www.tensorflow.org/tutorials/customization/autodiff)
+
 import tensorflow as tf
 
 # ## 勾配テープ

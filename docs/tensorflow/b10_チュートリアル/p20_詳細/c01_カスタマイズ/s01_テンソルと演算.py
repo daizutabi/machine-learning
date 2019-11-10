@@ -1,5 +1,9 @@
 # #!
+
 # # テンソルと演算
+# # (https://www.tensorflow.org/tutorials/customization/basics)
+
+
 import tempfile
 import time
 

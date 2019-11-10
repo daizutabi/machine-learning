@@ -1,4 +1,6 @@
 # # テキスト
+# # (https://www.tensorflow.org/tutorials/load_data/text)
+
 import os
 
 import tensorflow as tf

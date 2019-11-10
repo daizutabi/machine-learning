@@ -1,5 +1,7 @@
 # #!
+
 # # 基本的な画像の分類
+# # (https://www.tensorflow.org/tutorials/keras/classification)
 
 import matplotlib.pyplot as plt
 import numpy as np

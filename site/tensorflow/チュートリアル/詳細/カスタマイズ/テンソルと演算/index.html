@@ -53,7 +53,11 @@
 </ul></li>
     <li class="toctree-l4"><button class="section nav-item hide">データの読み込みと前処理</button>
 <ul class="subnav hide">
-    <li class="toctree-l5"><a class="nav-item" href="../../../初級/データの読み込みと前処理/CSV/">1 tf.data を使って CSV をロードする</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/データの読み込みと前処理/CSV/">1 CSV</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/データの読み込みと前処理/NumPy/">2 NumPy</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/データの読み込みと前処理/pandas.DataFrame/">3 pandas.DataFrame</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/データの読み込みと前処理/画像/">4 画像</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/データの読み込みと前処理/テキスト/">5 テキスト</a></li>
 </ul></li>
 </ul></li>
     <li class="toctree-l3 current"><button class="section nav-item">詳細</button>
@@ -70,7 +74,16 @@
     <li class="toctree-l5"><a class="nav-item" href="../自動微分と勾配テープ/">3 自動微分と勾配テープ</a></li>
     <li class="toctree-l5"><a class="nav-item" href="../カスタム訓練：基本/">4 カスタム訓練：基本</a></li>
     <li class="toctree-l5"><a class="nav-item" href="../カスタム訓練：ウォークスルー/">5 カスタム訓練：ウォークスルー</a></li>
-    <li class="toctree-l5"><a class="nav-item" href="../tf.functionで性能アップ/">6 tf.functionで性能アップ</a><a class="nav-item" href="../tf.functionで性能アップ/">7 自動的な依存関係の制御</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../tf.functionで性能アップ/">6 tf.functionで性能アップ</a></li>
+</ul></li>
+    <li class="toctree-l4"><button class="section nav-item hide">画像</button>
+<ul class="subnav hide">
+    <li class="toctree-l5"><a class="nav-item" href="../../画像/畳み込みニューラルネットワーク/">1 畳み込みニューラルネットワーク</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../画像/画像分類/">2 画像分類</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../画像/TF.Hubによる転移学習/">3 TF.Hubによる転移学習</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../画像/学習済CNNによる転移学習/">4 学習済CNNによる転移学習</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../画像/画像セグメンテーション/">5 画像セグメンテーション</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../画像/TF.Hubによるオブジェクト検出/">6 TF.Hubによるオブジェクト検出</a></li>
 </ul></li>
 </ul></li>
 </ul></li>
@@ -81,7 +94,7 @@
     <div class="link">
         <a href="https://github.com/daizutabi/machine-learning/" class="fa fa-github"> GitHub</a>
     </div>
-    <div class="previous"><a href="../../../初級/データの読み込みと前処理/CSV/">&laquo; Previous</a></div>
+    <div class="previous"><a href="../../../初級/データの読み込みと前処理/テキスト/">&laquo; Previous</a></div>
     <div class="next"><a href="../カスタムレイヤー/">Next &raquo;</a></div>
 </div>
         </aside>
@@ -98,15 +111,15 @@
 </ul>
 </nav>
                 <div id="content">
-<h1 id="1"><span class="pheasant-header"><span class="header"><span class="number">1</span> <span class="title">テンソルと演算</span></span></span></h1>
+<h1 id="1"><span class="pheasant-header"><span class="header"><span class="number">1</span> <span class="title">テンソルと演算</span><span class="link"><a href="https://www.tensorflow.org/tutorials/customization/basics" target="_blank" title="https://www.tensorflow.org/tutorials/customization/basics"></a></span></span></span></h1>
 <div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">import tempfile
 import time
 
 import numpy as np
 import tensorflow as tf</code></pre></div>
 <div class="report"><p><span class="count">[1]</span>
-<span class="start">2019-11-09 05:41:16</span> (<span class="time">1.97s</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">1.97s</span>)</span></p></div></div></div></div>
+<span class="start">2019-11-10 09:54:43</span> (<span class="time">1.90s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">3min0s</span>)</span></p></div></div></div></div>
 
 <h2 id="11"><span class="pheasant-header"><span class="header"><span class="number">1.1</span> <span class="title">テンソル</span></span></span></h2>
 <div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">print(tf.add(1, 2))
@@ -114,8 +127,8 @@ print(tf.add([1, 2], [3, 4]))
 print(tf.square(5))
 print(tf.reduce_sum([1, 2, 3]))</code></pre></div>
 <div class="report"><p><span class="count">[2]</span>
-<span class="start">2019-11-09 05:41:18</span> (<span class="time">1.46s</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">3.43s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+<span class="start">2019-11-10 09:54:45</span> (<span class="time">1.15s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">3min2s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
       <pre><code class="nohighlight">tf.Tensor(3, shape=(), dtype=int32)
 tf.Tensor([4 6], shape=(2,), dtype=int32)
 tf.Tensor(25, shape=(), dtype=int32)
@@ -124,8 +137,8 @@ tf.Tensor(6, shape=(), dtype=int32)</code></pre></div></div></div></div>
 <p>Operator overloading is also supported</p>
 <div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">print(tf.square(2) + tf.square(3))</code></pre></div>
 <div class="report"><p><span class="count">[3]</span>
-<span class="start">2019-11-09 05:41:20</span> (<span class="time">5.04ms</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">3.44s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+<span class="start">2019-11-10 09:54:46</span> (<span class="time">15.6ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">3min2s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
       <pre><code class="nohighlight">tf.Tensor(13, shape=(), dtype=int32)</code></pre></div></div></div></div>
 
 <div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">x = tf.matmul([[1]], [[2, 3]])
@@ -133,8 +146,8 @@ print(x)
 print(x.shape)
 print(x.dtype)</code></pre></div>
 <div class="report"><p><span class="count">[4]</span>
-<span class="start">2019-11-09 05:41:20</span> (<span class="time">6.00ms</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">3.44s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+<span class="start">2019-11-10 09:54:46</span> (<span class="time">15.6ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">3min2s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
       <pre><code class="nohighlight">tf.Tensor([[2 3]], shape=(1, 2), dtype=int32)
 (1, 2)
 &lt;dtype: &#39;int32&#39;&gt;</code></pre></div></div></div></div>
@@ -152,8 +165,8 @@ print(np.add(tensor, 1))
 print(&#34;.numpy()メソッドによりテンソルは明示的にnumpy配列に変換される&#34;)
 print(tensor.numpy())</code></pre></div>
 <div class="report"><p><span class="count">[5]</span>
-<span class="start">2019-11-09 05:41:20</span> (<span class="time">10.0ms</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">3.45s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+<span class="start">2019-11-10 09:54:46</span> (<span class="time">31.4ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">3min2s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
       <pre><code class="nohighlight">TensorFlow演算によりnumpy配列は自動的にテンソルに変換される
 tf.Tensor(
 [[42. 42. 42.]
@@ -177,8 +190,8 @@ print(tf.config.experimental.list_physical_devices(&#34;GPU&#34;))
 print(&#34;テンソルはGPU #0にあるか:  &#34;)
 print(x.device.endswith(&#34;GPU:0&#34;))</code></pre></div>
 <div class="report"><p><span class="count">[6]</span>
-<span class="start">2019-11-09 05:41:20</span> (<span class="time">8.02ms</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">3.46s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+<span class="start">2019-11-10 09:54:46</span> (<span class="time">15.7ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">3min2s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
       <pre><code class="nohighlight">利用できるGPUはあるか: 
 [PhysicalDevice(name=&#39;/physical_device:GPU:0&#39;, device_type=&#39;GPU&#39;)]
 テンソルはGPU #0にあるか:  
@@ -207,12 +220,12 @@ if tf.config.experimental.list_physical_devices(&#34;GPU&#34;):
         assert x.device.endswith(&#34;GPU:0&#34;)
         time_matmul(x)</code></pre></div>
 <div class="report"><p><span class="count">[7]</span>
-<span class="start">2019-11-09 05:41:20</span> (<span class="time">365ms</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">3.82s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+<span class="start">2019-11-10 09:54:46</span> (<span class="time">345ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">3min2s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
       <pre><code class="nohighlight">On CPU:
-10 loops: 90.00ms
+10 loops: 93.71ms
 On GPU:
-10 loops: 255.53ms</code></pre></div></div></div></div>
+10 loops: 235.63ms</code></pre></div></div></div></div>
 
 <h2 id="13"><span class="pheasant-header"><span class="header"><span class="number">1.3</span> <span class="title">データセット</span></span></span></h2>
 <h3 id="131-dataset"><span class="pheasant-header"><span class="header"><span class="number">1.3.1</span> <span class="title">ソースDatasetの作成</span></span></span></h3>
@@ -225,15 +238,15 @@ with open(filename, &#34;w&#34;) as f:
     f.write(&#34;Line 1\nLine 2\nLine 3\n&#34;)
 ds_file = tf.data.TextLineDataset(filename)</code></pre></div>
 <div class="report"><p><span class="count">[8]</span>
-<span class="start">2019-11-09 05:41:20</span> (<span class="time">24.0ms</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">3.85s</span>)</span></p></div></div></div></div>
+<span class="start">2019-11-10 09:54:46</span> (<span class="time">40.9ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">3min2s</span>)</span></p></div></div></div></div>
 
 <h3 id="132"><span class="pheasant-header"><span class="header"><span class="number">1.3.2</span> <span class="title">変換の適用</span></span></span></h3>
 <div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">ds_tensors = ds_tensors.map(tf.square).shuffle(2).batch(2)
 ds_file = ds_file.batch(2)</code></pre></div>
 <div class="report"><p><span class="count">[9]</span>
-<span class="start">2019-11-09 05:41:20</span> (<span class="time">11.0ms</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">3.86s</span>)</span></p></div></div></div></div>
+<span class="start">2019-11-10 09:54:46</span> (<span class="time">31.3ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">3min2s</span>)</span></p></div></div></div></div>
 
 <h3 id="133"><span class="pheasant-header"><span class="header"><span class="number">1.3.3</span> <span class="title">イテレート</span></span></span></h3>
 <div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">print(&#34;ds_tensors の要素:&#34;)
@@ -243,19 +256,19 @@ print(&#34;\nds_file の要素:&#34;)
 for x in ds_file:
     print(x)</code></pre></div>
 <div class="report"><p><span class="count">[10]</span>
-<span class="start">2019-11-09 05:41:20</span> (<span class="time">23.0ms</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">3.88s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+<span class="start">2019-11-10 09:54:46</span> (<span class="time">46.9ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">3min2s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
       <pre><code class="nohighlight">ds_tensors の要素:
 tf.Tensor([4 1], shape=(2,), dtype=int32)
-tf.Tensor([ 9 16], shape=(2,), dtype=int32)
-tf.Tensor([36 25], shape=(2,), dtype=int32)
+tf.Tensor([16 25], shape=(2,), dtype=int32)
+tf.Tensor([ 9 36], shape=(2,), dtype=int32)
 
 ds_file の要素:
 tf.Tensor([b&#39;Line 1&#39; b&#39;Line 2&#39;], shape=(2,), dtype=string)
 tf.Tensor([b&#39;Line 3&#39;], shape=(1,), dtype=string)</code></pre></div></div></div></div></div>
                 <footer>
     <div class="footer-buttons">
-        <div class="previous"><a href="../../../初級/データの読み込みと前処理/CSV/" title="1 tf.data を使って CSV をロードする"><span>Previous</span></a></div>
+        <div class="previous"><a href="../../../初級/データの読み込みと前処理/テキスト/" title="5 テキスト"><span>Previous</span></a></div>
         <div class="next"><a href="../カスタムレイヤー/" title="2 カスタムレイヤー"><span>Next</span></a></div>
     </div>
     <div class="footer-note">

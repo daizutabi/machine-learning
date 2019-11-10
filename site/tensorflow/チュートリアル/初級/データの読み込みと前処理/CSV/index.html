@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="daizutabi">
     <link rel="shortcut icon" href="../../../../../img/favicon.ico">
-    <title>1 tf.data を使って CSV をロードする &mdash; Machine Learning</title>
+    <title>1 CSV &mdash; Machine Learning</title>
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/tonsky/FiraCode@1.206/distr/fira_code.css">
     <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/all.css">
@@ -53,9 +53,17 @@
 </ul></li>
     <li class="toctree-l4 current"><button class="section nav-item">データの読み込みと前処理</button>
 <ul class="subnav">
-    <li class="toctree-l5 current"><a class="nav-item current" href="./">1 tf.data を使って CSV をロードする</a>
+    <li class="toctree-l5 current"><a class="nav-item current" href="./">1 CSV</a>
 <ul class="subnav">
+<li class="toctree-l6"><a class="nav-item toc" href="#11">1.1 データのロード</a></li>
+<li class="toctree-l6"><a class="nav-item toc" href="#12">1.2 データの前処理</a></li>
+<li class="toctree-l6"><a class="nav-item toc" href="#13">1.3 モデルの構築</a></li>
+<li class="toctree-l6"><a class="nav-item toc" href="#14">1.4 訓練、評価、そして予測</a></li>
 </ul></li>
+    <li class="toctree-l5"><a class="nav-item" href="../NumPy/">2 NumPy</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../pandas.DataFrame/">3 pandas.DataFrame</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../画像/">4 画像</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../テキスト/">5 テキスト</a></li>
 </ul></li>
 </ul></li>
     <li class="toctree-l3"><button class="section nav-item hide">詳細</button>
@@ -67,7 +75,16 @@
     <li class="toctree-l5"><a class="nav-item" href="../../../詳細/カスタマイズ/自動微分と勾配テープ/">3 自動微分と勾配テープ</a></li>
     <li class="toctree-l5"><a class="nav-item" href="../../../詳細/カスタマイズ/カスタム訓練：基本/">4 カスタム訓練：基本</a></li>
     <li class="toctree-l5"><a class="nav-item" href="../../../詳細/カスタマイズ/カスタム訓練：ウォークスルー/">5 カスタム訓練：ウォークスルー</a></li>
-    <li class="toctree-l5"><a class="nav-item" href="../../../詳細/カスタマイズ/tf.functionで性能アップ/">6 tf.functionで性能アップ</a><a class="nav-item" href="../../../詳細/カスタマイズ/tf.functionで性能アップ/">7 自動的な依存関係の制御</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../詳細/カスタマイズ/tf.functionで性能アップ/">6 tf.functionで性能アップ</a></li>
+</ul></li>
+    <li class="toctree-l4"><button class="section nav-item hide">画像</button>
+<ul class="subnav hide">
+    <li class="toctree-l5"><a class="nav-item" href="../../../詳細/画像/畳み込みニューラルネットワーク/">1 畳み込みニューラルネットワーク</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../詳細/画像/画像分類/">2 画像分類</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../詳細/画像/TF.Hubによる転移学習/">3 TF.Hubによる転移学習</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../詳細/画像/学習済CNNによる転移学習/">4 学習済CNNによる転移学習</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../詳細/画像/画像セグメンテーション/">5 画像セグメンテーション</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../詳細/画像/TF.Hubによるオブジェクト検出/">6 TF.Hubによるオブジェクト検出</a></li>
 </ul></li>
 </ul></li>
 </ul></li>
@@ -79,7 +96,7 @@
         <a href="https://github.com/daizutabi/machine-learning/" class="fa fa-github"> GitHub</a>
     </div>
     <div class="previous"><a href="../../KerasによるMLの基本/モデルの保存と復元/">&laquo; Previous</a></div>
-    <div class="next"><a href="../../../詳細/カスタマイズ/テンソルと演算/">Next &raquo;</a></div>
+    <div class="next"><a href="../NumPy/">Next &raquo;</a></div>
 </div>
         </aside>
         <div id="spacer"><button class="arrow"></button></div>
@@ -95,11 +112,277 @@
 </ul>
 </nav>
                 <div id="content">
-<h1 id="1-tfdata-csv"><span class="pheasant-header"><span class="header"><span class="number">1</span> <span class="title">tf.data を使って CSV をロードする</span></span></span></h1></div>
+<h1 id="1-csv"><span class="pheasant-header"><span class="header"><span class="number">1</span> <span class="title">CSV</span><span class="link"><a href="https://www.tensorflow.org/tutorials/load_data/csv" target="_blank" title="https://www.tensorflow.org/tutorials/load_data/csv"></a></span></span></span></h1>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">import numpy as np
+import tensorflow as tf
+
+TRAIN_DATA_URL = &#34;https://storage.googleapis.com/tf-datasets/titanic/train.csv&#34;
+TEST_DATA_URL = &#34;https://storage.googleapis.com/tf-datasets/titanic/eval.csv&#34;
+
+train_file_path = tf.keras.utils.get_file(&#34;train.csv&#34;, TRAIN_DATA_URL)
+test_file_path = tf.keras.utils.get_file(&#34;eval.csv&#34;, TEST_DATA_URL)
+
+# numpy の値を読みやすくする
+np.set_printoptions(precision=3, suppress=True)</code></pre></div>
+<div class="report"><p><span class="count">[1]</span>
+<span class="start">2019-11-10 09:51:25</span> (<span class="time">1.95s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">1.95s</span>)</span></p></div></div></div></div>
+
+<h2 id="11"><span class="pheasant-header"><span class="header"><span class="number">1.1</span> <span class="title">データのロード</span></span></span></h2>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python"># 入力ファイル中の CSV 列
+with open(train_file_path, &#34;r&#34;) as f:
+    names_row = f.readline()
+CSV_COLUMNS = names_row.rstrip(&#34;\n&#34;).split(&#34;,&#34;)
+LABELS = [0, 1]
+LABEL_COLUMN = &#34;survived&#34;
+FEATURE_COLUMNS = [column for column in CSV_COLUMNS if column != LABEL_COLUMN]</code></pre></div>
+<div class="report"><p><span class="count">[2]</span>
+<span class="start">2019-11-10 09:51:27</span> (<span class="time">23.0ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">1.98s</span>)</span></p></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">def get_dataset(file_path):
+    dataset = tf.data.experimental.make_csv_dataset(
+        file_path,
+        batch_size=12,  # 見やすく表示するために意図して小さく設定しています
+        label_name=LABEL_COLUMN,
+        na_value=&#34;?&#34;,
+        num_epochs=1,
+        ignore_errors=True,
+    )
+    return dataset
+
+raw_train_data = get_dataset(train_file_path)
+raw_test_data = get_dataset(test_file_path)</code></pre></div>
+<div class="report"><p><span class="count">[3]</span>
+<span class="start">2019-11-10 09:51:27</span> (<span class="time">1.48s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">3.46s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">WARNING:tensorflow:From C:\Users\daizu\Miniconda3\envs\daizu\lib\site-packages\tensorflow_core\python\data\experimental\ops\readers.py:521: parallel_interleave (from tensorflow.python.data.experimental.ops.interleave_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use `tf.data.Dataset.interleave(map_func, cycle_length, block_length, num_parallel_calls=tf.data.experimental.AUTOTUNE)` instead. If sloppy execution is desired, use `tf.data.Options.experimental_determinstic`.</code></pre></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">examples, labels = next(iter(raw_train_data))  # 最初のバッチのみ
+print(&#34;EXAMPLES: \n&#34;, examples, &#34;\n&#34;)
+print(&#34;LABELS: \n&#34;, labels)</code></pre></div>
+<div class="report"><p><span class="count">[4]</span>
+<span class="start">2019-11-10 09:51:29</span> (<span class="time">46.5ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">3.51s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">EXAMPLES: 
+ OrderedDict([(&#39;sex&#39;, &lt;tf.Tensor: id=176, shape=(12,), dtype=string, numpy=
+array([b&#39;female&#39;, b&#39;female&#39;, b&#39;male&#39;, b&#39;female&#39;, b&#39;female&#39;, b&#39;male&#39;,
+       b&#39;male&#39;, b&#39;male&#39;, b&#39;male&#39;, b&#39;female&#39;, b&#39;male&#39;, b&#39;male&#39;],
+      dtype=object)&gt;), (&#39;age&#39;, &lt;tf.Tensor: id=168, shape=(12,), dtype=float32, numpy=
+array([30., 22., 30., 18., 28.,  4., 28., 66., 37., 24., 27., 30.],
+      dtype=float32)&gt;), (&#39;n_siblings_spouses&#39;, &lt;tf.Tensor: id=174, shape=(12,), dtype=int32, numpy=array([0, 0, 0, 0, 0, 4, 0, 0, 1, 0, 0, 0])&gt;), (&#39;parch&#39;, &lt;tf.Tensor: id=175, shape=(12,), dtype=int32, numpy=array([0, 1, 0, 1, 0, 2, 0, 0, 0, 2, 0, 0])&gt;), (&#39;fare&#39;, &lt;tf.Tensor: id=173, shape=(12,), dtype=float32, numpy=
+array([106.425,  55.   ,   7.225,  23.   ,  13.   ,  31.275,   7.75 ,
+        10.5  ,  26.   ,  14.5  ,  26.   ,   7.229], dtype=float32)&gt;), (&#39;class&#39;, &lt;tf.Tensor: id=170, shape=(12,), dtype=string, numpy=
+array([b&#39;First&#39;, b&#39;First&#39;, b&#39;Third&#39;, b&#39;Second&#39;, b&#39;Second&#39;, b&#39;Third&#39;,
+       b&#39;Third&#39;, b&#39;Second&#39;, b&#39;Second&#39;, b&#39;Second&#39;, b&#39;Second&#39;, b&#39;Third&#39;],
+      dtype=object)&gt;), (&#39;deck&#39;, &lt;tf.Tensor: id=171, shape=(12,), dtype=string, numpy=
+array([b&#39;unknown&#39;, b&#39;E&#39;, b&#39;unknown&#39;, b&#39;unknown&#39;, b&#39;unknown&#39;, b&#39;unknown&#39;,
+       b&#39;unknown&#39;, b&#39;unknown&#39;, b&#39;unknown&#39;, b&#39;unknown&#39;, b&#39;unknown&#39;,
+       b&#39;unknown&#39;], dtype=object)&gt;), (&#39;embark_town&#39;, &lt;tf.Tensor: id=172, shape=(12,), dtype=string, numpy=
+array([b&#39;Cherbourg&#39;, b&#39;Southampton&#39;, b&#39;Cherbourg&#39;, b&#39;Southampton&#39;,
+       b&#39;Southampton&#39;, b&#39;Southampton&#39;, b&#39;Queenstown&#39;, b&#39;Southampton&#39;,
+       b&#39;Southampton&#39;, b&#39;Southampton&#39;, b&#39;Southampton&#39;, b&#39;Cherbourg&#39;],
+      dtype=object)&gt;), (&#39;alone&#39;, &lt;tf.Tensor: id=169, shape=(12,), dtype=string, numpy=
+array([b&#39;y&#39;, b&#39;n&#39;, b&#39;y&#39;, b&#39;n&#39;, b&#39;y&#39;, b&#39;n&#39;, b&#39;y&#39;, b&#39;y&#39;, b&#39;n&#39;, b&#39;n&#39;, b&#39;y&#39;,
+       b&#39;y&#39;], dtype=object)&gt;)])
+
+LABELS: 
+ tf.Tensor([1 1 0 1 1 0 0 0 0 1 0 0], shape=(12,), dtype=int32)</code></pre></div></div></div></div>
+
+<h2 id="12"><span class="pheasant-header"><span class="header"><span class="number">1.2</span> <span class="title">データの前処理</span></span></span></h2>
+<h3 id="121"><span class="pheasant-header"><span class="header"><span class="number">1.2.1</span> <span class="title">カテゴリデータ</span></span></span></h3>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">CATEGORIES = {
+    &#34;sex&#34;: [&#34;male&#34;, &#34;female&#34;],
+    &#34;class&#34;: [&#34;First&#34;, &#34;Second&#34;, &#34;Third&#34;],
+    &#34;deck&#34;: [&#34;A&#34;, &#34;B&#34;, &#34;C&#34;, &#34;D&#34;, &#34;E&#34;, &#34;F&#34;, &#34;G&#34;, &#34;H&#34;, &#34;I&#34;, &#34;J&#34;],
+    &#34;embark_town&#34;: [&#34;Cherbourg&#34;, &#34;Southhampton&#34;, &#34;Queenstown&#34;],
+    &#34;alone&#34;: [&#34;y&#34;, &#34;n&#34;],
+}</code></pre></div>
+<div class="report"><p><span class="count">[5]</span>
+<span class="start">2019-11-10 09:51:29</span> (<span class="time">31.3ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">3.54s</span>)</span></p></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">def process_categorical_data(data, categories):
+    &#34;&#34;&#34;カテゴリ値を表すワンホット・エンコーディングされたテンソルを返す&#34;&#34;&#34;
+
+    # 最初の &#39; &#39; を取り除く
+    data = tf.strings.regex_replace(data, &#34;^ &#34;, &#34;&#34;)
+    # 最後の &#39;.&#39; を取り除く
+    data = tf.strings.regex_replace(data, r&#34;\.$&#34;, &#34;&#34;)
+
+    # ワンホット・エンコーディング
+    # data を1次元（リスト）から2次元（要素が1個のリストのリスト）にリシェープ
+    data = tf.reshape(data, [-1, 1])
+    # それぞれの要素について、カテゴリ数の長さの真偽値のリストで、
+    # 要素とカテゴリのラベルが一致したところが True となるものを作成
+    data = categories == data
+    # 真偽値を浮動小数点数にキャスト
+    data = tf.cast(data, tf.float32)
+
+    # エンコーディング全体を次の1行に収めることもできる：
+    # data = tf.cast(categories == tf.reshape(data, [-1, 1]), tf.float32)
+    return data</code></pre></div>
+<div class="report"><p><span class="count">[6]</span>
+<span class="start">2019-11-10 09:51:29</span> (<span class="time">15.6ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">3.55s</span>)</span></p></div></div></div></div>
+
+<h3 id="122"><span class="pheasant-header"><span class="header"><span class="number">1.2.2</span> <span class="title">連続データ</span></span></span></h3>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">def process_continuous_data(data, mean):
+    # data の標準化
+    data = tf.cast(data, tf.float32) * 1 / (2 * mean)
+    return tf.reshape(data, [-1, 1])
+
+MEANS = {
+    &#34;age&#34;: 29.631308,
+    &#34;n_siblings_spouses&#34;: 0.545455,
+    &#34;parch&#34;: 0.379585,
+    &#34;fare&#34;: 34.385399,
+}</code></pre></div>
+<div class="report"><p><span class="count">[7]</span>
+<span class="start">2019-11-10 09:51:29</span> (<span class="time">15.6ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">3.57s</span>)</span></p></div></div></div></div>
+
+<h3 id="123"><span class="pheasant-header"><span class="header"><span class="number">1.2.3</span> <span class="title">データの前処理</span></span></span></h3>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">def preprocess(features, labels):
+
+    # カテゴリ特徴量の処理
+    for feature in CATEGORIES.keys():
+        features[feature] = process_categorical_data(
+            features[feature], CATEGORIES[feature]
+        )
+    # 連続特徴量の処理
+    for feature in MEANS.keys():
+        features[feature] = process_continuous_data(features[feature], MEANS[feature])
+    # 特徴量を1つのテンソルに組み立てる
+    features = tf.concat([features[column] for column in FEATURE_COLUMNS], 1)
+
+    return features, labels
+
+train_data = raw_train_data.map(preprocess).shuffle(500)
+test_data = raw_test_data.map(preprocess)</code></pre></div>
+<div class="report"><p><span class="count">[8]</span>
+<span class="start">2019-11-10 09:51:29</span> (<span class="time">392ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">3.96s</span>)</span></p></div></div></div></div>
+
+<h2 id="13"><span class="pheasant-header"><span class="header"><span class="number">1.3</span> <span class="title">モデルの構築</span></span></span></h2>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">def get_model(input_dim, hidden_units=[100]):
+    &#34;&#34;&#34;複数の層を持つ Keras モデルを作成
+
+  引数:
+    input_dim: (int) バッチ中のアイテムの形状
+    labels_dim: (int) ラベルの形状
+    hidden_units: [int] DNN の層のサイズ（入力層が先）
+    learning_rate: (float) オプティマイザの学習率
+
+  戻り値:
+    Keras モデル
+  &#34;&#34;&#34;
+
+    inputs = tf.keras.Input(shape=(input_dim,))
+    x = inputs
+
+    for units in hidden_units:
+        x = tf.keras.layers.Dense(units, activation=&#34;relu&#34;)(x)
+    outputs = tf.keras.layers.Dense(1, activation=&#34;sigmoid&#34;)(x)
+
+    model = tf.keras.Model(inputs, outputs)
+
+    return model</code></pre></div>
+<div class="report"><p><span class="count">[9]</span>
+<span class="start">2019-11-10 09:51:29</span> (<span class="time">15.7ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">3.98s</span>)</span></p></div></div></div></div>
+
+<p>input_shape, output_shape = train_data.output_shapes input_dimension = input_shape.dims[1]  # [0] はバッチサイズ</p>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">input_dimension = 24</code></pre></div>
+<div class="report"><p><span class="count">[10]</span>
+<span class="start">2019-11-10 09:51:29</span> (<span class="time">15.7ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">3.99s</span>)</span></p></div></div></div></div>
+
+<h2 id="14"><span class="pheasant-header"><span class="header"><span class="number">1.4</span> <span class="title">訓練、評価、そして予測</span></span></span></h2>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">model = get_model(input_dimension)
+model.compile(loss=&#34;binary_crossentropy&#34;, optimizer=&#34;adam&#34;, metrics=[&#34;accuracy&#34;])
+
+model.fit(train_data, epochs=20)</code></pre></div>
+<div class="report"><p><span class="count">[11]</span>
+<span class="start">2019-11-10 09:51:29</span> (<span class="time">5.96s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">9.96s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">Epoch 1/20
+53/53 [==============================] - 1s 19ms/step - loss: 0.6015 - accuracy: 0.6954
+Epoch 2/20
+53/53 [==============================] - 0s 4ms/step - loss: 0.4997 - accuracy: 0.7943
+Epoch 3/20
+53/53 [==============================] - 0s 5ms/step - loss: 0.4532 - accuracy: 0.8134
+Epoch 4/20
+53/53 [==============================] - 0s 5ms/step - loss: 0.4342 - accuracy: 0.8070
+Epoch 5/20
+53/53 [==============================] - 0s 5ms/step - loss: 0.4352 - accuracy: 0.8134
+Epoch 6/20
+53/53 [==============================] - 0s 4ms/step - loss: 0.4194 - accuracy: 0.8134
+Epoch 7/20
+53/53 [==============================] - 0s 5ms/step - loss: 0.4118 - accuracy: 0.8150
+Epoch 8/20
+53/53 [==============================] - 0s 5ms/step - loss: 0.4151 - accuracy: 0.8166
+Epoch 9/20
+53/53 [==============================] - 0s 5ms/step - loss: 0.4027 - accuracy: 0.8214
+Epoch 10/20
+53/53 [==============================] - 0s 4ms/step - loss: 0.4158 - accuracy: 0.8214
+Epoch 11/20
+53/53 [==============================] - 0s 5ms/step - loss: 0.4006 - accuracy: 0.8262
+Epoch 12/20
+53/53 [==============================] - 0s 5ms/step - loss: 0.4008 - accuracy: 0.8246
+Epoch 13/20
+53/53 [==============================] - 0s 5ms/step - loss: 0.4087 - accuracy: 0.8278
+Epoch 14/20
+53/53 [==============================] - 0s 4ms/step - loss: 0.4023 - accuracy: 0.8182
+Epoch 15/20
+53/53 [==============================] - 0s 5ms/step - loss: 0.3979 - accuracy: 0.8278
+Epoch 16/20
+53/53 [==============================] - 0s 5ms/step - loss: 0.3907 - accuracy: 0.8293
+Epoch 17/20
+53/53 [==============================] - 0s 5ms/step - loss: 0.3878 - accuracy: 0.8373
+Epoch 18/20
+53/53 [==============================] - 0s 4ms/step - loss: 0.3919 - accuracy: 0.8389
+Epoch 19/20
+53/53 [==============================] - 0s 5ms/step - loss: 0.3947 - accuracy: 0.8389
+Epoch 20/20
+53/53 [==============================] - 0s 5ms/step - loss: 0.3846 - accuracy: 0.8262</code></pre></div></div><div class="cell jupyter output"><div class="code"><pre><code class="nohighlight">&lt;tensorflow.python.keras.callbacks.History at 0x1d5222ce848&gt;</code></pre></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">test_loss, test_accuracy = model.evaluate(test_data)
+print(&#34;\n\nTest Loss {}, Test Accuracy {}&#34;.format(test_loss, test_accuracy))</code></pre></div>
+<div class="report"><p><span class="count">[12]</span>
+<span class="start">2019-11-10 09:51:35</span> (<span class="time">251ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">10.2s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">22/22 [==============================] - 0s 9ms/step - loss: 0.4404 - accuracy: 0.7955
+
+Test Loss 0.4404323879968036, Test Accuracy 0.7954545617103577</code></pre></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">predictions = model.predict(test_data)
+# 結果のいくつかを表示
+for prediction, survived in zip(predictions[:10], list(test_data)[0][1][:10]):
+    print(
+        &#34;Predicted survival: {:.2%}&#34;.format(prediction[0]),
+        &#34; | Actual outcome: &#34;,
+        (&#34;SURVIVED&#34; if bool(survived) else &#34;DIED&#34;),
+    )</code></pre></div>
+<div class="report"><p><span class="count">[13]</span>
+<span class="start">2019-11-10 09:51:36</span> (<span class="time">208ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">10.4s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">Predicted survival: 83.97%  | Actual outcome:  SURVIVED
+Predicted survival: 19.01%  | Actual outcome:  DIED
+Predicted survival: 81.79%  | Actual outcome:  SURVIVED
+Predicted survival: 7.11%  | Actual outcome:  DIED
+Predicted survival: 74.35%  | Actual outcome:  DIED
+Predicted survival: 4.90%  | Actual outcome:  SURVIVED
+Predicted survival: 11.36%  | Actual outcome:  DIED
+Predicted survival: 11.58%  | Actual outcome:  SURVIVED
+Predicted survival: 58.31%  | Actual outcome:  DIED
+Predicted survival: 43.20%  | Actual outcome:  DIED</code></pre></div></div></div></div></div>
                 <footer>
     <div class="footer-buttons">
         <div class="previous"><a href="../../KerasによるMLの基本/モデルの保存と復元/" title="6 モデルの保存と復元"><span>Previous</span></a></div>
-        <div class="next"><a href="../../../詳細/カスタマイズ/テンソルと演算/" title="1 テンソルと演算"><span>Next</span></a></div>
+        <div class="next"><a href="../NumPy/" title="2 NumPy"><span>Next</span></a></div>
     </div>
     <div class="footer-note">
         <p>

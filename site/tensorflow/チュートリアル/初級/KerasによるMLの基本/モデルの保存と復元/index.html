@@ -57,7 +57,11 @@
 </ul></li>
     <li class="toctree-l4"><button class="section nav-item hide">データの読み込みと前処理</button>
 <ul class="subnav hide">
-    <li class="toctree-l5"><a class="nav-item" href="../../データの読み込みと前処理/CSV/">1 tf.data を使って CSV をロードする</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../データの読み込みと前処理/CSV/">1 CSV</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../データの読み込みと前処理/NumPy/">2 NumPy</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../データの読み込みと前処理/pandas.DataFrame/">3 pandas.DataFrame</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../データの読み込みと前処理/画像/">4 画像</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../データの読み込みと前処理/テキスト/">5 テキスト</a></li>
 </ul></li>
 </ul></li>
     <li class="toctree-l3"><button class="section nav-item hide">詳細</button>
@@ -69,7 +73,16 @@
     <li class="toctree-l5"><a class="nav-item" href="../../../詳細/カスタマイズ/自動微分と勾配テープ/">3 自動微分と勾配テープ</a></li>
     <li class="toctree-l5"><a class="nav-item" href="../../../詳細/カスタマイズ/カスタム訓練：基本/">4 カスタム訓練：基本</a></li>
     <li class="toctree-l5"><a class="nav-item" href="../../../詳細/カスタマイズ/カスタム訓練：ウォークスルー/">5 カスタム訓練：ウォークスルー</a></li>
-    <li class="toctree-l5"><a class="nav-item" href="../../../詳細/カスタマイズ/tf.functionで性能アップ/">6 tf.functionで性能アップ</a><a class="nav-item" href="../../../詳細/カスタマイズ/tf.functionで性能アップ/">7 自動的な依存関係の制御</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../詳細/カスタマイズ/tf.functionで性能アップ/">6 tf.functionで性能アップ</a></li>
+</ul></li>
+    <li class="toctree-l4"><button class="section nav-item hide">画像</button>
+<ul class="subnav hide">
+    <li class="toctree-l5"><a class="nav-item" href="../../../詳細/画像/畳み込みニューラルネットワーク/">1 畳み込みニューラルネットワーク</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../詳細/画像/画像分類/">2 画像分類</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../詳細/画像/TF.Hubによる転移学習/">3 TF.Hubによる転移学習</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../詳細/画像/学習済CNNによる転移学習/">4 学習済CNNによる転移学習</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../詳細/画像/画像セグメンテーション/">5 画像セグメンテーション</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../詳細/画像/TF.Hubによるオブジェクト検出/">6 TF.Hubによるオブジェクト検出</a></li>
 </ul></li>
 </ul></li>
 </ul></li>
@@ -97,7 +110,7 @@
 </ul>
 </nav>
                 <div id="content">
-<h1 id="6"><span class="pheasant-header"><span class="header"><span class="number">6</span> <span class="title">モデルの保存と復元</span></span></span></h1>
+<h1 id="6"><span class="pheasant-header"><span class="header"><span class="number">6</span> <span class="title">モデルの保存と復元</span><span class="link"><a href="https://www.tensorflow.org/tutorials/keras/save_and_load" target="_blank" title="https://www.tensorflow.org/tutorials/keras/save_and_load"></a></span></span></span></h1>
 <h2 id="61"><span class="pheasant-header"><span class="header"><span class="number">6.1</span> <span class="title">設定</span></span></span></h2>
 <div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">import os
 import shutil
@@ -105,8 +118,8 @@ import shutil
 import tensorflow as tf
 from tensorflow import keras</code></pre></div>
 <div class="report"><p><span class="count">[1]</span>
-<span class="start">2019-11-08 22:31:55</span> (<span class="time">1.94s</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">1.94s</span>)</span></p></div></div></div></div>
+<span class="start">2019-11-10 09:37:09</span> (<span class="time">1.93s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">7min31s</span>)</span></p></div></div></div></div>
 
 <h3 id="611"><span class="pheasant-header"><span class="header"><span class="number">6.1.1</span> <span class="title">サンプルデータセットの取得</span></span></span></h3>
 <div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">dataset = tf.keras.datasets.mnist.load_data()
@@ -118,8 +131,8 @@ test_labels = test_labels[:1000]
 train_images = train_images[:1000].reshape(-1, 28 * 28) / 255.0
 test_images = test_images[:1000].reshape(-1, 28 * 28) / 255.0</code></pre></div>
 <div class="report"><p><span class="count">[2]</span>
-<span class="start">2019-11-08 22:31:57</span> (<span class="time">281ms</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">2.22s</span>)</span></p></div></div></div></div>
+<span class="start">2019-11-10 09:37:11</span> (<span class="time">310ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">7min31s</span>)</span></p></div></div></div></div>
 
 <h3 id="612"><span class="pheasant-header"><span class="header"><span class="number">6.1.2</span> <span class="title">モデルの定義</span></span></span></h3>
 <div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python"># 短いシーケンシャルモデルを返す関数
@@ -142,8 +155,8 @@ def create_model():
 model = create_model()
 model.summary()</code></pre></div>
 <div class="report"><p><span class="count">[3]</span>
-<span class="start">2019-11-08 22:31:57</span> (<span class="time">1.55s</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">3.78s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+<span class="start">2019-11-10 09:37:11</span> (<span class="time">1.19s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">7min32s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
       <pre><code class="nohighlight">Model: &#34;sequential&#34;
 _________________________________________________________________
 Layer (type)                 Output Shape              Param #   
@@ -164,8 +177,8 @@ _________________________________________________________________</code></pre></
 <div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">checkpoint_path = &#34;training_1/cp.ckpt&#34;
 checkpoint_dir = os.path.dirname(checkpoint_path)</code></pre></div>
 <div class="report"><p><span class="count">[4]</span>
-<span class="start">2019-11-08 22:31:59</span> (<span class="time">6.01ms</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">3.78s</span>)</span></p></div></div></div></div>
+<span class="start">2019-11-10 09:37:12</span> (<span class="time">25.7ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">7min32s</span>)</span></p></div></div></div></div>
 
 <p>チェックポイントコールバックを作る</p>
 <div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">cp_callback = tf.keras.callbacks.ModelCheckpoint(
@@ -182,49 +195,49 @@ model.fit(
     callbacks=[cp_callback],
 )</code></pre></div>
 <div class="report"><p><span class="count">[5]</span>
-<span class="start">2019-11-08 22:31:59</span> (<span class="time">3.84s</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">7.62s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+<span class="start">2019-11-10 09:37:12</span> (<span class="time">3.61s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">7min36s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
       <pre><code class="nohighlight">Train on 1000 samples, validate on 1000 samples
 Epoch 1/10
- 512/1000 [==============&gt;...............] - ETA: 1000/1000 [==============================] - 1s 1ms/sample - loss: 1.1411 - accuracy: 0.6800 - val_loss: 0.7267 - val_accuracy: 0.7840
+ 544/1000 [===============&gt;..............] - ETA: 1000/1000 [==============================] - 1s 1ms/sample - loss: 1.1337 - accuracy: 0.6810 - val_loss: 0.7334 - val_accuracy: 0.7630
 Epoch 2/10
- 800/1000 [=======================&gt;......] - ETA:1000/1000 [==============================] - 0s 283us/sample - loss: 0.4155 - accuracy: 0.8790 - val_loss: 0.5350 - val_accuracy: 0.8320
+ 480/1000 [=============&gt;................] - ETA:1000/1000 [==============================] - 0s 253us/sample - loss: 0.4142 - accuracy: 0.8830 - val_loss: 0.5169 - val_accuracy: 0.8330
 Epoch 3/10
- 768/1000 [======================&gt;.......] - ETA:1000/1000 [==============================] - 0s 288us/sample - loss: 0.2699 - accuracy: 0.9270 - val_loss: 0.4799 - val_accuracy: 0.8480
+ 576/1000 [================&gt;.............] - ETA:1000/1000 [==============================] - 0s 271us/sample - loss: 0.2846 - accuracy: 0.9290 - val_loss: 0.4828 - val_accuracy: 0.8460
 Epoch 4/10
- 768/1000 [======================&gt;.......] - ETA:1000/1000 [==============================] - 0s 289us/sample - loss: 0.2117 - accuracy: 0.9470 - val_loss: 0.4343 - val_accuracy: 0.8560
+ 544/1000 [===============&gt;..............] - ETA:1000/1000 [==============================] - 0s 251us/sample - loss: 0.2189 - accuracy: 0.9450 - val_loss: 0.4463 - val_accuracy: 0.8540
 Epoch 5/10
- 800/1000 [=======================&gt;......] - ETA:1000/1000 [==============================] - 0s 287us/sample - loss: 0.1446 - accuracy: 0.9650 - val_loss: 0.4425 - val_accuracy: 0.8650
+ 512/1000 [==============&gt;...............] - ETA:1000/1000 [==============================] - 0s 269us/sample - loss: 0.1580 - accuracy: 0.9670 - val_loss: 0.4151 - val_accuracy: 0.8640
 Epoch 6/10
- 832/1000 [=======================&gt;......] - ETA:1000/1000 [==============================] - 0s 290us/sample - loss: 0.1165 - accuracy: 0.9700 - val_loss: 0.4280 - val_accuracy: 0.8690
+ 448/1000 [============&gt;.................] - ETA:1000/1000 [==============================] - 0s 269us/sample - loss: 0.1175 - accuracy: 0.9800 - val_loss: 0.4241 - val_accuracy: 0.8550
 Epoch 7/10
- 800/1000 [=======================&gt;......] - ETA:1000/1000 [==============================] - 0s 290us/sample - loss: 0.0803 - accuracy: 0.9870 - val_loss: 0.4263 - val_accuracy: 0.8580
+ 480/1000 [=============&gt;................] - ETA:1000/1000 [==============================] - 0s 250us/sample - loss: 0.0900 - accuracy: 0.9860 - val_loss: 0.4081 - val_accuracy: 0.8640
 Epoch 8/10
- 800/1000 [=======================&gt;......] - ETA:1000/1000 [==============================] - 0s 286us/sample - loss: 0.0594 - accuracy: 0.9980 - val_loss: 0.4167 - val_accuracy: 0.8680
+ 416/1000 [===========&gt;..................] - ETA:1000/1000 [==============================] - 0s 266us/sample - loss: 0.0672 - accuracy: 0.9900 - val_loss: 0.4079 - val_accuracy: 0.8700
 Epoch 9/10
- 864/1000 [========================&gt;.....] - ETA:1000/1000 [==============================] - 0s 285us/sample - loss: 0.0470 - accuracy: 0.9980 - val_loss: 0.4108 - val_accuracy: 0.8670
+ 544/1000 [===============&gt;..............] - ETA:1000/1000 [==============================] - 0s 266us/sample - loss: 0.0504 - accuracy: 0.9970 - val_loss: 0.4141 - val_accuracy: 0.8690
 Epoch 10/10
- 896/1000 [=========================&gt;....] - ETA:1000/1000 [==============================] - 0s 272us/sample - loss: 0.0382 - accuracy: 1.0000 - val_loss: 0.4115 - val_accuracy: 0.8700</code></pre></div></div><div class="cell jupyter output"><div class="code"><pre><code class="nohighlight">&lt;tensorflow.python.keras.callbacks.History at 0x2362736fe88&gt;</code></pre></div></div></div></div>
+ 544/1000 [===============&gt;..............] - ETA:1000/1000 [==============================] - 0s 263us/sample - loss: 0.0408 - accuracy: 0.9980 - val_loss: 0.4119 - val_accuracy: 0.8650</code></pre></div></div><div class="cell jupyter output"><div class="code"><pre><code class="nohighlight">&lt;tensorflow.python.keras.callbacks.History at 0x229a380e148&gt;</code></pre></div></div></div></div>
 
 <div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">model = create_model()
 
 loss, acc = model.evaluate(test_images, test_labels, verbose=2)
 print(&#34;Untrained model, accuracy: {:5.2f}%&#34;.format(100 * acc))</code></pre></div>
 <div class="report"><p><span class="count">[6]</span>
-<span class="start">2019-11-08 22:32:03</span> (<span class="time">272ms</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">7.89s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
-      <pre><code class="nohighlight">1000/1 - 0s - loss: 2.3667 - accuracy: 0.0820
-Untrained model, accuracy:  8.20%</code></pre></div></div></div></div>
+<span class="start">2019-11-10 09:37:16</span> (<span class="time">236ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">7min36s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">1000/1 - 0s - loss: 2.2236 - accuracy: 0.1100
+Untrained model, accuracy: 11.00%</code></pre></div></div></div></div>
 
 <div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">model.load_weights(checkpoint_path)
 loss, acc = model.evaluate(test_images, test_labels, verbose=2)
 print(&#34;Restored model, accuracy: {:5.2f}%&#34;.format(100 * acc))
 shutil.rmtree(checkpoint_dir)</code></pre></div>
 <div class="report"><p><span class="count">[7]</span>
-<span class="start">2019-11-08 22:32:03</span> (<span class="time">188ms</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">8.08s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
-      <pre><code class="nohighlight">1000/1 - 0s - loss: 0.5259 - accuracy: 0.8700
-Restored model, accuracy: 87.00%</code></pre></div></div></div></div>
+<span class="start">2019-11-10 09:37:16</span> (<span class="time">201ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">7min36s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">1000/1 - 0s - loss: 0.5070 - accuracy: 0.8650
+Restored model, accuracy: 86.50%</code></pre></div></div></div></div>
 
 <h3 id="622"><span class="pheasant-header"><span class="header"><span class="number">6.2.2</span> <span class="title">チェックポイントコールバックのオプション</span></span></span></h3>
 <div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python"># ファイル名に(`str.format`を使って)エポック数を埋め込みます
@@ -249,8 +262,8 @@ model.fit(
     verbose=0,
 )</code></pre></div>
 <div class="report"><p><span class="count">[8]</span>
-<span class="start">2019-11-08 22:32:03</span> (<span class="time">11.0s</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">19.1s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+<span class="start">2019-11-10 09:37:16</span> (<span class="time">10.1s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">7min46s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
       <pre><code class="nohighlight">WARNING:tensorflow:`period` argument is deprecated. Please use `save_freq` to specify the frequency in number of samples seen.
 WARNING:tensorflow:Unresolved object in checkpoint: (root).optimizer.iter
 WARNING:tensorflow:Unresolved object in checkpoint: (root).optimizer.beta_1
@@ -277,13 +290,13 @@ Epoch 00040: saving model to training_2/cp-0040.ckpt
 
 Epoch 00045: saving model to training_2/cp-0045.ckpt
 
-Epoch 00050: saving model to training_2/cp-0050.ckpt</code></pre></div></div><div class="cell jupyter output"><div class="code"><pre><code class="nohighlight">&lt;tensorflow.python.keras.callbacks.History at 0x2362f53f608&gt;</code></pre></div></div></div></div>
+Epoch 00050: saving model to training_2/cp-0050.ckpt</code></pre></div></div><div class="cell jupyter output"><div class="code"><pre><code class="nohighlight">&lt;tensorflow.python.keras.callbacks.History at 0x229ae9f49c8&gt;</code></pre></div></div></div></div>
 
 <div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">latest = tf.train.latest_checkpoint(checkpoint_dir)
 latest</code></pre></div>
 <div class="report"><p><span class="count">[9]</span>
-<span class="start">2019-11-08 22:32:14</span> (<span class="time">12.0ms</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">19.1s</span>)</span></p></div></div><div class="cell jupyter output"><div class="code"><pre><code class="nohighlight">&#39;training_2\\cp-0050.ckpt&#39;</code></pre></div></div></div></div>
+<span class="start">2019-11-10 09:37:26</span> (<span class="time">47.0ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">7min46s</span>)</span></p></div></div><div class="cell jupyter output"><div class="code"><pre><code class="nohighlight">&#39;training_2\\cp-0050.ckpt&#39;</code></pre></div></div></div></div>
 
 <div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">model = create_model()
 model.load_weights(latest)
@@ -291,14 +304,14 @@ loss, acc = model.evaluate(test_images, test_labels, verbose=2)
 print(&#34;Restored model, accuracy: {:5.2f}%&#34;.format(100 * acc))
 shutil.rmtree(checkpoint_dir)</code></pre></div>
 <div class="report"><p><span class="count">[10]</span>
-<span class="start">2019-11-08 22:32:14</span> (<span class="time">351ms</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">19.5s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
-      <pre><code class="nohighlight">1000/1 - 0s - loss: 0.5898 - accuracy: 0.8740
-Restored model, accuracy: 87.40%</code></pre></div></div></div></div></div>
+<span class="start">2019-11-10 09:37:26</span> (<span class="time">345ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">7min47s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">1000/1 - 0s - loss: 0.5073 - accuracy: 0.8790
+Restored model, accuracy: 87.90%</code></pre></div></div></div></div></div>
                 <footer>
     <div class="footer-buttons">
         <div class="previous"><a href="../過学習と学習不足/" title="5 過学習と学習不足"><span>Previous</span></a></div>
-        <div class="next"><a href="../../データの読み込みと前処理/CSV/" title="1 tf.data を使って CSV をロードする"><span>Next</span></a></div>
+        <div class="next"><a href="../../データの読み込みと前処理/CSV/" title="1 CSV"><span>Next</span></a></div>
     </div>
     <div class="footer-note">
         <p>

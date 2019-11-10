@@ -1,4 +1,6 @@
 # # tf.functionで性能アップ
+# # (https://www.tensorflow.org/tutorials/customization/performance)
+
 import contextlib
 
 import tensorflow as tf

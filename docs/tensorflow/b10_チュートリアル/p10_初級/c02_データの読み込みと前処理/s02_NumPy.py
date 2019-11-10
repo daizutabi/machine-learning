@@ -1,4 +1,6 @@
 # # NumPy
+# # (https://www.tensorflow.org/tutorials/load_data/numpy)
+
 import numpy as np
 import tensorflow as tf
 

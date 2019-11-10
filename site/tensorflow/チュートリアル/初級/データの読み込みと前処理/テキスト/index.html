@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="daizutabi">
+    <link rel="shortcut icon" href="../../../../../img/favicon.ico">
+    <title>5 テキスト &mdash; Machine Learning</title>
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/tonsky/FiraCode@1.206/distr/fira_code.css">
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/v4-shims.css">
+    <link rel="stylesheet" href="../../../../../css/theme.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/v4-shims.css">
+    <link rel="stylesheet" href="../../../../../css/pheasant.css">
+    <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script>
+        hljs.initHighlightingOnLoad();
+    </script> 
+</head>
+
+<body ontouchstart="">
+    <div id="container">
+        <aside>
+            <div class="home">
+                <div class="title">
+                    <button class="hamburger"></button>
+                    <a href="../../../../.." class="site-name"> Machine Learning</a>
+                </div>
+            </div>
+            <nav class="nav">
+                <ul class="root">
+                    <li class="toctree-l1"><a class="nav-item" href="../../../../..">機械学習自習室</a></li>
+                    <li class="toctree-l1"><button class="section nav-item">TensorFlow</button>
+<ul class="subnav">
+    <li class="toctree-l2 current"><button class="section nav-item">チュートリアル</button>
+<ul class="subnav">
+    <li class="toctree-l3 current"><button class="section nav-item">初級</button>
+<ul class="subnav">
+    <li class="toctree-l4"><button class="section nav-item hide">KerasによるMLの基本</button>
+<ul class="subnav hide">
+    <li class="toctree-l5"><a class="nav-item" href="../../KerasによるMLの基本/基本的な画像分類/">1 基本的な画像の分類</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../KerasによるMLの基本/TF.Hubによるテキスト分類/">2 TF.Hubによるテキスト分類</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../KerasによるMLの基本/映画レビューのテキスト分類/">3 映画レビューのテキスト分類</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../KerasによるMLの基本/回帰：燃費を予測する/">4 回帰：燃費を予測する</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../KerasによるMLの基本/過学習と学習不足/">5 過学習と学習不足</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../KerasによるMLの基本/モデルの保存と復元/">6 モデルの保存と復元</a></li>
+</ul></li>
+    <li class="toctree-l4 current"><button class="section nav-item">データの読み込みと前処理</button>
+<ul class="subnav">
+    <li class="toctree-l5"><a class="nav-item" href="../CSV/">1 CSV</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../NumPy/">2 NumPy</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../pandas.DataFrame/">3 pandas.DataFrame</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../画像/">4 画像</a></li>
+    <li class="toctree-l5 current"><a class="nav-item current" href="./">5 テキスト</a>
+<ul class="subnav">
+<li class="toctree-l6"><a class="nav-item toc" href="#51">5.1 テキストをデータセットに読み込む</a></li>
+<li class="toctree-l6"><a class="nav-item toc" href="#52">5.2 テキスト行を数字にエンコードする</a></li>
+<li class="toctree-l6"><a class="nav-item toc" href="#53">5.3 データセットを、テスト用と訓練用のバッチに分割する</a></li>
+<li class="toctree-l6"><a class="nav-item toc" href="#54">5.4 モデルを構築する</a></li>
+<li class="toctree-l6"><a class="nav-item toc" href="#55">5.5 モデルを訓練する</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+    <li class="toctree-l3"><button class="section nav-item hide">詳細</button>
+<ul class="subnav hide">
+    <li class="toctree-l4"><button class="section nav-item hide">カスタマイズ</button>
+<ul class="subnav hide">
+    <li class="toctree-l5"><a class="nav-item" href="../../../詳細/カスタマイズ/テンソルと演算/">1 テンソルと演算</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../詳細/カスタマイズ/カスタムレイヤー/">2 カスタムレイヤー</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../詳細/カスタマイズ/自動微分と勾配テープ/">3 自動微分と勾配テープ</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../詳細/カスタマイズ/カスタム訓練：基本/">4 カスタム訓練：基本</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../詳細/カスタマイズ/カスタム訓練：ウォークスルー/">5 カスタム訓練：ウォークスルー</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../詳細/カスタマイズ/tf.functionで性能アップ/">6 tf.functionで性能アップ</a></li>
+</ul></li>
+    <li class="toctree-l4"><button class="section nav-item hide">画像</button>
+<ul class="subnav hide">
+    <li class="toctree-l5"><a class="nav-item" href="../../../詳細/画像/畳み込みニューラルネットワーク/">1 畳み込みニューラルネットワーク</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../詳細/画像/画像分類/">2 画像分類</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../詳細/画像/TF.Hubによる転移学習/">3 TF.Hubによる転移学習</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../詳細/画像/学習済CNNによる転移学習/">4 学習済CNNによる転移学習</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../詳細/画像/画像セグメンテーション/">5 画像セグメンテーション</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../詳細/画像/TF.Hubによるオブジェクト検出/">6 TF.Hubによるオブジェクト検出</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+                </ul>
+            </nav>
+            <div class="repo">
+    <div class="link">
+        <a href="https://github.com/daizutabi/machine-learning/" class="fa fa-github"> GitHub</a>
+    </div>
+    <div class="previous"><a href="../画像/">&laquo; Previous</a></div>
+    <div class="next"><a href="../../../詳細/カスタマイズ/テンソルと演算/">Next &raquo;</a></div>
+</div>
+        </aside>
+        <div id="spacer"><button class="arrow"></button></div>
+        <main>
+            <div class="home-top">
+                <button class="hamburger"></button>
+                <a href="../../../../.." class="site-name"> Machine Learning</a>
+            </div>
+            <div id="main">
+                <nav class="breadcrumbs">
+<ul>
+    <li>TensorFlow &raquo; </li><li>チュートリアル &raquo; </li><li>初級 &raquo; </li><li>データの読み込みと前処理</li>
+</ul>
+</nav>
+                <div id="content">
+<h1 id="5"><span class="pheasant-header"><span class="header"><span class="number">5</span> <span class="title">テキスト</span><span class="link"><a href="https://www.tensorflow.org/tutorials/load_data/text" target="_blank" title="https://www.tensorflow.org/tutorials/load_data/text"></a></span></span></span></h1>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">import os
+
+import tensorflow as tf
+import tensorflow_datasets as tfds
+
+DIRECTORY_URL = &#34;https://storage.googleapis.com/download.tensorflow.org/data/illiad/&#34;
+FILE_NAMES = [&#34;cowper.txt&#34;, &#34;derby.txt&#34;, &#34;butler.txt&#34;]
+
+for name in FILE_NAMES:
+    text_dir = tf.keras.utils.get_file(name, origin=DIRECTORY_URL + name)
+parent_dir = os.path.dirname(text_dir)</code></pre></div>
+<div class="report"><p><span class="count">[1]</span>
+<span class="start">2019-11-10 09:52:48</span> (<span class="time">2.10s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">1min10s</span>)</span></p></div></div></div></div>
+
+<h2 id="51"><span class="pheasant-header"><span class="header"><span class="number">5.1</span> <span class="title">テキストをデータセットに読み込む</span></span></span></h2>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">def labeler(example, index):
+    return example, tf.cast(index, tf.int64)
+
+labeled_data_sets = []
+
+for i, file_name in enumerate(FILE_NAMES):
+    lines_dataset = tf.data.TextLineDataset(os.path.join(parent_dir, file_name))
+    labeled_dataset = lines_dataset.map(lambda ex: labeler(ex, i))
+    labeled_data_sets.append(labeled_dataset)</code></pre></div>
+<div class="report"><p><span class="count">[2]</span>
+<span class="start">2019-11-10 09:52:50</span> (<span class="time">1.24s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">1min11s</span>)</span></p></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">BUFFER_SIZE = 50000
+BATCH_SIZE = 64
+TAKE_SIZE = 5000
+
+all_labeled_data = labeled_data_sets[0]
+for labeled_dataset in labeled_data_sets[1:]:
+    all_labeled_data = all_labeled_data.concatenate(labeled_dataset)
+all_labeled_data = all_labeled_data.shuffle(BUFFER_SIZE, reshuffle_each_iteration=False)
+
+for ex in all_labeled_data.take(5):
+    print(ex)</code></pre></div>
+<div class="report"><p><span class="count">[3]</span>
+<span class="start">2019-11-10 09:52:51</span> (<span class="time">2.23s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">1min14s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">(&lt;tf.Tensor: id=74, shape=(), dtype=string, numpy=b&#39;not defend them and I shall not care. Even if I did, and tried to stay&#39;&gt;, &lt;tf.Tensor: id=75, shape=(), dtype=int64, numpy=2&gt;)
+(&lt;tf.Tensor: id=76, shape=(), dtype=string, numpy=b&#39;Whom royal Agamemnon thus bespake.&#39;&gt;, &lt;tf.Tensor: id=77, shape=(), dtype=int64, numpy=0&gt;)
+(&lt;tf.Tensor: id=78, shape=(), dtype=string, numpy=b&#39;the topmost summits of Olympus. She shot through the sky as some&#39;&gt;, &lt;tf.Tensor: id=79, shape=(), dtype=int64, numpy=2&gt;)
+(&lt;tf.Tensor: id=80, shape=(), dtype=string, numpy=b&#34;And, seizing Agamemnon&#39;s better hand,&#34;&gt;, &lt;tf.Tensor: id=81, shape=(), dtype=int64, numpy=0&gt;)
+(&lt;tf.Tensor: id=82, shape=(), dtype=string, numpy=b&#39;While me the noble Grecians shall entomb!&#39;&gt;, &lt;tf.Tensor: id=83, shape=(), dtype=int64, numpy=0&gt;)</code></pre></div></div></div></div>
+
+<h2 id="52"><span class="pheasant-header"><span class="header"><span class="number">5.2</span> <span class="title">テキスト行を数字にエンコードする</span></span></span></h2>
+<h3 id="521"><span class="pheasant-header"><span class="header"><span class="number">5.2.1</span> <span class="title">ボキャブラリーの構築</span></span></span></h3>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">tokenizer = tfds.features.text.Tokenizer()
+
+vocabulary_set = set()  # type: ignore
+for text_tensor, _ in all_labeled_data:
+    some_tokens = tokenizer.tokenize(text_tensor.numpy())
+    vocabulary_set.update(some_tokens)
+vocab_size = len(vocabulary_set)
+vocab_size
+text_tensor</code></pre></div>
+<div class="report"><p><span class="count">[4]</span>
+<span class="start">2019-11-10 09:52:54</span> (<span class="time">6.01s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">1min20s</span>)</span></p></div></div><div class="cell jupyter output"><div class="code"><pre><code class="nohighlight">&lt;tf.Tensor: id=99303, shape=(), dtype=string, numpy=b&#39;down a thick mist in front of them to stay them. The other half were&#39;&gt;</code></pre></div></div></div></div>
+
+<h3 id="522"><span class="pheasant-header"><span class="header"><span class="number">5.2.2</span> <span class="title">サンプルをエンコードする</span></span></span></h3>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">encoder = tfds.features.text.TokenTextEncoder(vocabulary_set)
+
+def encode(text_tensor, label):
+    encoded_text = encoder.encode(text_tensor.numpy())
+    return encoded_text, label
+
+def encode_map_fn(text, label):
+    return tf.py_function(encode, inp=[text, label], Tout=(tf.int64, tf.int64))
+
+all_encoded_data = all_labeled_data.map(encode_map_fn)</code></pre></div>
+<div class="report"><p><span class="count">[5]</span>
+<span class="start">2019-11-10 09:53:00</span> (<span class="time">93.9ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">1min20s</span>)</span></p></div></div></div></div>
+
+<h2 id="53"><span class="pheasant-header"><span class="header"><span class="number">5.3</span> <span class="title">データセットを、テスト用と訓練用のバッチに分割する</span></span></span></h2>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">train_data = all_encoded_data.skip(TAKE_SIZE).shuffle(BUFFER_SIZE)
+train_data = train_data.padded_batch(BATCH_SIZE, padded_shapes=([-1], []))
+
+test_data = all_encoded_data.take(TAKE_SIZE)
+test_data = test_data.padded_batch(BATCH_SIZE, padded_shapes=([-1], []))
+
+# （ゼロをパディングに使用した）新しいトークン番号を1つ導入したので、
+# ボキャブラリーサイズは1つ増えています。
+vocab_size += 1</code></pre></div>
+<div class="report"><p><span class="count">[6]</span>
+<span class="start">2019-11-10 09:53:00</span> (<span class="time">31.1ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">1min20s</span>)</span></p></div></div></div></div>
+
+<h2 id="54"><span class="pheasant-header"><span class="header"><span class="number">5.4</span> <span class="title">モデルを構築する</span></span></span></h2>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">model = tf.keras.Sequential()
+model.add(tf.keras.layers.Embedding(vocab_size, 64))
+model.add(tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(64)))
+# 1 つ以上の Dense 層
+# `for` 行の中のリストを編集して、層のサイズの実験をしてください
+for units in [64, 64]:
+    model.add(tf.keras.layers.Dense(units, activation=&#34;relu&#34;))
+# 出力層 最初の引数はラベルの数
+model.add(tf.keras.layers.Dense(3, activation=&#34;softmax&#34;))
+
+model.compile(
+    optimizer=&#34;adam&#34;, loss=&#34;sparse_categorical_crossentropy&#34;, metrics=[&#34;accuracy&#34;]
+)</code></pre></div>
+<div class="report"><p><span class="count">[7]</span>
+<span class="start">2019-11-10 09:53:00</span> (<span class="time">595ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">1min20s</span>)</span></p></div></div></div></div>
+
+<h2 id="55"><span class="pheasant-header"><span class="header"><span class="number">5.5</span> <span class="title">モデルを訓練する</span></span></span></h2>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">model.fit(train_data, epochs=3, validation_data=test_data)</code></pre></div>
+<div class="report"><p><span class="count">[8]</span>
+<span class="start">2019-11-10 09:53:00</span> (<span class="time">1min34s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">2min54s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">Epoch 1/3
+697/697 [==============================] - 35s 51ms/step - loss: 0.5157 - accuracy: 0.7499 - val_loss: 0.0000e+00 - val_accuracy: 0.0000e+00
+Epoch 2/3
+697/697 [==============================] - 29s 42ms/step - loss: 0.2957 - accuracy: 0.8680 - val_loss: 0.3566 - val_accuracy: 0.8384
+Epoch 3/3
+697/697 [==============================] - 29s 42ms/step - loss: 0.2260 - accuracy: 0.9003 - val_loss: 0.3987 - val_accuracy: 0.8344</code></pre></div></div><div class="cell jupyter output"><div class="code"><pre><code class="nohighlight">&lt;tensorflow.python.keras.callbacks.History at 0x1ace6644748&gt;</code></pre></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">eval_loss, eval_acc = model.evaluate(test_data)
+
+print(&#34;\nEval loss: {}, Eval accuracy: {}&#34;.format(eval_loss, eval_acc))</code></pre></div>
+<div class="report"><p><span class="count">[9]</span>
+<span class="start">2019-11-10 09:54:34</span> (<span class="time">4.37s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">2min58s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">79/79 [==============================] - 4s 55ms/step - loss: 0.3987 - accuracy: 0.8344
+
+Eval loss: 0.3986915667317336, Eval accuracy: 0.8343999981880188</code></pre></div></div></div></div></div>
+                <footer>
+    <div class="footer-buttons">
+        <div class="previous"><a href="../画像/" title="4 画像"><span>Previous</span></a></div>
+        <div class="next"><a href="../../../詳細/カスタマイズ/テンソルと演算/" title="1 テンソルと演算"><span>Next</span></a></div>
+    </div>
+    <div class="footer-note">
+        <p>
+            Built with <a href="http://www.mkdocs.org">MkDocs</a> using
+            <a href="https://github.com/daizutabi/mkdocs-ivory">Ivory theme</a>.
+        </p>
+    </div>
+</footer>
+            </div>
+        </main>
+    </div>
+    <script>
+        var base_url = '.';
+    </script>
+    <script src="../../../../../js/theme.js"></script>
+    <script src="../../../../../js/pheasant.js"></script>
+</body>
+
+</html>

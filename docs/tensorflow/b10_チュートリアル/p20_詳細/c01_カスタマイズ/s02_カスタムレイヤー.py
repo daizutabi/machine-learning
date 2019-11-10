@@ -1,4 +1,5 @@
 # # カスタムレイヤー
+# # (https://www.tensorflow.org/tutorials/customization/custom_layers)
 
 import tensorflow as tf
 

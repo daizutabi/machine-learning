@@ -1,4 +1,6 @@
 # # モデルの保存と復元
+# # (https://www.tensorflow.org/tutorials/keras/save_and_load)
+
 # ## 設定
 import os
 import shutil

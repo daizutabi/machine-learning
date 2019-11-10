@@ -53,7 +53,11 @@
 </ul></li>
     <li class="toctree-l4"><button class="section nav-item hide">データの読み込みと前処理</button>
 <ul class="subnav hide">
-    <li class="toctree-l5"><a class="nav-item" href="../../../初級/データの読み込みと前処理/CSV/">1 tf.data を使って CSV をロードする</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/データの読み込みと前処理/CSV/">1 CSV</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/データの読み込みと前処理/NumPy/">2 NumPy</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/データの読み込みと前処理/pandas.DataFrame/">3 pandas.DataFrame</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/データの読み込みと前処理/画像/">4 画像</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/データの読み込みと前処理/テキスト/">5 テキスト</a></li>
 </ul></li>
 </ul></li>
     <li class="toctree-l3 current"><button class="section nav-item">詳細</button>
@@ -68,7 +72,16 @@
 </ul></li>
     <li class="toctree-l5"><a class="nav-item" href="../カスタム訓練：基本/">4 カスタム訓練：基本</a></li>
     <li class="toctree-l5"><a class="nav-item" href="../カスタム訓練：ウォークスルー/">5 カスタム訓練：ウォークスルー</a></li>
-    <li class="toctree-l5"><a class="nav-item" href="../tf.functionで性能アップ/">6 tf.functionで性能アップ</a><a class="nav-item" href="../tf.functionで性能アップ/">7 自動的な依存関係の制御</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../tf.functionで性能アップ/">6 tf.functionで性能アップ</a></li>
+</ul></li>
+    <li class="toctree-l4"><button class="section nav-item hide">画像</button>
+<ul class="subnav hide">
+    <li class="toctree-l5"><a class="nav-item" href="../../画像/畳み込みニューラルネットワーク/">1 畳み込みニューラルネットワーク</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../画像/画像分類/">2 画像分類</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../画像/TF.Hubによる転移学習/">3 TF.Hubによる転移学習</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../画像/学習済CNNによる転移学習/">4 学習済CNNによる転移学習</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../画像/画像セグメンテーション/">5 画像セグメンテーション</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../画像/TF.Hubによるオブジェクト検出/">6 TF.Hubによるオブジェクト検出</a></li>
 </ul></li>
 </ul></li>
 </ul></li>
@@ -96,11 +109,11 @@
 </ul>
 </nav>
                 <div id="content">
-<h1 id="3"><span class="pheasant-header"><span class="header"><span class="number">3</span> <span class="title">自動微分と勾配テープ</span></span></span></h1>
+<h1 id="3"><span class="pheasant-header"><span class="header"><span class="number">3</span> <span class="title">自動微分と勾配テープ</span><span class="link"><a href="https://www.tensorflow.org/tutorials/customization/autodiff" target="_blank" title="https://www.tensorflow.org/tutorials/customization/autodiff"></a></span></span></span></h1>
 <div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">import tensorflow as tf</code></pre></div>
 <div class="report"><p><span class="count">[1]</span>
-<span class="start">2019-11-09 09:26:28</span> (<span class="time">6.02ms</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">3.93s</span>)</span></p></div></div></div></div>
+<span class="start">2019-11-10 09:54:57</span> (<span class="time">1.91s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">3min8s</span>)</span></p></div></div></div></div>
 
 <h2 id="31"><span class="pheasant-header"><span class="header"><span class="number">3.1</span> <span class="title">勾配テープ</span></span></span></h2>
 <div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">x = tf.ones((2, 2))
@@ -115,8 +128,8 @@ for i in [0, 1]:
     for j in [0, 1]:
         assert dz_dx[i][j].numpy() == 8.0</code></pre></div>
 <div class="report"><p><span class="count">[2]</span>
-<span class="start">2019-11-09 09:26:28</span> (<span class="time">15.0ms</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">3.94s</span>)</span></p></div></div></div></div>
+<span class="start">2019-11-10 09:54:59</span> (<span class="time">1.11s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">3min9s</span>)</span></p></div></div></div></div>
 
 <div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">x = tf.ones((2, 2))
 
@@ -128,8 +141,8 @@ with tf.GradientTape() as t:
 dz_dy = t.gradient(z, y)
 assert dz_dy.numpy() == 8.0</code></pre></div>
 <div class="report"><p><span class="count">[3]</span>
-<span class="start">2019-11-09 09:26:28</span> (<span class="time">10.0ms</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">3.95s</span>)</span></p></div></div></div></div>
+<span class="start">2019-11-10 09:55:00</span> (<span class="time">15.6ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">3min9s</span>)</span></p></div></div></div></div>
 
 <div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">x = tf.constant(3.0)
 with tf.GradientTape(persistent=True) as t:
@@ -140,8 +153,8 @@ print(t.gradient(z, x))  # 108.0 (4*x^3 at x = 3)
 print(t.gradient(y, x))  # 6.0
 del t  # テープへの参照を削除</code></pre></div>
 <div class="report"><p><span class="count">[4]</span>
-<span class="start">2019-11-09 09:26:28</span> (<span class="time">12.0ms</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">3.97s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+<span class="start">2019-11-10 09:55:01</span> (<span class="time">15.7ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">3min9s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
       <pre><code class="nohighlight">tf.Tensor(108.0, shape=(), dtype=float32)
 tf.Tensor(6.0, shape=(), dtype=float32)</code></pre></div></div></div></div>
 
@@ -165,8 +178,8 @@ assert grad(x, 6).numpy() == 12.0
 assert grad(x, 5).numpy() == 12.0
 assert grad(x, 4).numpy() == 4.0</code></pre></div>
 <div class="report"><p><span class="count">[5]</span>
-<span class="start">2019-11-09 09:26:29</span> (<span class="time">18.0ms</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">3.98s</span>)</span></p></div></div></div></div>
+<span class="start">2019-11-10 09:55:01</span> (<span class="time">31.3ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">3min9s</span>)</span></p></div></div></div></div>
 
 <h3 id="312"><span class="pheasant-header"><span class="header"><span class="number">3.1.2</span> <span class="title">高次勾配</span></span></span></h3>
 <div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">x = tf.Variable(1.0)  # 1.0 で初期化された TensorFlow 変数を作成
@@ -182,8 +195,8 @@ d2y_dx2 = t.gradient(dy_dx, x)
 assert dy_dx.numpy() == 3.0
 assert d2y_dx2.numpy() == 6.0</code></pre></div>
 <div class="report"><p><span class="count">[6]</span>
-<span class="start">2019-11-09 09:26:29</span> (<span class="time">15.0ms</span>)
-<span class="right"><span class="kernel">python3</span> (<span class="total">4.00s</span>)</span></p></div></div></div></div></div>
+<span class="start">2019-11-10 09:55:01</span> (<span class="time">31.4ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">3min9s</span>)</span></p></div></div></div></div></div>
                 <footer>
     <div class="footer-buttons">
         <div class="previous"><a href="../カスタムレイヤー/" title="2 カスタムレイヤー"><span>Previous</span></a></div>

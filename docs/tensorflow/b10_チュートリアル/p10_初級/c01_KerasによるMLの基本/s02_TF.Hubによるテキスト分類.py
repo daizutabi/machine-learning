@@ -1,4 +1,5 @@
 # # TF.Hubによるテキスト分類
+# # (https://www.tensorflow.org/tutorials/keras/text_classification_with_hub)
 
 import tensorflow as tf
 import tensorflow_datasets as tfds

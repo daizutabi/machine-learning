@@ -1,5 +1,9 @@
 # #!
+
 # # CSV
+# # (https://www.tensorflow.org/tutorials/load_data/csv)
+
+
 import numpy as np
 import tensorflow as tf
 
@@ -137,8 +141,9 @@ def get_model(input_dim, hidden_units=[100]):
     return model
 
 
-input_shape, output_shape = train_data.output_shapes
-input_dimension = input_shape.dims[1]  # [0] はバッチサイズ
+# input_shape, output_shape = train_data.output_shapes
+# input_dimension = input_shape.dims[1]  # [0] はバッチサイズ
+input_dimension = 24
 
 # ## 訓練、評価、そして予測
 model = get_model(input_dimension)

@@ -1,4 +1,6 @@
 # # 画像
+# # (https://www.tensorflow.org/tutorials/load_data/images)
+
 import os
 import pathlib
 import random

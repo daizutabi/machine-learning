@@ -1,4 +1,6 @@
 # # カスタム訓練：ウォークスルー
+# # (https://www.tensorflow.org/tutorials/customization/custom_training_walkthrough)
+
 import os
 
 import matplotlib.pyplot as plt

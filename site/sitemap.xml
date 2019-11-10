@@ -2,72 +2,122 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
      <loc>https://ml.daizutabi.net/</loc>
-     <lastmod>2019-11-09</lastmod>
+     <lastmod>2019-11-10</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/初級/KerasによるMLの基本/基本的な画像分類/</loc>
-     <lastmod>2019-11-09</lastmod>
+     <lastmod>2019-11-10</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/初級/KerasによるMLの基本/TF.Hubによるテキスト分類/</loc>
-     <lastmod>2019-11-09</lastmod>
+     <lastmod>2019-11-10</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/初級/KerasによるMLの基本/映画レビューのテキスト分類/</loc>
-     <lastmod>2019-11-09</lastmod>
+     <lastmod>2019-11-10</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/初級/KerasによるMLの基本/回帰：燃費を予測する/</loc>
-     <lastmod>2019-11-09</lastmod>
+     <lastmod>2019-11-10</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/初級/KerasによるMLの基本/過学習と学習不足/</loc>
-     <lastmod>2019-11-09</lastmod>
+     <lastmod>2019-11-10</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/初級/KerasによるMLの基本/モデルの保存と復元/</loc>
-     <lastmod>2019-11-09</lastmod>
+     <lastmod>2019-11-10</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/初級/データの読み込みと前処理/CSV/</loc>
-     <lastmod>2019-11-09</lastmod>
+     <lastmod>2019-11-10</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
+     <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/初級/データの読み込みと前処理/NumPy/</loc>
+     <lastmod>2019-11-10</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
+     <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/初級/データの読み込みと前処理/pandas.DataFrame/</loc>
+     <lastmod>2019-11-10</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
+     <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/初級/データの読み込みと前処理/画像/</loc>
+     <lastmod>2019-11-10</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
+     <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/初級/データの読み込みと前処理/テキスト/</loc>
+     <lastmod>2019-11-10</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/詳細/カスタマイズ/テンソルと演算/</loc>
-     <lastmod>2019-11-09</lastmod>
+     <lastmod>2019-11-10</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/詳細/カスタマイズ/カスタムレイヤー/</loc>
-     <lastmod>2019-11-09</lastmod>
+     <lastmod>2019-11-10</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/詳細/カスタマイズ/自動微分と勾配テープ/</loc>
-     <lastmod>2019-11-09</lastmod>
+     <lastmod>2019-11-10</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/詳細/カスタマイズ/カスタム訓練：基本/</loc>
-     <lastmod>2019-11-09</lastmod>
+     <lastmod>2019-11-10</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/詳細/カスタマイズ/カスタム訓練：ウォークスルー/</loc>
-     <lastmod>2019-11-09</lastmod>
+     <lastmod>2019-11-10</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/詳細/カスタマイズ/tf.functionで性能アップ/</loc>
-     <lastmod>2019-11-09</lastmod>
+     <lastmod>2019-11-10</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
+     <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/詳細/画像/畳み込みニューラルネットワーク/</loc>
+     <lastmod>2019-11-10</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
+     <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/詳細/画像/画像分類/</loc>
+     <lastmod>2019-11-10</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
+     <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/詳細/画像/TF.Hubによる転移学習/</loc>
+     <lastmod>2019-11-10</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
+     <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/詳細/画像/学習済CNNによる転移学習/</loc>
+     <lastmod>2019-11-10</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
+     <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/詳細/画像/画像セグメンテーション/</loc>
+     <lastmod>2019-11-10</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
+     <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/詳細/画像/TF.Hubによるオブジェクト検出/</loc>
+     <lastmod>2019-11-10</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>

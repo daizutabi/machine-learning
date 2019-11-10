@@ -1,4 +1,5 @@
 # # 回帰：燃費を予測する
+# # (https://www.tensorflow.org/tutorials/keras/regression)
 
 import altair as alt
 import pandas as pd

@@ -1,4 +1,5 @@
 # # 映画レビューのテキスト分類
+# # (https://www.tensorflow.org/tutorials/keras/text_classification)
 
 import altair as alt
 import pandas as pd

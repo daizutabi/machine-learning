@@ -1,4 +1,6 @@
 # # カスタム訓練：基本
+# # (https://www.tensorflow.org/tutorials/customization/custom_training)
+
 import matplotlib.pyplot as plt
 import tensorflow as tf
 

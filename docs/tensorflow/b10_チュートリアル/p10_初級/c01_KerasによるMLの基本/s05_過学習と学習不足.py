@@ -1,7 +1,8 @@
 # # 過学習と学習不足
+# # (https://www.tensorflow.org/tutorials/keras/overfit_and_underfit)
+
 import matplotlib.pyplot as plt
 import numpy as np
-import tensorflow as tf
 from tensorflow import keras
 
 # ## IMDBデータセットのダウンロード
