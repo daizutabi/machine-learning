@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="daizutabi">
+    <link rel="shortcut icon" href="../../../../../img/favicon.ico">
+    <title>9 RNNを使ったテキスト生成 &mdash; Machine Learning</title>
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/tonsky/FiraCode@1.206/distr/fira_code.css">
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/v4-shims.css">
+    <link rel="stylesheet" href="../../../../../css/theme.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/v4-shims.css">
+    <link rel="stylesheet" href="../../../../../css/pheasant.css">
+    <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script>
+        hljs.initHighlightingOnLoad();
+    </script> 
+</head>
+
+<body ontouchstart="">
+    <div id="container">
+        <aside>
+            <div class="home">
+                <div class="title">
+                    <button class="hamburger"></button>
+                    <a href="../../../../.." class="site-name"> Machine Learning</a>
+                </div>
+            </div>
+            <nav class="nav">
+                <ul class="root">
+                    <li class="toctree-l1"><a class="nav-item" href="../../../../..">機械学習自習室</a></li>
+                    <li class="toctree-l1"><button class="section nav-item">TensorFlow</button>
+<ul class="subnav">
+    <li class="toctree-l2 current"><button class="section nav-item">チュートリアル</button>
+<ul class="subnav">
+    <li class="toctree-l3"><button class="section nav-item hide">初級</button>
+<ul class="subnav hide">
+    <li class="toctree-l4"><button class="section nav-item hide">KerasによるMLの基本</button>
+<ul class="subnav hide">
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/KerasによるMLの基本/基本的な画像分類/">1 基本的な画像の分類</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/KerasによるMLの基本/TF.Hubによるテキスト分類/">2 TF.Hubによるテキスト分類</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/KerasによるMLの基本/映画レビューのテキスト分類/">3 映画レビューのテキスト分類</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/KerasによるMLの基本/回帰：燃費を予測する/">4 回帰：燃費を予測する</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/KerasによるMLの基本/過学習と学習不足/">5 過学習と学習不足</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/KerasによるMLの基本/モデルの保存と復元/">6 モデルの保存と復元</a></li>
+</ul></li>
+    <li class="toctree-l4"><button class="section nav-item hide">データの読み込みと前処理</button>
+<ul class="subnav hide">
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/データの読み込みと前処理/CSV/">1 CSV</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/データの読み込みと前処理/NumPy/">2 NumPy</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/データの読み込みと前処理/pandas.DataFrame/">3 pandas.DataFrame</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/データの読み込みと前処理/画像/">4 画像</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../../初級/データの読み込みと前処理/テキスト/">5 テキスト</a></li>
+</ul></li>
+</ul></li>
+    <li class="toctree-l3 current"><button class="section nav-item">詳細</button>
+<ul class="subnav">
+    <li class="toctree-l4"><button class="section nav-item hide">カスタマイズ</button>
+<ul class="subnav hide">
+    <li class="toctree-l5"><a class="nav-item" href="../../カスタマイズ/テンソルと演算/">1 テンソルと演算</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../カスタマイズ/カスタムレイヤー/">2 カスタムレイヤー</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../カスタマイズ/自動微分と勾配テープ/">3 自動微分と勾配テープ</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../カスタマイズ/カスタム訓練：基本/">4 カスタム訓練：基本</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../カスタマイズ/カスタム訓練：ウォークスルー/">5 カスタム訓練：ウォークスルー</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../カスタマイズ/tf.functionで性能アップ/">6 tf.functionで性能アップ</a></li>
+</ul></li>
+    <li class="toctree-l4"><button class="section nav-item hide">画像</button>
+<ul class="subnav hide">
+    <li class="toctree-l5"><a class="nav-item" href="../../画像/畳み込みニューラルネットワーク/">1 畳み込みニューラルネットワーク</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../画像/画像分類/">2 画像分類</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../画像/TF.Hubによる転移学習/">3 TF.Hubによる転移学習</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../画像/学習済CNNによる転移学習/">4 学習済CNNによる転移学習</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../画像/画像セグメンテーション/">5 画像セグメンテーション</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../../画像/TF.Hubによるオブジェクト検出/">6 TF.Hubによるオブジェクト検出</a></li>
+</ul></li>
+    <li class="toctree-l4 current"><button class="section nav-item">テキスト</button>
+<ul class="subnav">
+    <li class="toctree-l5"><a class="nav-item" href="../単語の埋め込み/">7 単語の埋め込み</a></li>
+    <li class="toctree-l5"><a class="nav-item" href="../RNNを使ったテキスト分類/">8 RNNを使ったテキスト分類</a></li>
+    <li class="toctree-l5 current"><a class="nav-item current" href="./">9 RNNを使ったテキスト生成</a>
+<ul class="subnav">
+<li class="toctree-l6"><a class="nav-item toc" href="#91-setup">9.1 Setup</a></li>
+<li class="toctree-l6"><a class="nav-item toc" href="#92-process-the-text">9.2 Process the text</a></li>
+<li class="toctree-l6"><a class="nav-item toc" href="#93-build-the-model">9.3 Build The Model</a></li>
+<li class="toctree-l6"><a class="nav-item toc" href="#94-try-the-model">9.4 Try the model</a></li>
+<li class="toctree-l6"><a class="nav-item toc" href="#95-train-the-model">9.5 Train the model</a></li>
+<li class="toctree-l6"><a class="nav-item toc" href="#96-generate-text">9.6 Generate text</a></li>
+<li class="toctree-l6"><a class="nav-item toc" href="#97-advanced-customized-training">9.7 Advanced: Customized Training</a></li>
+</ul></li>
+    <li class="toctree-l5"><a class="nav-item" href="../アテンションを用いたニューラル機械翻訳/">10 アテンションを用いたニューラル機械翻訳</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+                </ul>
+            </nav>
+            <div class="repo">
+    <div class="link">
+        <a href="https://github.com/daizutabi/machine-learning/" class="fa fa-github"> GitHub</a>
+    </div>
+    <div class="previous"><a href="../RNNを使ったテキスト分類/">&laquo; Previous</a></div>
+    <div class="next"><a href="../アテンションを用いたニューラル機械翻訳/">Next &raquo;</a></div>
+</div>
+        </aside>
+        <div id="spacer"><button class="arrow"></button></div>
+        <main>
+            <div class="home-top">
+                <button class="hamburger"></button>
+                <a href="../../../../.." class="site-name"> Machine Learning</a>
+            </div>
+            <div id="main">
+                <nav class="breadcrumbs">
+<ul>
+    <li>TensorFlow &raquo; </li><li>チュートリアル &raquo; </li><li>詳細 &raquo; </li><li>テキスト</li>
+</ul>
+</nav>
+                <div id="content">
+<h1 id="9-rnn"><span class="pheasant-header"><span class="header"><span class="number">9</span> <span class="title">RNNを使ったテキスト生成</span><span class="link"><a href="https://www.tensorflow.org/tutorials/text/text_generation" target="_blank" title="https://www.tensorflow.org/tutorials/text/text_generation"></a></span></span></span></h1>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">import os</code></pre></div>
+<div class="report"><p><span class="count">[1]</span>
+<span class="start">2019-11-10 14:13:51</span> (<span class="time">4.01ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">4.01ms</span>)</span></p></div></div></div></div>
+
+<h2 id="91-setup"><span class="pheasant-header"><span class="header"><span class="number">9.1</span> <span class="title">Setup</span></span></span></h2>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">import tempfile
+import time
+
+import numpy as np
+import tensorflow as tf</code></pre></div>
+<div class="report"><p><span class="count">[2]</span>
+<span class="start">2019-11-10 14:13:51</span> (<span class="time">1.93s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">1.93s</span>)</span></p></div></div></div></div>
+
+<h3 id="911-download-the-shakespeare-dataset"><span class="pheasant-header"><span class="header"><span class="number">9.1.1</span> <span class="title">Download the Shakespeare dataset</span></span></span></h3>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">path_to_file = tf.keras.utils.get_file(
+    &#34;shakespeare.txt&#34;,
+    &#34;https://storage.googleapis.com/download.tensorflow.org/data/shakespeare.txt&#34;,
+)</code></pre></div>
+<div class="report"><p><span class="count">[3]</span>
+<span class="start">2019-11-10 14:13:53</span> (<span class="time">33.0ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">1.96s</span>)</span></p></div></div></div></div>
+
+<h3 id="912-read-the-data"><span class="pheasant-header"><span class="header"><span class="number">9.1.2</span> <span class="title">Read the data</span></span></span></h3>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python"># Read, then decode for py2 compat.
+text = open(path_to_file, &#34;rb&#34;).read().decode(encoding=&#34;utf-8&#34;)
+# length of text is the number of characters in it
+print(&#34;Length of text: {} characters&#34;.format(len(text)))</code></pre></div>
+<div class="report"><p><span class="count">[4]</span>
+<span class="start">2019-11-10 14:13:53</span> (<span class="time">12.0ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">1.97s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">Length of text: 1115394 characters</code></pre></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python"># Take a look at the first 250 characters in text
+print(text[:250])</code></pre></div>
+<div class="report"><p><span class="count">[5]</span>
+<span class="start">2019-11-10 14:13:53</span> (<span class="time">18.0ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">1.99s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">First Citizen:
+Before we proceed any further, hear me speak.
+
+All:
+Speak, speak.
+
+First Citizen:
+You are all resolved rather to die than to famish?
+
+All:
+Resolved. resolved.
+
+First Citizen:
+First, you know Caius Marcius is chief enemy to the people.</code></pre></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python"># The unique characters in the file
+vocab = sorted(set(text))
+print(&#34;{} unique characters&#34;.format(len(vocab)))</code></pre></div>
+<div class="report"><p><span class="count">[6]</span>
+<span class="start">2019-11-10 14:13:53</span> (<span class="time">46.9ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">2.04s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">65 unique characters</code></pre></div></div></div></div>
+
+<h2 id="92-process-the-text"><span class="pheasant-header"><span class="header"><span class="number">9.2</span> <span class="title">Process the text</span></span></span></h2>
+<h3 id="921-vectorize-the-text"><span class="pheasant-header"><span class="header"><span class="number">9.2.1</span> <span class="title">Vectorize the text</span></span></span></h3>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python"># Creating a mapping from unique characters to indices
+char2idx = {u: i for i, u in enumerate(vocab)}
+idx2char = np.array(vocab)
+text_as_int = np.array([char2idx[c] for c in text])</code></pre></div>
+<div class="report"><p><span class="count">[7]</span>
+<span class="start">2019-11-10 14:13:53</span> (<span class="time">185ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">2.22s</span>)</span></p></div></div></div></div>
+
+<h3 id="922-create-training-examples-and-targets"><span class="pheasant-header"><span class="header"><span class="number">9.2.2</span> <span class="title">Create training examples and targets</span></span></span></h3>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python"># The maximum length sentence we want for a single input in characters
+seq_length = 100
+examples_per_epoch = len(text) // (seq_length + 1)
+
+# Create training examples / targets
+char_dataset = tf.data.Dataset.from_tensor_slices(text_as_int)
+
+for i in char_dataset.take(5):
+    print(idx2char[i.numpy()])</code></pre></div>
+<div class="report"><p><span class="count">[8]</span>
+<span class="start">2019-11-10 14:13:53</span> (<span class="time">1.39s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">3.61s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">F
+i
+r
+s
+t</code></pre></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">sequences = char_dataset.batch(seq_length + 1, drop_remainder=True)
+
+for item in sequences.take(5):
+    print(repr(&#34;&#34;.join(idx2char[item.numpy()])))</code></pre></div>
+<div class="report"><p><span class="count">[9]</span>
+<span class="start">2019-11-10 14:13:55</span> (<span class="time">31.2ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">3.64s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">&#39;First Citizen:\nBefore we proceed any further, hear me speak.\n\nAll:\nSpeak, speak.\n\nFirst Citizen:\nYou &#39;
+&#39;are all resolved rather to die than to famish?\n\nAll:\nResolved. resolved.\n\nFirst Citizen:\nFirst, you k&#39;
+&#34;now Caius Marcius is chief enemy to the people.\n\nAll:\nWe know&#39;t, we know&#39;t.\n\nFirst Citizen:\nLet us ki&#34;
+&#34;ll him, and we&#39;ll have corn at our own price.\nIs&#39;t a verdict?\n\nAll:\nNo more talking on&#39;t; let it be d&#34;
+&#39;one: away, away!\n\nSecond Citizen:\nOne word, good citizens.\n\nFirst Citizen:\nWe are accounted poor citi&#39;</code></pre></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">def split_input_target(chunk):
+    input_text = chunk[:-1]
+    target_text = chunk[1:]
+    return input_text, target_text
+
+dataset = sequences.map(split_input_target)
+
+for input_example, target_example in dataset.take(1):
+    print(&#34;Input data: &#34;, repr(&#34;&#34;.join(idx2char[input_example.numpy()])))
+    print(&#34;Target data:&#34;, repr(&#34;&#34;.join(idx2char[target_example.numpy()])))</code></pre></div>
+<div class="report"><p><span class="count">[10]</span>
+<span class="start">2019-11-10 14:13:55</span> (<span class="time">166ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">3.81s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">Input data:  &#39;First Citizen:\nBefore we proceed any further, hear me speak.\n\nAll:\nSpeak, speak.\n\nFirst Citizen:\nYou&#39;
+Target data: &#39;irst Citizen:\nBefore we proceed any further, hear me speak.\n\nAll:\nSpeak, speak.\n\nFirst Citizen:\nYou &#39;</code></pre></div></div></div></div>
+
+<h3 id="923-create-training-batches"><span class="pheasant-header"><span class="header"><span class="number">9.2.3</span> <span class="title">Create training batches</span></span></span></h3>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python"># Batch size
+BATCH_SIZE = 64
+
+# Buffer size to shuffle the dataset
+# (TF data is designed to work with possibly infinite sequences,
+# so it doesn&#39;t attempt to shuffle the entire sequence in memory. Instead,
+# it maintains a buffer in which it shuffles elements).
+BUFFER_SIZE = 10000
+
+dataset = dataset.shuffle(BUFFER_SIZE).batch(BATCH_SIZE, drop_remainder=True)
+dataset</code></pre></div>
+<div class="report"><p><span class="count">[11]</span>
+<span class="start">2019-11-10 14:13:55</span> (<span class="time">15.6ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">3.82s</span>)</span></p></div></div><div class="cell jupyter output"><div class="code"><pre><code class="nohighlight">&lt;BatchDataset shapes: ((64, 100), (64, 100)), types: (tf.int32, tf.int32)&gt;</code></pre></div></div></div></div>
+
+<h2 id="93-build-the-model"><span class="pheasant-header"><span class="header"><span class="number">9.3</span> <span class="title">Build The Model</span></span></span></h2>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python"># Length of the vocabulary in chars
+vocab_size = len(vocab)
+
+# The embedding dimension
+embedding_dim = 256
+
+# Number of RNN units
+rnn_units = 1024</code></pre></div>
+<div class="report"><p><span class="count">[12]</span>
+<span class="start">2019-11-10 14:13:55</span> (<span class="time">15.7ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">3.84s</span>)</span></p></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">def build_model(vocab_size, embedding_dim, rnn_units, batch_size):
+    model = tf.keras.Sequential(
+        [
+            tf.keras.layers.Embedding(
+                vocab_size, embedding_dim, batch_input_shape=[batch_size, None]
+            ),
+            tf.keras.layers.GRU(
+                rnn_units,
+                return_sequences=True,
+                stateful=True,
+                recurrent_initializer=&#34;glorot_uniform&#34;,
+            ),
+            tf.keras.layers.Dense(vocab_size),
+        ]
+    )
+    return model
+
+model = build_model(
+    vocab_size=len(vocab),
+    embedding_dim=embedding_dim,
+    rnn_units=rnn_units,
+    batch_size=BATCH_SIZE,
+)</code></pre></div>
+<div class="report"><p><span class="count">[13]</span>
+<span class="start">2019-11-10 14:13:55</span> (<span class="time">349ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">4.19s</span>)</span></p></div></div></div></div>
+
+<h2 id="94-try-the-model"><span class="pheasant-header"><span class="header"><span class="number">9.4</span> <span class="title">Try the model</span></span></span></h2>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">for input_example_batch, target_example_batch in dataset.take(1):
+    example_batch_predictions = model(input_example_batch)
+    comment = &#34;# (batch_size, sequence_length, vocab_size)&#34;
+    print(example_batch_predictions.shape, comment)</code></pre></div>
+<div class="report"><p><span class="count">[14]</span>
+<span class="start">2019-11-10 14:13:55</span> (<span class="time">2.42s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">6.60s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">(64, 100, 65) # (batch_size, sequence_length, vocab_size)</code></pre></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">model.summary()</code></pre></div>
+<div class="report"><p><span class="count">[15]</span>
+<span class="start">2019-11-10 14:13:58</span> (<span class="time">27.9ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">6.63s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">Model: &#34;sequential&#34;
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+embedding (Embedding)        (64, None, 256)           16640     
+_________________________________________________________________
+gru (GRU)                    (64, None, 1024)          3938304   
+_________________________________________________________________
+dense (Dense)                (64, None, 65)            66625     
+=================================================================
+Total params: 4,021,569
+Trainable params: 4,021,569
+Non-trainable params: 0
+_________________________________________________________________</code></pre></div></div></div></div>
+
+<h2 id="95-train-the-model"><span class="pheasant-header"><span class="header"><span class="number">9.5</span> <span class="title">Train the model</span></span></span></h2>
+<h3 id="951-attach-an-optimizer-and-a-loss-function"><span class="pheasant-header"><span class="header"><span class="number">9.5.1</span> <span class="title">Attach an optimizer, and a loss function</span></span></span></h3>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">def loss(labels, logits):
+    return tf.keras.losses.sparse_categorical_crossentropy(
+        labels, logits, from_logits=True
+    )
+
+example_batch_loss = loss(target_example_batch, example_batch_predictions)
+print(
+    &#34;Prediction shape: &#34;,
+    example_batch_predictions.shape,
+    &#34; # (batch_size, sequence_length, vocab_size)&#34;,
+)
+print(&#34;scalar_loss:      &#34;, example_batch_loss.numpy().mean())</code></pre></div>
+<div class="report"><p><span class="count">[16]</span>
+<span class="start">2019-11-10 14:13:58</span> (<span class="time">19.2ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">6.65s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">Prediction shape:  (64, 100, 65)  # (batch_size, sequence_length, vocab_size)
+scalar_loss:       4.1742816</code></pre></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">model.compile(optimizer=&#34;adam&#34;, loss=loss)</code></pre></div>
+<div class="report"><p><span class="count">[17]</span>
+<span class="start">2019-11-10 14:13:58</span> (<span class="time">25.1ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">6.68s</span>)</span></p></div></div></div></div>
+
+<h3 id="952-configure-checkpoints"><span class="pheasant-header"><span class="header"><span class="number">9.5.2</span> <span class="title">Configure checkpoints</span></span></span></h3>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python"># Directory where the checkpoints will be saved
+checkpoint_dir = tempfile.mkdtemp()
+# Name of the checkpoint files
+checkpoint_prefix = os.path.join(checkpoint_dir, &#34;ckpt_{epoch}&#34;)
+
+checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
+    filepath=checkpoint_prefix, save_weights_only=True
+)</code></pre></div>
+<div class="report"><p><span class="count">[18]</span>
+<span class="start">2019-11-10 14:13:58</span> (<span class="time">6.06ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">6.68s</span>)</span></p></div></div></div></div>
+
+<h3 id="953-execute-the-training"><span class="pheasant-header"><span class="header"><span class="number">9.5.3</span> <span class="title">Execute the training</span></span></span></h3>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">EPOCHS = 10
+history = model.fit(dataset, epochs=EPOCHS, callbacks=[checkpoint_callback])</code></pre></div>
+<div class="report"><p><span class="count">[19]</span>
+<span class="start">2019-11-10 14:13:58</span> (<span class="time">4min10s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">4min17s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">Epoch 1/10
+172/172 [==============================] - 24s 141ms/step - loss: 2.6709
+Epoch 2/10
+172/172 [==============================] - 23s 135ms/step - loss: 1.9486
+Epoch 3/10
+172/172 [==============================] - 24s 137ms/step - loss: 1.6814
+Epoch 4/10
+172/172 [==============================] - 25s 145ms/step - loss: 1.5361
+Epoch 5/10
+172/172 [==============================] - 25s 148ms/step - loss: 1.4494
+Epoch 6/10
+172/172 [==============================] - 26s 149ms/step - loss: 1.3900
+Epoch 7/10
+172/172 [==============================] - 26s 149ms/step - loss: 1.3450
+Epoch 8/10
+172/172 [==============================] - 26s 151ms/step - loss: 1.3061
+Epoch 9/10
+172/172 [==============================] - 26s 151ms/step - loss: 1.2722
+Epoch 10/10
+172/172 [==============================] - 26s 151ms/step - loss: 1.2382</code></pre></div></div></div></div>
+
+<h2 id="96-generate-text"><span class="pheasant-header"><span class="header"><span class="number">9.6</span> <span class="title">Generate text</span></span></span></h2>
+<h3 id="961-restore-the-latest-checkpoint"><span class="pheasant-header"><span class="header"><span class="number">9.6.1</span> <span class="title">Restore the latest checkpoint</span></span></span></h3>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">model = build_model(vocab_size, embedding_dim, rnn_units, batch_size=1)
+model.load_weights(tf.train.latest_checkpoint(checkpoint_dir))
+model.build(tf.TensorShape([1, None]))
+model.summary()</code></pre></div>
+<div class="report"><p><span class="count">[20]</span>
+<span class="start">2019-11-10 14:18:08</span> (<span class="time">381ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">4min17s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">Model: &#34;sequential_1&#34;
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+embedding_1 (Embedding)      (1, None, 256)            16640     
+_________________________________________________________________
+gru_1 (GRU)                  (1, None, 1024)           3938304   
+_________________________________________________________________
+dense_1 (Dense)              (1, None, 65)             66625     
+=================================================================
+Total params: 4,021,569
+Trainable params: 4,021,569
+Non-trainable params: 0
+_________________________________________________________________</code></pre></div></div></div></div>
+
+<h3 id="962-the-prediction-loop"><span class="pheasant-header"><span class="header"><span class="number">9.6.2</span> <span class="title">The prediction loop</span></span></span></h3>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">def generate_text(model, start_string):
+    # Evaluation step (generating text using the learned model)
+
+    # Number of characters to generate
+    num_generate = 1000
+
+    # Converting our start string to numbers (vectorizing)
+    input_eval = [char2idx[s] for s in start_string]
+    input_eval = tf.expand_dims(input_eval, 0)
+
+    # Empty string to store our results
+    text_generated = []
+
+    # Low temperatures results in more predictable text.
+    # Higher temperatures results in more surprising text.
+    # Experiment to find the best setting.
+    temperature = 1.0
+
+    # Here batch size == 1
+    model.reset_states()
+    for i in range(num_generate):
+        predictions = model(input_eval)
+        # remove the batch dimension
+        predictions = tf.squeeze(predictions, 0)
+
+        # using a categorical distribution to predict the word returned by the model
+        predictions = predictions / temperature
+        predicted_id = tf.random.categorical(predictions, num_samples=1)[-1, 0].numpy()
+
+        # We pass the predicted word as the next input to the model
+        # along with the previous hidden state
+        input_eval = tf.expand_dims([predicted_id], 0)
+
+        text_generated.append(idx2char[predicted_id])
+    return start_string + &#34;&#34;.join(text_generated)
+
+print(generate_text(model, start_string=u&#34;ROMEO: &#34;))</code></pre></div>
+<div class="report"><p><span class="count">[21]</span>
+<span class="start">2019-11-10 14:18:08</span> (<span class="time">6.06s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">4min23s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">ROMEO: I will propage my life,
+Pasd ages of the e blown by the morning days sky
+left sixing at him that little thus
+fled provost all under soul.
+
+COMINIUS:
+One that good us not Northumberland,
+That, in men&#39;s love, when it tears true-happier being breath,
+Thus have fing of your bapremat-bastand&#39;s report
+A man bit the court, as ne&#39;er oncent you out
+Of dreadful tears: now pray you.
+
+ANGELO:
+Nay, ano would I cry your will! why, let me seek the bloody face in mine.
+
+MIRANDA:
+For your heard! true man&#39;s power,
+I will be marrye to my heart, and perdice
+Last his own runk, with another for our cobstry and right butcher&#39;s spreadgh.
+
+TYRREL:
+If thou hadst nomes your fine as so.
+
+CLIFFORD:
+O excels the house of York.
+
+EDWARD:
+So, friar? O he that craps&#39;s kildly
+That shook had yet he should smell but made a
+chaught of togs.
+
+AEdY:
+No fit to him, what cannot charge
+you and the prench chase! Even in the head,
+All this slip rough enough the world that ne&#39;er gross of the eyes to whither.&#39;
+That is herself: &#39;tai</code></pre></div></div></div></div>
+
+<h2 id="97-advanced-customized-training"><span class="pheasant-header"><span class="header"><span class="number">9.7</span> <span class="title">Advanced: Customized Training</span></span></span></h2>
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">model = build_model(
+    vocab_size=len(vocab),
+    embedding_dim=embedding_dim,
+    rnn_units=rnn_units,
+    batch_size=BATCH_SIZE,
+)
+
+optimizer = tf.keras.optimizers.Adam()</code></pre></div>
+<div class="report"><p><span class="count">[22]</span>
+<span class="start">2019-11-10 14:18:14</span> (<span class="time">201ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">4min24s</span>)</span></p></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python">@tf.function
+def train_step(inp, target):
+    with tf.GradientTape() as tape:
+        predictions = model(inp)
+        loss = tf.reduce_mean(
+            tf.keras.losses.sparse_categorical_crossentropy(
+                target, predictions, from_logits=True
+            )
+        )
+    grads = tape.gradient(loss, model.trainable_variables)
+    optimizer.apply_gradients(zip(grads, model.trainable_variables))
+
+    return loss</code></pre></div>
+<div class="report"><p><span class="count">[23]</span>
+<span class="start">2019-11-10 14:18:15</span> (<span class="time">7.00ms</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">4min24s</span>)</span></p></div></div></div></div>
+
+<div class="pheasant-fenced-code"><div class="cached"><div class="cell jupyter input"><div class="code"><pre><code class="python"># Training step
+EPOCHS = 10
+
+for epoch in range(EPOCHS):
+    start = time.time()
+
+    # initializing the hidden state at the start of every epoch
+    # initally hidden is None
+    hidden = model.reset_states()
+
+    for (batch_n, (inp, target)) in enumerate(dataset):
+        loss = train_step(inp, target)
+
+        if batch_n % 100 == 0:
+            template = &#34;Epoch {} Batch {} Loss {}&#34;
+            print(template.format(epoch + 1, batch_n, loss))
+    # saving (checkpoint) the model every 5 epochs
+    if (epoch + 1) % 5 == 0:
+        model.save_weights(checkpoint_prefix.format(epoch=epoch))
+    print(&#34;Epoch {} Loss {:.4f}&#34;.format(epoch + 1, loss))  # type: ignore
+    print(&#34;Time taken for 1 epoch {} sec\n&#34;.format(time.time() - start))
+model.save_weights(checkpoint_prefix.format(epoch=epoch))</code></pre></div>
+<div class="report"><p><span class="count">[24]</span>
+<span class="start">2019-11-10 14:18:15</span> (<span class="time">4min14s</span>)
+<span class="right"><span class="kernel">python3</span> (<span class="total">8min38s</span>)</span></p></div></div><div class="cell jupyter stdout"><div class="code">
+      <pre><code class="nohighlight">WARNING:tensorflow:Unresolved object in checkpoint: (root).optimizer
+WARNING:tensorflow:Unresolved object in checkpoint: (root).optimizer.iter
+WARNING:tensorflow:Unresolved object in checkpoint: (root).optimizer.beta_1
+WARNING:tensorflow:Unresolved object in checkpoint: (root).optimizer.beta_2
+WARNING:tensorflow:Unresolved object in checkpoint: (root).optimizer.decay
+WARNING:tensorflow:Unresolved object in checkpoint: (root).optimizer.learning_rate
+WARNING:tensorflow:Unresolved object in checkpoint: (root).optimizer&#39;s state &#39;m&#39; for (root).layer_with_weights-0.embeddings
+WARNING:tensorflow:Unresolved object in checkpoint: (root).optimizer&#39;s state &#39;m&#39; for (root).layer_with_weights-2.kernel
+WARNING:tensorflow:Unresolved object in checkpoint: (root).optimizer&#39;s state &#39;m&#39; for (root).layer_with_weights-2.bias
+WARNING:tensorflow:Unresolved object in checkpoint: (root).optimizer&#39;s state &#39;m&#39; for (root).layer_with_weights-1.cell.kernel
+WARNING:tensorflow:Unresolved object in checkpoint: (root).optimizer&#39;s state &#39;m&#39; for (root).layer_with_weights-1.cell.recurrent_kernel
+WARNING:tensorflow:Unresolved object in checkpoint: (root).optimizer&#39;s state &#39;m&#39; for (root).layer_with_weights-1.cell.bias
+WARNING:tensorflow:Unresolved object in checkpoint: (root).optimizer&#39;s state &#39;v&#39; for (root).layer_with_weights-0.embeddings
+WARNING:tensorflow:Unresolved object in checkpoint: (root).optimizer&#39;s state &#39;v&#39; for (root).layer_with_weights-2.kernel
+WARNING:tensorflow:Unresolved object in checkpoint: (root).optimizer&#39;s state &#39;v&#39; for (root).layer_with_weights-2.bias
+WARNING:tensorflow:Unresolved object in checkpoint: (root).optimizer&#39;s state &#39;v&#39; for (root).layer_with_weights-1.cell.kernel
+WARNING:tensorflow:Unresolved object in checkpoint: (root).optimizer&#39;s state &#39;v&#39; for (root).layer_with_weights-1.cell.recurrent_kernel
+WARNING:tensorflow:Unresolved object in checkpoint: (root).optimizer&#39;s state &#39;v&#39; for (root).layer_with_weights-1.cell.bias
+WARNING:tensorflow:A checkpoint was restored (e.g. tf.train.Checkpoint.restore or tf.keras.Model.load_weights) but not all checkpointed values were used. See above for specific issues. Use expect_partial() on the load status object, e.g. tf.train.Checkpoint.restore(...).expect_partial(), to silence these warnings, or use assert_consumed() to make the check explicit. See https://www.tensorflow.org/alpha/guide/checkpoints#loading_mechanics for details.
+Epoch 1 Batch 0 Loss 4.175241470336914
+Epoch 1 Batch 100 Loss 2.3230133056640625
+Epoch 1 Loss 2.1752
+Time taken for 1 epoch 25.7055401802063 sec
+
+Epoch 2 Batch 0 Loss 2.129734992980957
+Epoch 2 Batch 100 Loss 1.9308865070343018
+Epoch 2 Loss 1.7829
+Time taken for 1 epoch 25.109810829162598 sec
+
+Epoch 3 Batch 0 Loss 1.7903985977172852
+Epoch 3 Batch 100 Loss 1.684728741645813
+Epoch 3 Loss 1.5635
+Time taken for 1 epoch 25.23121738433838 sec
+
+Epoch 4 Batch 0 Loss 1.5300925970077515
+Epoch 4 Batch 100 Loss 1.4672574996948242
+Epoch 4 Loss 1.4777
+Time taken for 1 epoch 25.337522745132446 sec
+
+Epoch 5 Batch 0 Loss 1.4624003171920776
+Epoch 5 Batch 100 Loss 1.448387861251831
+Epoch 5 Loss 1.4165
+Time taken for 1 epoch 25.446640729904175 sec
+
+Epoch 6 Batch 0 Loss 1.4028750658035278
+Epoch 6 Batch 100 Loss 1.3973259925842285
+Epoch 6 Loss 1.3690
+Time taken for 1 epoch 25.407334089279175 sec
+
+Epoch 7 Batch 0 Loss 1.3469080924987793
+Epoch 7 Batch 100 Loss 1.3726792335510254
+Epoch 7 Loss 1.3087
+Time taken for 1 epoch 25.37715220451355 sec
+
+Epoch 8 Batch 0 Loss 1.2957813739776611
+Epoch 8 Batch 100 Loss 1.3158564567565918
+Epoch 8 Loss 1.2709
+Time taken for 1 epoch 25.398983478546143 sec
+
+Epoch 9 Batch 0 Loss 1.2178534269332886
+Epoch 9 Batch 100 Loss 1.2948020696640015
+Epoch 9 Loss 1.3018
+Time taken for 1 epoch 25.447317838668823 sec
+
+Epoch 10 Batch 0 Loss 1.2016081809997559
+Epoch 10 Batch 100 Loss 1.25323486328125
+Epoch 10 Loss 1.2214
+Time taken for 1 epoch 25.641273975372314 sec</code></pre></div></div></div></div></div>
+                <footer>
+    <div class="footer-buttons">
+        <div class="previous"><a href="../RNNを使ったテキスト分類/" title="8 RNNを使ったテキスト分類"><span>Previous</span></a></div>
+        <div class="next"><a href="../アテンションを用いたニューラル機械翻訳/" title="10 アテンションを用いたニューラル機械翻訳"><span>Next</span></a></div>
+    </div>
+    <div class="footer-note">
+        <p>
+            Built with <a href="http://www.mkdocs.org">MkDocs</a> using
+            <a href="https://github.com/daizutabi/mkdocs-ivory">Ivory theme</a>.
+        </p>
+    </div>
+</footer>
+            </div>
+        </main>
+    </div>
+    <script>
+        var base_url = '.';
+    </script>
+    <script src="../../../../../js/theme.js"></script>
+    <script src="../../../../../js/pheasant.js"></script>
+</body>
+
+</html>

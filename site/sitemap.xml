@@ -120,4 +120,24 @@
      <lastmod>2019-11-10</lastmod>
      <changefreq>daily</changefreq>
     </url>
+    <url>
+     <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/詳細/テキスト/単語の埋め込み/</loc>
+     <lastmod>2019-11-10</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
+     <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/詳細/テキスト/RNNを使ったテキスト分類/</loc>
+     <lastmod>2019-11-10</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
+     <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/詳細/テキスト/RNNを使ったテキスト生成/</loc>
+     <lastmod>2019-11-10</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
+     <loc>https://ml.daizutabi.net/tensorflow/チュートリアル/詳細/テキスト/アテンションを用いたニューラル機械翻訳/</loc>
+     <lastmod>2019-11-10</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
 </urlset>
